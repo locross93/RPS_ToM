@@ -98,7 +98,6 @@ def main():
         }
     tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type='gpt35')
 
-
     # Run game
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=3, debug=True))
