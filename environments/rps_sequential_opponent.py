@@ -46,7 +46,7 @@ def get_reward(player_move, opponent_move):
     return REWARD_LOOKUP.loc[player_move, opponent_move]
 
 
-async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # TODO make sense to pass in # rounds?
+async def run_episode(tom_agent, sequential_agent, num_rounds): # TODO make sense to pass in # rounds?
     # Initialize results files
     now = datetime.datetime.now()
     date_time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -69,8 +69,6 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # T
         # Get move from sequential agent
         sequential_agent_move = sequential_agent.get_action(sequential_agent_history)
         # Get move from tom agent
-        # if debug: # TESTING
-        #     tom_agent_move = tom_agent.get_action(tom_agent_history)
         # TODO how does tom_agent handle empty interaction history?
         if round_idx == 0:
             tom_agent_move = str(np.random.choice(ACTIONS))
@@ -91,7 +89,7 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # T
             'opponent_last_play': sequential_agent_move,
             'reward': tom_agent_reward
         })
-        df_results._append({'sequential_agent_class': str(sequential_agent.id), 'tom_agent_class': str(tom_agent.llm_type),
+        df_results = df_results._append({'sequential_agent_class': str(sequential_agent.id), 'tom_agent_class': str(tom_agent.llm_type),
                            'round_index': round_idx, 'sequential_agent_move': sequential_agent_move, 'tom_agent_move': tom_agent_move,
                            'sequential_agent_reward': sequential_agent_reward, 'tom_agent_reward': tom_agent_reward}, ignore_index=True)
 
@@ -106,13 +104,5 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # T
 
     results_file = os.path.join(results_folder, 'rps_scores.csv')
     df_results.to_csv(results_file)
-
-    # TESTING
-    print(str(sequential_agent))
-    if debug:
-        print(str(tom_agent))
-
-    print(sequential_agent_history)
-    print(tom_agent_history)
 
 

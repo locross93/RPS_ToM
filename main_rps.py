@@ -100,7 +100,7 @@ def main():
 
     # Run game
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=3, debug=True))
+    loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=50))
 
 
 
