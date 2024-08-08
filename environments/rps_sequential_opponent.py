@@ -2,7 +2,7 @@
 """
 
 import pandas as pd
-
+import numpy as np
 
 # TODO put these somewhere else?
 ACTIONS = ['rock', 'paper', 'scissors'] # useful in case we modify format (e.g. 0, 1, 2)
@@ -39,11 +39,13 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # T
         # Get move from sequential agent
         sequential_agent_move = sequential_agent.get_action(sequential_agent_history)
         # Get move from tom agent
-        if debug: # TESTING
-            tom_agent_move = tom_agent.get_action(tom_agent_history)
+        # if debug: # TESTING
+        #     tom_agent_move = tom_agent.get_action(tom_agent_history)
         # TODO how does tom_agent handle empty interaction history?
-        tom_agent_resp, tom_agent_user_msg, tom_agent_move = await tom_agent.tom_module(tom_agent_history)
-        # print_and_save(...)
+        if round_idx == 0:
+            tom_agent_move = str(np.random.choice(ACTIONS))
+        else:
+            tom_agent_resp, tom_agent_user_msg, tom_agent_move = await tom_agent.tom_module(tom_agent_history, round_idx)
 
         # Calculate reward from move choices above
         sequential_agent_reward = get_reward(sequential_agent_move, tom_agent_move)

@@ -26,6 +26,7 @@ class DecentralizedAgent(abc.ABC):
         self.interaction_history = []
         self.opponent_hypotheses = {}
         self.interaction_num = 0
+        self.reward_tracker = {self.agent_id: 0}
         self.good_hypothesis_found = False
         self.alpha = 0.3 # learning rate for updating hypothesis values
         self.correct_guess_reward = 1
@@ -123,7 +124,7 @@ class DecentralizedAgent(abc.ABC):
         user_message = f"""
             An interaction with the other player has occurred at round {step}, {self.interaction_history[-1]}.
             The total interaction history is: {self.interaction_history}.
-            You last played: {self.interaction_history[-1]['your_last_play']}
+            You last played: {self.interaction_history[-1]['my_last_play']}
             You previously guessed that their policy or strategy is: {possible_opponent_strategy}.
             High-level strategy Request:
             Provide the next high-level strategy for player {self.agent_id}. 
@@ -143,14 +144,16 @@ class DecentralizedAgent(abc.ABC):
 
         return user_message
 
-    async def tom_module(self, state, step):
+    async def tom_module(self, interaction_history, step):
+        self.interaction_history = interaction_history
+        self.reward_tracker[self.agent_id] += interaction_history[-1]['reward']
         hls_user_msg = ''
         hls_response = ''
         # score top hypotheses based on last interaction's play
         if self.interaction_num > 1:
             self.eval_hypotheses()
         if not self.good_hypothesis_found:
-            hls_user_msg1 = self.generate_interaction_feedback_user_message1(reward_tracker, step) 
+            hls_user_msg1 = self.generate_interaction_feedback_user_message1(self.reward_tracker, step) 
             hls_user_msg = hls_user_msg + hls_user_msg1
             responses = await asyncio.gather(
                 *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg1])]
