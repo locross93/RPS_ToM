@@ -1,5 +1,6 @@
 import os
 import asyncio
+import argparse
 import numpy as np
 
 from environments.rps_sequential_opponent import run_episode
@@ -28,6 +29,20 @@ def setup_sequential_agent(sequential_opponents, sequential_opponent_actions):
 def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type='gpt4'):
     if llm_type == 'gpt4':
         llm = AsyncChatLLM(kwargs={'api_key': api_key, 'model': 'gpt-4-1106-preview'})
+        controller = AsyncGPTController(
+            llm=llm,
+            model_id=model_id,
+            **model_settings
+        )
+    elif llm_type == 'gpt4o':
+        llm = AsyncChatLLM(kwargs={'api_key': api_key, 'model': 'gpt-4o-2024-08-06'})
+        controller = AsyncGPTController(
+            llm=llm,
+            model_id=model_id,
+            **model_settings
+        )
+    elif llm_type == 'gpt-4o-mini':
+        llm = AsyncChatLLM(kwargs={'api_key': api_key, 'model': 'gpt-4o-mini'})
         controller = AsyncGPTController(
             llm=llm,
             model_id=model_id,
@@ -75,12 +90,17 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type='gpt
         agent_config_obj['self_improve'] = True
     
     agent = DecentralizedAgent(agent_config_obj, controller)
+    agent.llm_type = llm_type
     return agent
 
 
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Run a game of rock paper scissors')
+    parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
+    args = parser.parse_args()
+
     # Initialize sequential agent
     sequential_agent = setup_sequential_agent(SEQUENTIAL_OPPONENTS, ACTION_MATRIX_LOOKUP)
 
@@ -89,20 +109,43 @@ def main():
     # TODO set up actual tom agent
     api_key = os.getenv('OPENAI_API_KEY')
     model_id = 'player_0'
-    model_settings = {
+    if args.llm_type == 'gpt4':
+        model_settings = {
+            "model": "gpt-4-1106-preview",
+            "max_tokens": 4000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    elif args.llm_type == 'gpt4o':
+        model_settings = {
+            "model": "gpt-4o-2024-08-06",
+            "max_tokens": 4000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    elif args.llm_type == 'gpt-4o-mini':
+        model_settings = {
+            "model": "gpt-4o-mini",
+            "max_tokens": 4000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    elif args.llm_type == 'gpt35':
+        model_settings = {
             "model": "gpt-3.5-turbo-1106",
             "max_tokens": 2000,
             "temperature": 0.2,
             "top_p": 1.0,
             "n": 1,
         }
-    tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type='gpt35')
+    tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type=args.llm_type)
 
     # Run game
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=50))
-
-
+    loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=300))
 
 if __name__ == "__main__":
     main()

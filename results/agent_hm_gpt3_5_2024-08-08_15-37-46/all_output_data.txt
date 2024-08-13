@@ -1208,3 +1208,203 @@ Tom agent played rock
 Sequential agent played scissors
 
 
+Round 13
+
+
+User Message: Total Rewards:- player_0: 10
+
+            
+                An interaction with the other player has occurred at round 13, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}.
+                The total interaction history is: [{'my_last_play': 'scissors', 'opponent_last_play': 'scissors', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'rock', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'scissors', 'reward': np.int64(-1)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 13, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}.
+            The total interaction history is: [{'my_last_play': 'scissors', 'opponent_last_play': 'scissors', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'rock', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'scissors', 'reward': np.int64(-1)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'I think my opponent is consistently playing the choice that beats my previous play.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            This response should include step by step reasoning in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next playand your next play in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {}
+
+Based on the interaction history, it seems that my opponent's likely policy is to play the counter strategy. They are likely playing a static strategy where they consistently play the choice that beats my previous play. This is evident from the fact that I have received positive rewards when playing the same choice as my opponent. For example, when I played rock, my opponent played scissors and I received a reward of 3.
+
+Therefore, my hypothesis is that my opponent is playing a static strategy to counter my choices.
+
+```python
+{
+'Opponent_strategy': 'I think my opponent is consistently playing the choice that beats my previous play.'
+}
+```
+
+1. 'predicted_opponent_next_play': Given the opponent's consistent strategy of playing the choice that beats your previous play, and considering that you played rock in the last round, the opponent's likely play in the next round would be paper, as it beats your previous play of rock.
+
+2. 'my_next_play': Given the opponent's likely play in the next round, your next play should be scissors, as it beats the opponent's likely play of paper.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+1. 'predicted_opponent_next_play': Given the opponent's consistent strategy of playing the choice that beats your previous play, and considering that you played rock in the last round, the opponent's likely play in the next round would be paper, as it beats your previous play of rock.
+
+2. 'my_next_play': Given the opponent's likely play in the next round, your next play should be scissors, as it beats the opponent's likely play of paper.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+
+
+
+
+Tom agent played scissors
+
+
+Sequential agent played rock
+
+
+Round 14
+
+
+User Message: Total Rewards:- player_0: 9
+
+            
+                An interaction with the other player has occurred at round 14, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}.
+                The total interaction history is: [{'my_last_play': 'scissors', 'opponent_last_play': 'scissors', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'rock', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'scissors', 'reward': np.int64(-1)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 14, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}.
+            The total interaction history is: [{'my_last_play': 'scissors', 'opponent_last_play': 'scissors', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'rock', 'reward': np.int64(3)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'scissors', 'reward': np.int64(-1)}, {'my_last_play': 'rock', 'opponent_last_play': 'rock', 'reward': np.int64(0)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}, {'my_last_play': 'paper', 'opponent_last_play': 'paper', 'reward': np.int64(0)}, {'my_last_play': 'rock', 'opponent_last_play': 'scissors', 'reward': np.int64(3)}, {'my_last_play': 'scissors', 'opponent_last_play': 'rock', 'reward': np.int64(-1)}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'My opponent may be playing the move that beats my previous move.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            This response should include step by step reasoning in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next playand your next play in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {}
+
+Based on the interaction history, it seems that my opponent's strategy is not static. They have played rock, scissors, and paper in different rounds, and their choices do not seem to be based on a simple pattern. However, I have observed that I received a negative reward when I played scissors and my opponent played rock. This suggests that my opponent may have a tendency to play rock when I play scissors.
+
+Based on this observation, I hypothesize that my opponent's strategy may involve countering my previous move. Specifically, they may be playing the move that beats my previous move. This would explain the negative reward when I played scissors and the positive reward when I played rock.
+
+```python
+{
+'Opponent_strategy': 'My opponent may be playing the move that beats my previous move.'
+}
+```
+
+1. 'predicted_opponent_next_play': Given the opponent's strategy of playing the move that beats your previous move, and considering their last play of rock, it is likely that they will continue with rock in the next round.
+
+2. 'my_next_play': To counter their likely play of rock, you should play paper in the next round.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+1. 'predicted_opponent_next_play': Given the opponent's strategy of playing the move that beats your previous move, and considering their last play of rock, it is likely that they will continue with rock in the next round.
+
+2. 'my_next_play': To counter their likely play of rock, you should play paper in the next round.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+
+
+
+
+Tom agent played paper
+
+
+Sequential agent played paper
+
+

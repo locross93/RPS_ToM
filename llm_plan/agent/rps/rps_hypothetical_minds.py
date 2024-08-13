@@ -42,6 +42,7 @@ class DecentralizedAgent(abc.ABC):
         self.system_message = f"""
             You are Agent {self.agent_id} in the two player iterated game of rock paper scisssors
             Rock beats scissors, paper beats rock, and scissors beats paper.
+            Winner gets 3 reward, loser gets -1 reward, and tie gives 0 reward.
             You will be playing the same opponent for 300 rounds.
             """
 
@@ -124,14 +125,14 @@ class DecentralizedAgent(abc.ABC):
         user_message = f"""
             An interaction with the other player has occurred at round {step}, {self.interaction_history[-1]}.
             The total interaction history is: {self.interaction_history}.
-            You last played: {self.interaction_history[-1]['my_last_play']}
+            You last played: {self.interaction_history[-1]['my_play']}
             You previously guessed that their policy or strategy is: {possible_opponent_strategy}.
             High-level strategy Request:
             Provide the next high-level strategy for player {self.agent_id}. 
-            This response should include step by step reasoning in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
             1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
             2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
-            3. In the 3rd part of your response, output the predicted opponent's next playand your next play in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
             Example response:
             1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
             2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
@@ -145,8 +146,12 @@ class DecentralizedAgent(abc.ABC):
         return user_message
 
     async def tom_module(self, interaction_history, step):
-        self.interaction_history = interaction_history
-        self.reward_tracker[self.agent_id] += interaction_history[-1]['reward']
+        # if interaction history longer than 50 rounds, just show last 50 rounds
+        if len(interaction_history) > 50:
+            self.interaction_history = interaction_history[-50:]
+        else:
+            self.interaction_history = interaction_history
+        self.reward_tracker[self.agent_id] += interaction_history[-1]['my_reward']
         hls_user_msg = ''
         hls_response = ''
         # score top hypotheses based on last interaction's play
@@ -186,7 +191,7 @@ class DecentralizedAgent(abc.ABC):
             # Make sure output dict syntax is correct
             correct_syntax = False
             counter = 0
-            while not correct_syntax and counter < 6:
+            while not correct_syntax and counter < 20:
                 correct_syntax = True
                 # Gathering responses asynchronously
                 responses = await asyncio.gather(
@@ -197,20 +202,21 @@ class DecentralizedAgent(abc.ABC):
                     response = responses[i][0]
                     next_plays = self.extract_dict(response)
                     both_keys_present = ('predicted_opponent_next_play' in next_plays) and ('my_next_play' in next_plays)
-                    if not both_keys_present:
+                    # check for correct formatting, 'my_next_play' should be either 'rock', 'paper', or 'scissors'
+                    correct_format = next_plays['my_next_play'] in ['rock', 'paper', 'scissors'] and next_plays['predicted_opponent_next_play'] in ['rock', 'paper', 'scissors']
+                    if not both_keys_present or not correct_format:
                         correct_syntax = False
                         print(f"Error parsing dictionary when extracting next plays, retrying...")
                         break
                     if i == 0:
                         self.next_plays = deepcopy(next_plays)
                         self.opponent_hypotheses[self.interaction_num]['next_plays'] = deepcopy(self.next_plays)
-                        # add response to hls after two new lines
-                        hls_response = hls_response + '\n\n' + response
+                        next_play_response = deepcopy(response)
                     else:
                         self.opponent_hypotheses[sorted_keys[i-1]]['next_plays'] = deepcopy(next_plays)
                 counter += 1
             # add response to hls after two new lines
-            hls_response = hls_response + '\n\n' + response
+            hls_response = hls_response + '\n\n' + next_play_response
         else:
             # skip asking about opponent's strategy when we have a good hypothesis
             # Sort the keys of self.opponent_hypotheses based on 'value', in descending order
@@ -236,8 +242,16 @@ class DecentralizedAgent(abc.ABC):
                     *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg2])]
                     )
                 response = responses[0][0]
+                next_plays = self.extract_dict(response)
+                both_keys_present = ('predicted_opponent_next_play' in next_plays) and ('my_next_play' in next_plays)
+                # check for correct formatting, 'my_next_play' should be either 'rock', 'paper', or 'scissors'
+                correct_format = next_plays['my_next_play'] in ['rock', 'paper', 'scissors'] and next_plays['predicted_opponent_next_play'] in ['rock', 'paper', 'scissors']
+                if not both_keys_present or not correct_format:
+                    correct_syntax = False
+                    print(f"Error parsing dictionary when extracting next plays, retrying...")
+                counter += 1
             self.next_plays = deepcopy(next_plays)
-            self.opponent_hypotheses[self.interaction_num]['next_plays'] = deepcopy(self.next_plays)
+            self.opponent_hypotheses[best_key]['next_plays'] = deepcopy(self.next_plays)
             # add response to hls after two new lines
             hls_response = hls_response + '\n\n' + response
 
@@ -259,7 +273,7 @@ class DecentralizedAgent(abc.ABC):
             if 'predicted_opponent_next_play' not in self.opponent_hypotheses[key]['next_plays']:
                 breakpoint()
             predicted_opponent_next_play = self.opponent_hypotheses[key]['next_plays']['predicted_opponent_next_play']
-            empirical_opp_play = self.interaction_history[-1]['opponent_last_play']
+            empirical_opp_play = self.interaction_history[-1]['opponent_play']
             # Check if the predicted opponent's next play matches the empirical opponent's last play
             same_play = predicted_opponent_next_play == empirical_opp_play
             if same_play:

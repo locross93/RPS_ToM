@@ -9,7 +9,11 @@ MODEL_COST_PER_INPUT = {
     'gpt-4-0613': 3e-05,
     'gpt-4-1106-preview': 1e-05,    # GPT4 Turbo
     'gpt-4-0125-preview': 1e-05,    # GPT4 Turbo
-    'gpt-4o-2024-05-13': 5e-06,    # GPT4-o
+    'gpt-4o-2024-05-13': 5e-06,     # GPT4-o
+    'gpt-4o': 5e-06,                # GPT4-o
+    'gpt-4o-2024-08-06': 2.5e-06,   # GPT4-o
+    'gpt-4o-mini': 1.5e-07,         # GPT4-o-mini
+    'gpt-4o-mini-2024-07-18': 1.5e-07,  # GPT4-o-mini
     'gpt-3.5-turbo-1106': 1e-06,
     'meta-llama/Meta-Llama-3-70B-Instruct': 0.0,
     'mistralai/Mixtral-8x7B-Instruct-v0.1': 0.0,
@@ -21,7 +25,11 @@ MODEL_COST_PER_OUTPUT = {
     'gpt-4-0613': 6e-05,
     'gpt-4-1106-preview': 3e-05,    # GPT4 Turbo
     'gpt-4-0125-preview': 3e-05,    # GPT4 Turbo
-    'gpt-4o-2024-05-13': 1.5e-05,    # GPT4-o
+    'gpt-4o-2024-05-13': 1.5e-05,   # GPT4-o
+    'gpt-4o': 1.5e-05,              # GPT4-o
+    'gpt-4o-2024-08-06': 1e-05,     # GPT4-o
+    'gpt-4o-mini': 6e-07,           # GPT4-o-mini
+    'gpt-4o-mini-2024-07-18': 6e-07,# GPT4-o-mini
     'gpt-3.5-turbo-1106': 2e-06,
     'meta-llama/Meta-Llama-3-70B-Instruct': 0.0,
     'mistralai/Mixtral-8x7B-Instruct-v0.1': 0.0,
