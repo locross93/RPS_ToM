@@ -1,6 +1,6 @@
 """
 """
-
+import csv
 import pandas as pd
 
 
@@ -15,8 +15,22 @@ REWARD_LOOKUP = pd.DataFrame(
 )
 
 
+def save_game_results(sequential_agent, tom_agent, sequential_agent_history, tom_agent_history):
+    with open('game_results.csv', 'w') as csvfile:
+        file = csv.writer(csvfile)
+        # Write headers
+        file.writerow(['sequential_agent_class', 'tom_agent_class',
+                       'round_index', 'sequential_agent_move', 'tom_agent_move',
+                       'sequential_agent_reward', 'tom_agent_reward'])
+        # Write data
+        for round_idx in range(len(sequential_agent_history)):
+            file.writerow([str(sequential_agent.id), 'gpt_3.5', # TODO make this an attribute of tom_agent
+                           round_idx, sequential_agent_history[round_idx]['my_last_play'], tom_agent_history[round_idx]['my_last_play'],
+                           sequential_agent_history[round_idx]['reward'], tom_agent_history[round_idx]['reward']])
+
+
+
 # NB: copied over from `running_with_scissors_in_the_matrix__repeated.py`
-# TODO do we need this?
 def print_and_save(*args, new_line=True, **kwargs):
     global all_output_file
     print(*args, **kwargs)
@@ -31,7 +45,10 @@ def get_reward(player_move, opponent_move):
     return REWARD_LOOKUP.loc[player_move, opponent_move]
 
 
-async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # TODO make sense to pass in # rounds?
+def run_episode(tom_agent, sequential_agent, num_rounds, debug=False):
+    df_results = pd.DataFrame(columns=['sequential_agent_class', 'tom_agent_class',
+                                    'round_index', 'sequential_agent_move', 'tom_agent_move',
+                                    'sequential_agent_reward', 'tom_agent_reward'])
     # Initialize game history
     sequential_agent_history = []
     tom_agent_history = []
@@ -42,7 +59,7 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # T
         if debug: # TESTING
             tom_agent_move = tom_agent.get_action(tom_agent_history)
         # TODO how does tom_agent handle empty interaction history?
-        tom_agent_resp, tom_agent_user_msg, tom_agent_move = await tom_agent.tom_module(tom_agent_history)
+        # tom_agent_resp, tom_agent_user_msg, tom_agent_move = await tom_agent.tom_module(tom_agent_history)
         # print_and_save(...)
 
         # Calculate reward from move choices above
@@ -60,17 +77,23 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, debug=False): # T
             'reward': tom_agent_reward
         })
 
-        # Log results
+        df_results = df_results._append({'sequential_agent_class': str(sequential_agent.id), 'tom_agent_class': 'gpt_3.5',
+                           'round_index': round_idx, 'sequential_agent_move': sequential_agent_move, 'tom_agent_move': tom_agent_move,
+                           'sequential_agent_reward': sequential_agent_reward, 'tom_agent_reward': tom_agent_reward}, ignore_index=True)
 
+
+    # Log results
+    print(df_results)
+    df_results.to_csv('rps_scores.csv')
 
 
 
     # TESTING
-    print(str(sequential_agent))
-    if debug:
-        print(str(tom_agent))
+    # print(str(sequential_agent))
+    # if debug:
+    #     print(str(tom_agent))
 
-    print(sequential_agent_history)
-    print(tom_agent_history)
+    # print(sequential_agent_history)
+    # print(tom_agent_history)
 
 
