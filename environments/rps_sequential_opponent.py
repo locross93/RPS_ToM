@@ -60,7 +60,7 @@ def get_reward(player_move, opponent_move):
     return REWARD_LOOKUP.loc[player_move, opponent_move]
 
 
-async def run_episode(tom_agent, sequential_agent, num_rounds): # TODO make sense to pass in # rounds?
+async def run_episode(tom_agent, sequential_agent, num_rounds):
     # Initialize results files
     now = datetime.datetime.now()
     date_time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -123,3 +123,36 @@ async def run_episode(tom_agent, sequential_agent, num_rounds): # TODO make sens
         df_results.to_csv(results_file)
 
 
+
+# TESTING: replace call to `run_episode` with this function to play two sequential agents against each other
+def run_sequential_episode(tom_agent, sequential_agent, num_rounds):
+    df_results = pd.DataFrame(columns=['sequential_agent_class', 'tom_agent_class',
+                                    'round_index', 'sequential_agent_move', 'tom_agent_move',
+                                    'sequential_agent_reward', 'tom_agent_reward'])
+    sequential_agent_history = []
+    tom_agent_history = []
+    for round_idx in range(num_rounds):
+        # Get move from sequential agent
+        sequential_agent_move = sequential_agent.get_action(sequential_agent_history)
+        tom_agent_move = tom_agent.get_action(tom_agent_history)
+        # Calculate reward from move choices above
+        sequential_agent_reward = get_reward(sequential_agent_move, tom_agent_move)
+        tom_agent_reward = get_reward(tom_agent_move, sequential_agent_move)
+        # Update game history
+        sequential_agent_history.append({
+            'round': round_idx,
+            'my_last_play': sequential_agent_move,
+            'opponent_last_play': tom_agent_move,
+            'reward': int(sequential_agent_reward)
+        })
+        tom_agent_history.append({
+            'round': round_idx,
+            'my_last_play': tom_agent_move,
+            'opponent_last_play': sequential_agent_move,
+            'my_reward': int(tom_agent_reward)
+        })
+        df_results = df_results._append({'sequential_agent_class': str(sequential_agent.id), 'tom_agent_class': str(sequential_agent.id),
+                           'round_index': round_idx, 'sequential_agent_move': sequential_agent_move, 'tom_agent_move': tom_agent_move,
+                           'sequential_agent_reward': sequential_agent_reward, 'tom_agent_reward': tom_agent_reward}, ignore_index=True)
+
+    print(df_results)

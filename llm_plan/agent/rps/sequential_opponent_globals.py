@@ -4,30 +4,109 @@ import pandas as pd
 ACTIONS = ['rock', 'paper', 'scissors'] # useful in case we modify format (e.g. 0, 1, 2)
 
 
-# NB: we could standardize these by specifying the same input values for all of them, "marginalizing" differently for each type
-SELF_TRANSITION_UP_ACTION_MATRIX = pd.DataFrame(
+TRANSITION_UP_ACTION_MATRIX = pd.DataFrame(
     [[0.05, 0.9, 0.05],
      [0.05, 0.05, 0.9],
      [0.9, 0.05, 0.05]],
     index=ACTIONS,
     columns=ACTIONS
 )
-SELF_TRANSITION_DOWN_ACTION_MATRIX = pd.DataFrame(
+TRANSITION_DOWN_ACTION_MATRIX = pd.DataFrame(
     [[0.05, 0.05, 0.9],
      [0.9, 0.05, 0.05],
      [0.05, 0.9, 0.05]],
     index=ACTIONS,
     columns=ACTIONS
 )
+TRANSITION_STAY_ACTION_MATRIX = pd.DataFrame(
+    [[0.9, 0.05, 0.05],
+     [0.05, 0.9, 0.05],
+     [0.05, 0.05, 0.9]],
+    index=ACTIONS,
+    columns=ACTIONS
+)
+
+OUTCOME_TRANSITION_W_stay_L_up_T_down_ACTION_MATRIX = pd.DataFrame.from_dict({
+    'opponent_last_play': [
+        # opponent's last move was 'rock'
+        pd.DataFrame(
+            [[0.05, 0.05, 0.9],  # player's last move: rock
+             [0.05, 0.9, 0.05],  # player's last move: paper
+             [0.9, 0.05, 0.05]], # player's last move: scissors
+             index=ACTIONS, # player's last move
+             columns=ACTIONS # next move
+        ),
+        # opponent's last move was 'paper'
+        pd.DataFrame(
+            [[0.05, 0.9, 0.05],  # player's last move: rock
+             [0.9, 0.05, 0.05],  # player's last move: paper
+             [0.05, 0.05, 0.9]], # player's last move: scissors
+             index=ACTIONS, # player's last move
+             columns=ACTIONS # next move
+        ),
+        # opponent's last move was 'scissors'
+        pd.DataFrame(
+            [[0.9, 0.05, 0.05],  # player's last move: rock
+             [0.05, 0.05, 0.9],  # player's last move: paper
+             [0.05, 0.9, 0.05]], # player's last move: scissors
+             index=ACTIONS, # player's last move
+             columns=ACTIONS # next move
+        )
+    ]},
+    orient='index',
+    columns=ACTIONS # opponent's last move
+)
+
+OUTCOME_TRANSITION_W_up_L_down_T_stay_ACTION_MATRIX = pd.DataFrame.from_dict({
+    'opponent_last_play': [
+        # opponent's last move was 'rock'
+        pd.DataFrame(
+            [[0.9, 0.05, 0.05],  # player's last move: rock
+             [0.05, 0.05, 0.9],  # player's last move: paper
+             [0.05, 0.9, 0.05]], # player's last move: scissors
+             index=ACTIONS, # player's last move
+             columns=ACTIONS # next move
+        ),
+        # opponent's last move was 'paper'
+        pd.DataFrame(
+            [[0.05, 0.05, 0.9],  # player's last move: rock
+             [0.05, 0.9, 0.05],  # player's last move: paper
+             [0.9, 0.05, 0.05]], # player's last move: scissors
+             index=ACTIONS, # player's last move
+             columns=ACTIONS # next move
+        ),
+        # opponent's last move was 'scissors'
+        pd.DataFrame(
+            [[0.05, 0.9, 0.05],  # player's last move: rock
+             [0.9, 0.05, 0.05],  # player's last move: paper
+             [0.05, 0.05, 0.9]], # player's last move: scissors
+             index=ACTIONS, # player's last move
+             columns=ACTIONS # next move
+        )
+    ]},
+    orient='index',
+    columns=ACTIONS # opponent's last move
+)
 
 
 SEQUENTIAL_OPPONENTS = [
+    # transition opponents
     'self_transition_up',
     'self_transition_down',
-    # TODO fill this in
+    'opponent_transition_up',
+    'opponent_transition_stay',
+    # win-stay, lose-shift variants
+    'W_stay_L_up_T_down',
+    'W_up_L_down_T_stay',
+    # TODO previous outcome, previous transition
+    # 'prev_outcome_prev_transition'
 ]
 
 ACTION_MATRIX_LOOKUP = {
-    'self_transition_up': SELF_TRANSITION_UP_ACTION_MATRIX,
-    'self_transition_down': SELF_TRANSITION_DOWN_ACTION_MATRIX
+    'self_transition_up': TRANSITION_UP_ACTION_MATRIX,
+    'self_transition_down': TRANSITION_DOWN_ACTION_MATRIX,
+    'opponent_transition_up': TRANSITION_UP_ACTION_MATRIX,
+    'opponent_transition_stay': TRANSITION_STAY_ACTION_MATRIX,
+    'W_stay_L_up_T_down': OUTCOME_TRANSITION_W_stay_L_up_T_down_ACTION_MATRIX,
+    'W_up_L_down_T_stay': OUTCOME_TRANSITION_W_up_L_down_T_stay_ACTION_MATRIX
 }

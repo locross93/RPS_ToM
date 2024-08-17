@@ -3,25 +3,25 @@ import asyncio
 import argparse
 import numpy as np
 
-from environments.rps_sequential_opponent import run_episode
+from environments.rps_sequential_opponent import run_episode, run_sequential_episode # TESTING
 from llm_plan.agent.rps.sequential_opponent_globals import ACTION_MATRIX_LOOKUP, SEQUENTIAL_OPPONENTS
-from llm_plan.agent.rps.sequential_opponent import SelfTransition
+from llm_plan.agent.rps.sequential_opponent import SelfTransition, OppTransition, OutcomeTransition
 from llm_plan.agent.rps.rps_hypothetical_minds import DecentralizedAgent
+# TESTING: comment out everything below
 from llm_plan.agent.agent_config import agent_config
 from llm_plan.controller.async_llm import AsyncChatLLM
 from llm_plan.controller.async_gpt_controller import AsyncGPTController
 
 
 
-def setup_sequential_agent(sequential_opponents, sequential_opponent_actions):
-    # Configure a randomly selected sequential agent
-    # TODO replace this with argparse / iterating over all opponents
-    sequential_agent = np.random.choice(sequential_opponents)
-
-    if sequential_agent == 'self_transition_up':
-        return SelfTransition(id=sequential_agent, action_matrix=sequential_opponent_actions[sequential_agent])
-    elif sequential_agent == 'self_transition_down':
-        return SelfTransition(id=sequential_agent, action_matrix=sequential_opponent_actions[sequential_agent])
+def setup_sequential_agent(sequential_agent, sequential_agent_actions):
+    if sequential_agent in ['self_transition_up', 'self_transition_down']: # self transition agents
+        return SelfTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+    elif sequential_agent in ['opponent_transition_up', 'opponent_transition_stay']: # opponent transition agents
+        return OppTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+    elif sequential_agent in ['W_stay_L_up_T_down', 'W_up_L_down_T_stay']: # outcome transition agents
+        return OutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+    # TODO final agent: outcome previous transition
     else:
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
@@ -83,12 +83,12 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type='gpt
             model_id=model_id,
             **model_settings
         )
-    
+
     agent_config_obj = {'agent_id': model_id}
-    
+
     if 'hypothetical_minds' in agent_type or 'hm' in agent_type:
         agent_config_obj['self_improve'] = True
-    
+
     agent = DecentralizedAgent(agent_config_obj, controller)
     agent.llm_type = llm_type
     return agent
@@ -99,14 +99,18 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type='gpt
 def main():
     parser = argparse.ArgumentParser(description='Run a game of rock paper scissors')
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
+    parser.add_argument('--sequential_opponent', type=str, default='self_transition_up', help=f'Sequential opponent type: {SEQUENTIAL_OPPONENTS}')
     args = parser.parse_args()
 
     # Initialize sequential agent
-    sequential_agent = setup_sequential_agent(SEQUENTIAL_OPPONENTS, ACTION_MATRIX_LOOKUP)
+    sequential_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
 
     # Initialize tom agent
-    #tom_agent = setup_sequential_agent(SEQUENTIAL_OPPONENTS, ACTION_MATRIX_LOOKUP) # TESTING
-    # TODO set up actual tom agent
+    # TESTING: uncomment two lines below
+    # tom_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
+    # run_sequential_episode(tom_agent, sequential_agent, num_rounds=10)
+    # TESTING: comment out everything below
+
     api_key = os.getenv('OPENAI_API_KEY')
     model_id = 'player_0'
     if args.llm_type == 'gpt4':
