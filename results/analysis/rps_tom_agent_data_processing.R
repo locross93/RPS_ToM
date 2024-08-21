@@ -11,7 +11,7 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 library(tidyverse)
 
 # Globals
-DATA_PATH = "../results/all_results" # NB: adjust as needed
+DATA_PATH = "../all_results" # NB: adjust as needed
 DATA_FILE = "all_results.csv" # name of file containing full dataset for all rounds
 
 

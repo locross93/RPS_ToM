@@ -10,7 +10,7 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 library(tidyverse)
 
 # Globals
-DATA_PATH = "../.." # NB: adjust as needed
+DATA_PATH = "../../.." # NB: this is just *outside* the root RPS_ToM directory
 DATA_FILE = "rps_human_data.csv" # name of file containing full dataset for all rounds
 GAME_ROUNDS = 300
 STRATEGY_LEVELS = c("prev_move_positive", "prev_move_negative",
@@ -65,8 +65,8 @@ read_bot_data = function(filename, strategy_levels, game_rounds) {
 
 
 # Read data
-bot_data = read_bot_data(paste(DATA_PATH, DATA_FILE, sep = "/"),
-                         STRATEGY_LEVELS,
-                         GAME_ROUNDS)
+human_data = read_bot_data(paste(DATA_PATH, DATA_FILE, sep = "/"),
+                           STRATEGY_LEVELS,
+                           GAME_ROUNDS)
 # Save as RData
-save(bot_data, file = "rps_human_data.RData")
+save(human_data, file = "rps_human_data.RData")

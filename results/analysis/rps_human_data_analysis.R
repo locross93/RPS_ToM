@@ -150,7 +150,7 @@ win_pct_bins = condition_block_win_pct %>%
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
   ggtitle("By Round") +
   scale_color_viridis(discrete = T,
-                      name = "Bot pattern",
+                      name = "Sequential pattern",
                       labels = function(x) str_wrap(x, width = 24)
                       ) +
   scale_x_continuous(
