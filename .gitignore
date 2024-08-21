@@ -172,3 +172,4 @@ llm_plan/sprite_labels/unlabeled_patches/*
 #!frames/**/**/**/*.txt
 experiments/
 old/
+llm_plan/lc_api_key.json

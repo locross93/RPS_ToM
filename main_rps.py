@@ -1,7 +1,7 @@
 import os
 import asyncio
 import argparse
-import numpy as np
+import json
 
 from environments.rps_sequential_opponent import run_episode, run_sequential_episode # TESTING
 from llm_plan.agent.rps.sequential_opponent_globals import ACTION_MATRIX_LOOKUP, SEQUENTIAL_OPPONENTS
@@ -112,6 +112,9 @@ def main():
     # TESTING: comment out everything below
 
     api_key = os.getenv('OPENAI_API_KEY')
+    api_key_path = './llm_plan/lc_api_key.json'
+    OPENAI_KEYS = json.load(open(api_key_path, 'r'))
+    api_key = OPENAI_KEYS['API_KEY']
     model_id = 'player_0'
     if args.llm_type == 'gpt4':
         model_settings = {
