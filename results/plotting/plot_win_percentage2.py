@@ -29,6 +29,8 @@ for filename in os.listdir(directory):
         llm_type = parts[0] + '_' + parts[1]  # e.g., 'gpt_4o'
         bot_type = '_'.join(parts[2:-3])  # e.g., 'self_transition_up'
         seed = int(parts[-1].split('.')[0])  # Last part before the file extension
+        datetime = parts[-3]  # Second to last part
+        breakpoint()
         
         # Add columns for llm_type, bot_type, and seed
         df['llm_type'] = llm_type

@@ -122,6 +122,16 @@ async def run_episode(tom_agent, sequential_agent, num_rounds):
         print_and_save(f"Sequential agent played {sequential_agent_move} and received reward {sequential_agent_reward}")
         df_results.to_csv(results_file)
 
+    # add column for timestamp
+    df_results['timestamp'] = date_time_str
+    all_results_file = './results/all_models/rps_scores_all_rounds.csv'
+    if os.path.exists(all_results_file):
+        df_all_results = pd.read_csv(all_results_file, index_col=0)
+        df_all_results = pd.concat([df_all_results, df_results], ignore_index=True)
+    else:
+        df_all_results = df_results
+    df_all_results.to_csv(all_results_file)
+
 
 
 # TESTING: replace call to `run_episode` with this function to play two sequential agents against each other
@@ -156,3 +166,4 @@ def run_sequential_episode(tom_agent, sequential_agent, num_rounds):
                            'sequential_agent_reward': sequential_agent_reward, 'tom_agent_reward': tom_agent_reward}, ignore_index=True)
 
     print(df_results)
+
