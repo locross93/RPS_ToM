@@ -1,0 +1,201 @@
+
+#'
+#' Plot human RPS data
+#'
+
+
+# SETUP ====
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+
+library(tidyverse)
+library(viridis)
+library(patchwork)
+
+
+load("rps_human_data.RData")
+
+
+# GLOBALS ====
+
+PLOT_THEME_DEFAULT = theme(
+  # text
+  plot.title = element_text(size = 24, family = "Avenir", color = "black", margin = margin(b = 0.5, unit = "line")),
+  axis.title.y = element_text(size = 24, family = "Avenir", color = "black", margin = margin(r = 0.5, unit = "line")),
+  axis.title.x = element_text(size = 24, family = "Avenir", color = "black", margin = margin(t = 0.5, unit = "line")),
+  axis.text.y = element_text(size = 18, family = "Avenir", color = "black"),
+  axis.text.x = element_text(size = 18, family = "Avenir", color = "black"),
+  legend.title = element_text(size = 20, family = "Avenir", color = "black"),
+  legend.text = element_text(size = 14, family = "Avenir", color = "black"),
+  # backgrounds, lines
+  panel.background = element_blank(),
+  strip.background = element_blank(),
+  panel.grid.major.x = element_blank(),
+  panel.grid.minor.x = element_blank(),
+  panel.grid.major.y = element_blank(),
+  panel.grid.minor.y = element_blank(),
+  axis.line = element_line(color = "black"),
+  axis.ticks = element_line(color = "black")
+)
+
+STRATEGY_LOOKUP = list("prev_move_positive" = "Self-transition (+)",
+                       "prev_move_negative" = "Self-transition (−)",
+                       "opponent_prev_move_positive" = "Opponent-transition (+)",
+                       "opponent_prev_move_nil" = "Opponent-transition (0)",
+                       "win_nil_lose_positive" = "Previous outcome (W0L+T−)",
+                       "win_positive_lose_negative" = "Previous outcome (W+L−T0)",
+                       "outcome_transition_dual_dependency" = "Previous outcome, \nprevious transition")
+
+STRATEGY_LABELS = c(
+  "Self-transition (+)",
+  "Self-transition (−)",
+  "Opponent-transition (+)",
+  "Opponent-transition (0)",
+  "Previous outcome (W0L+T−)",
+  "Previous outcome (W+L−T0)",
+  "Previous outcome, \nprevious transition"
+)
+
+
+
+# ANALYSIS FUNCTIONS ====
+
+# Divide each subject's trials into blocks of size blocksize (e.g. 10 trials)
+# then get each subject's win percent in each block
+get_subject_block_win_pct = function(data, blocksize) {
+  data %>%
+    filter(is_bot == 0) %>%
+    group_by(bot_strategy, round_index) %>%
+    # NB: round_block is 0-indexed
+    mutate(round_block = ceiling(round_index / blocksize) - 1) %>%
+    select(bot_strategy, round_index, game_id, player_id, player_outcome, round_block) %>%
+    group_by(bot_strategy, game_id, player_id, round_block) %>%
+    count(win = player_outcome == "win") %>%
+    mutate(total = sum(n),
+           win_pct = n / total) %>%
+    filter(win == TRUE)
+}
+
+# Take in subject block win percent (calculated above) and summarize by bot strategy across subjects
+get_block_win_pct_summary = function(subject_block_data) {
+  subject_block_data %>%
+    group_by(bot_strategy, round_block) %>%
+    summarize(subjects = n(),
+              mean_win_pct = mean(win_pct),
+              se_win_pct = sd(win_pct) / sqrt(subjects))
+}
+
+
+# FIGURE: Human win percentages ====
+
+# Win percentage overall
+subject_win_pct = get_subject_block_win_pct(bot_data, blocksize = 300)
+condition_win_pct = get_block_win_pct_summary(subject_win_pct)
+condition_win_pct = condition_win_pct %>%
+  rowwise() %>%
+  mutate(
+    bot_strategy_str = factor(STRATEGY_LOOKUP[[bot_strategy]],
+                              levels = STRATEGY_LABELS)
+  )
+
+# Fig
+win_pct_overall = condition_win_pct %>%
+  ggplot(aes(x = bot_strategy_str, y = mean_win_pct, color = bot_strategy_str)) +
+  geom_point(size = 6) +
+  geom_errorbar(aes(ymin = mean_win_pct - se_win_pct, ymax = mean_win_pct + se_win_pct),
+                width = 0, linewidth = 1) +
+  geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
+  geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
+  ggtitle("Aggregate") +
+  scale_color_viridis(discrete = TRUE,
+                      name = element_blank()) +
+  scale_y_continuous(
+    name = "Human win percentage",
+    breaks = seq(0.3, 0.9, by = 0.1),
+    labels = as.character(seq(0.3, 0.9, by = 0.1)),
+    limits = c(0.3, 0.9)
+  ) +
+  scale_x_discrete(
+    name = element_blank(),
+    labels = element_blank()
+  ) +
+  PLOT_THEME_DEFAULT +
+  theme(
+    # remove X axis text and ticks
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    legend.position = "none",
+  )
+win_pct_overall
+
+
+# Win percentage by block
+subject_block_win_pct = get_subject_block_win_pct(bot_data, blocksize = 30)
+condition_block_win_pct = get_block_win_pct_summary(subject_block_win_pct)
+condition_block_win_pct = condition_block_win_pct %>%
+  rowwise() %>%
+  mutate(
+    bot_strategy_str = factor(STRATEGY_LOOKUP[[bot_strategy]],
+                              levels = STRATEGY_LABELS)
+  )
+
+# Fig
+block_labels = c("0" = "30", "1" = "60", "2" = "90", "3" = "120", "4" = "150",
+                 "5" = "180", "6" = "210", "7" = "240", "8" = "270", "9" = "300")
+
+win_pct_bins = condition_block_win_pct %>%
+  ggplot(aes(x = round_block, y = mean_win_pct, color = bot_strategy_str)) +
+  geom_point(size = 6) +
+  geom_errorbar(aes(ymin = mean_win_pct - se_win_pct, ymax = mean_win_pct + se_win_pct), linewidth = 1, width = 0) +
+  geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
+  geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
+  ggtitle("By Round") +
+  scale_color_viridis(discrete = T,
+                      name = "Bot pattern",
+                      labels = function(x) str_wrap(x, width = 24)
+                      ) +
+  scale_x_continuous(
+    name = element_blank(),
+    labels = block_labels,
+    breaks = seq(0, 9)) +
+  scale_y_continuous(
+    name = element_blank(),
+    breaks = seq(0.3, 0.9, by = 0.1),
+    labels = c("", "", "", "", "", "", ""),
+    limits = c(0.3, 0.9)
+  ) +
+  PLOT_THEME_DEFAULT +
+  theme(
+    # Make X axis text sideways
+    axis.text.x = element_text(size = 14, angle = 45, vjust = 0.5, family = "Avenir", color = "black"),
+    # Add legend formatting
+    legend.position = "right",
+    legend.key = element_rect(colour = "transparent", fill = "transparent"),
+    legend.spacing.y = unit(0, "lines"),
+    legend.key.size = unit(3, "lines"))
+
+win_pct_bins
+
+
+# Save combined figure
+win_pct_combined = win_pct_overall + win_pct_bins +
+  plot_layout(widths = c(1.5, 2.5))
+win_pct_combined
+
+ggsave(
+  win_pct_combined,
+  filename = "human_win_pct.pdf",
+  device = cairo_pdf,
+  path = "figures",
+  width = 10,
+  height = 6.5,
+  dpi = 300
+)
+
+
+
+
+
+
+
+
+
