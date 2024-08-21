@@ -236,3 +236,10 @@
 234,opponent_transition_up,gpt4o,234,scissors,rock,-1,3
 235,opponent_transition_up,gpt4o,235,paper,scissors,-1,3
 236,opponent_transition_up,gpt4o,236,rock,paper,-1,3
+237,opponent_transition_up,gpt4o,237,scissors,rock,-1,3
+238,opponent_transition_up,gpt4o,238,paper,scissors,-1,3
+239,opponent_transition_up,gpt4o,239,rock,paper,-1,3
+240,opponent_transition_up,gpt4o,240,scissors,rock,-1,3
+241,opponent_transition_up,gpt4o,241,scissors,scissors,0,0
+242,opponent_transition_up,gpt4o,242,rock,paper,-1,3
+243,opponent_transition_up,gpt4o,243,scissors,rock,-1,3
