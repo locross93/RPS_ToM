@@ -33,6 +33,9 @@ grouped_df = gpt_4o_df.groupby(['sequential_agent_class', 'timestamp']).agg(
 ).reset_index()
 
 grouped_df['win_percentage'] = grouped_df['total_wins'] / (grouped_df['total_wins'] + grouped_df['total_losses'] + grouped_df['total_ties']) * 100
+grouped_df['num_rounds'] = grouped_df['total_wins'] + grouped_df['total_losses'] + grouped_df['total_ties']
+# exclude rows that do not have 300 rounds
+grouped_df = grouped_df[grouped_df['num_rounds'] == 300]
 
 # Calculate the average win percentage and SEM across seeds for each bot_type
 avg_win_percentage = grouped_df.groupby('sequential_agent_class').agg(

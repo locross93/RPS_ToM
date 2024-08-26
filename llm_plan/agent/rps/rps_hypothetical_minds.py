@@ -202,8 +202,11 @@ class DecentralizedAgent(abc.ABC):
                     response = responses[i][0]
                     next_plays = self.extract_dict(response)
                     both_keys_present = ('predicted_opponent_next_play' in next_plays) and ('my_next_play' in next_plays)
+                    # check for correct formatting, next plays should contain the keys 'my_next_play' and 'predicted_opponent_next_play'
+                    correct_format = 'my_next_play' in next_plays and 'predicted_opponent_next_play' in next_plays
                     # check for correct formatting, 'my_next_play' should be either 'rock', 'paper', or 'scissors'
-                    correct_format = next_plays['my_next_play'] in ['rock', 'paper', 'scissors'] and next_plays['predicted_opponent_next_play'] in ['rock', 'paper', 'scissors']
+                    if correct_format:
+                        correct_format = next_plays['my_next_play'] in ['rock', 'paper', 'scissors'] and next_plays['predicted_opponent_next_play'] in ['rock', 'paper', 'scissors']
                     if not both_keys_present or not correct_format:
                         correct_syntax = False
                         print(f"Error parsing dictionary when extracting next plays, retrying...")
@@ -235,7 +238,7 @@ class DecentralizedAgent(abc.ABC):
             # Make sure output dict syntax is correct
             correct_syntax = False
             counter = 0
-            while not correct_syntax and counter < 6:
+            while not correct_syntax and counter < 20:
                 correct_syntax = True
                 # Gathering responses asynchronously
                 responses = await asyncio.gather(
