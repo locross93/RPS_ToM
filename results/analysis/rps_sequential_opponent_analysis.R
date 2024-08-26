@@ -44,8 +44,8 @@ STRATEGY_LABELS = c(
   "Opponent-transition (+)",
   "Opponent-transition (0)",
   "Previous outcome (W0L+T−)",
-  "Previous outcome (W+L−T0)",
-  "Previous outcome, \nprevious transition"
+  "Previous outcome (W+L−T0)"
+  # "Previous outcome, \nprevious transition"
 )
 
 HUMAN_TRIAL_STRATEGY_LOOKUP = list("prev_move_positive" = "Self-transition (+)",
@@ -53,8 +53,8 @@ HUMAN_TRIAL_STRATEGY_LOOKUP = list("prev_move_positive" = "Self-transition (+)",
                                    "opponent_prev_move_positive" = "Opponent-transition (+)",
                                    "opponent_prev_move_nil" = "Opponent-transition (0)",
                                    "win_nil_lose_positive" = "Previous outcome (W0L+T−)",
-                                   "win_positive_lose_negative" = "Previous outcome (W+L−T0)",
-                                   "outcome_transition_dual_dependency" = "Previous outcome, \nprevious transition"
+                                   "win_positive_lose_negative" = "Previous outcome (W+L−T0)"
+                                   # "outcome_transition_dual_dependency" = "Previous outcome, \nprevious transition"
                                    )
 
 TOM_AGENT_STRATEGY_LOOKUP = list("self_transition_up" = "Self-transition (+)",
@@ -121,8 +121,10 @@ get_tom_agent_win_pct_summary = function(subject_block_data) {
 
 
 # FIGURE: Human win percentages overall ----
+# NB: filtering out most complex bot to align figure legends
+human_trial_data = human_trial_data %>%
+  filter(bot_strategy != "outcome_transition_dual_dependency")
 
-# Win percentage overall
 human_win_pct = get_subject_block_win_pct(human_trial_data, blocksize = 300)
 human_win_pct_summary = get_subject_win_pct_summary(human_win_pct)
 human_win_pct_summary = human_win_pct_summary %>%
@@ -131,7 +133,6 @@ human_win_pct_summary = human_win_pct_summary %>%
     bot_strategy_str = factor(HUMAN_TRIAL_STRATEGY_LOOKUP[[bot_strategy]],
                               levels = STRATEGY_LABELS)
   )
-
 # Fig
 human_win_pct_fig = human_win_pct_summary %>%
   ggplot(aes(x = bot_strategy_str, y = mean_win_pct, color = bot_strategy_str)) +
@@ -140,11 +141,11 @@ human_win_pct_fig = human_win_pct_summary %>%
                 width = 0, linewidth = 1) +
   geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
-  # ggtitle("Aggregate") +
+  ggtitle("Humans") +
   scale_color_viridis(discrete = TRUE,
                       name = element_blank()) +
   scale_y_continuous(
-    name = "Human win percentage",
+    name = "win rate",
     breaks = seq(0.0, 1.0, by = 0.25),
     labels = seq(0.0, 1.0, by = 0.25),
     limits = c(0.0, 1.0)
@@ -164,8 +165,6 @@ human_win_pct_fig
 
 
 # FIGURE: ToM Agent win percentages overall ----
-
-# TODO sanity check these, make sure they're properly broken out by game
 tom_agent_win_pct = get_tom_agent_block_win_pct(tom_agent_data, blocksize = 300)
 tom_agent_win_pct_summary = get_tom_agent_win_pct_summary(tom_agent_win_pct)
 tom_agent_win_pct_summary = tom_agent_win_pct_summary %>%
@@ -174,7 +173,6 @@ tom_agent_win_pct_summary = tom_agent_win_pct_summary %>%
     sequential_agent_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[sequential_agent_class]],
                                   levels = STRATEGY_LABELS)
   )
-
 tom_agent_win_pct_fig = tom_agent_win_pct_summary %>%
   ggplot(aes(x = sequential_agent_str, y = mean_win_pct, color = sequential_agent_str)) +
   geom_point(size = 6) +
@@ -182,11 +180,12 @@ tom_agent_win_pct_fig = tom_agent_win_pct_summary %>%
                 width = 0, linewidth = 1) +
   geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
-  # ggtitle("Aggregate") +
+  ggtitle("ToM agent") +
   scale_color_viridis(discrete = TRUE,
                       name = element_blank()) +
   scale_y_continuous(
-    name = "ToM Agent win percentage",
+    # name = "win percentage",
+    name = element_blank(),
     breaks = seq(0.0, 1.0, by = 0.25),
     labels = seq(0.0, 1.0, by = 0.25),
     limits = c(0.0, 1.0)
@@ -200,39 +199,40 @@ tom_agent_win_pct_fig = tom_agent_win_pct_summary %>%
     # remove X axis text and ticks
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank(),
-    legend.position = "none",
+    # legend.position = "none",
+    # Add legend formatting
+    legend.position = "right",
+    legend.key = element_rect(colour = "transparent", fill = "transparent"),
+    legend.spacing.y = unit(0, "lines"),
+    legend.key.size = unit(3, "lines")
   )
-
-# TODO add legend at right
-# TODO need most complex opponent so legends are aligned...
 tom_agent_win_pct_fig
 
 
+# Combine figures
+# TODO ggsave
+human_win_pct_fig + tom_agent_win_pct_fig
 
 
 # FIGURE: human learning curves ----
-
-# Win percentage by block
 human_block_win_pct = get_subject_block_win_pct(human_trial_data, blocksize = 30)
-human_block_win_pct_summary = get_subject_block_win_pct_summary(subject_block_win_pct)
+human_block_win_pct_summary = get_subject_win_pct_summary(human_block_win_pct)
 human_block_win_pct_summary = human_block_win_pct_summary %>%
   rowwise() %>%
   mutate(
     bot_strategy_str = factor(HUMAN_TRIAL_STRATEGY_LOOKUP[[bot_strategy]],
                               levels = STRATEGY_LABELS)
   )
-
 # Fig
 block_labels = c("0" = "30", "1" = "60", "2" = "90", "3" = "120", "4" = "150",
                  "5" = "180", "6" = "210", "7" = "240", "8" = "270", "9" = "300")
-
 human_learning_curve_fig = human_block_win_pct_summary %>%
   ggplot(aes(x = round_block, y = mean_win_pct, color = bot_strategy_str)) +
   geom_point(size = 6) +
   geom_errorbar(aes(ymin = mean_win_pct - se_win_pct, ymax = mean_win_pct + se_win_pct), linewidth = 1, width = 0) +
   geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
-  # ggtitle("By Round") +
+  ggtitle("Humans") +
   scale_color_viridis(discrete = T,
                       name = "Sequential pattern",
                       labels = function(x) str_wrap(x, width = 24)
@@ -242,7 +242,7 @@ human_learning_curve_fig = human_block_win_pct_summary %>%
     labels = block_labels,
     breaks = seq(0, 9)) +
   scale_y_continuous(
-    name = element_blank(),
+    name = "win rate",
     breaks = seq(0.3, 0.9, by = 0.1),
     labels = c("", "", "", "", "", "", ""),
     limits = c(0.3, 0.9)
@@ -251,20 +251,12 @@ human_learning_curve_fig = human_block_win_pct_summary %>%
   theme(
     # Make X axis text sideways
     axis.text.x = element_text(size = 14, angle = 45, vjust = 0.5, family = "Avenir", color = "black"),
-    # Add legend formatting
-    legend.position = "right",
-    legend.key = element_rect(colour = "transparent", fill = "transparent"),
-    legend.spacing.y = unit(0, "lines"),
-    legend.key.size = unit(3, "lines")
+    legend.position = "none"
     )
-
-# TODO remove legend
-# TODO align y-axis limits/labels with ToM agent
 human_learning_curve_fig
 
 
 # FIGURE: ToM Agent learning curves ----
-
 tom_agent_block_win_pct = get_tom_agent_block_win_pct(tom_agent_data, blocksize = 30)
 tom_agent_block_win_pct_summary = get_tom_agent_win_pct_summary(tom_agent_block_win_pct)
 tom_agent_block_win_pct_summary = tom_agent_block_win_pct_summary %>%
@@ -273,18 +265,16 @@ tom_agent_block_win_pct_summary = tom_agent_block_win_pct_summary %>%
     sequential_agent_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[sequential_agent_class]],
                                   levels = STRATEGY_LABELS)
   )
-
 # NB: same as identically named variable above
 block_labels = c("0" = "30", "1" = "60", "2" = "90", "3" = "120", "4" = "150",
                  "5" = "180", "6" = "210", "7" = "240", "8" = "270", "9" = "300")
-
 tom_agent_learning_curve_fig = tom_agent_block_win_pct_summary %>%
   ggplot(aes(x = round_block, y = mean_win_pct, color = sequential_agent_str)) +
   geom_point(size = 6) +
   geom_errorbar(aes(ymin = mean_win_pct - se_win_pct, ymax = mean_win_pct + se_win_pct), linewidth = 1, width = 0) +
   geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
-  # ggtitle("By Round") +
+  ggtitle("ToM Agent") +
   scale_color_viridis(discrete = T,
                       name = "Sequential pattern",
                       labels = function(x) str_wrap(x, width = 24)
@@ -308,7 +298,13 @@ tom_agent_learning_curve_fig = tom_agent_block_win_pct_summary %>%
     legend.key = element_rect(colour = "transparent", fill = "transparent"),
     legend.spacing.y = unit(0, "lines"),
     legend.key.size = unit(3, "lines"))
-
-# TODO align legend values with human data (add most complex bot)
 tom_agent_learning_curve_fig
+
+
+# Combine figures
+# TODO ggsave
+human_learning_curve_fig + tom_agent_learning_curve_fig
+
+
+
 
