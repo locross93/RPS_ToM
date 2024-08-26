@@ -5,13 +5,16 @@
 #'
 
 
-# SETUP ====
+# SETUP ----
+rm(list=ls())
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 library(tidyverse)
 
 # Globals
 DATA_PATH = "../../.." # NB: this is just *outside* the root RPS_ToM directory
-DATA_FILE = "rps_human_data.csv" # name of file containing full dataset for all rounds
+DATA_FILE = "rps_human_data.csv" # name of file containing full trial dataset for all rounds
+FREE_RESP_FILE = "rps_human_free_resp.csv" # name of file containing free response strategy data for all participants
+SLIDER_FILE = "rps_human_slider.csv" # name of file containing slider questionnaire data for all participants
 GAME_ROUNDS = 300
 STRATEGY_LEVELS = c("prev_move_positive", "prev_move_negative",
                     "opponent_prev_move_positive", "opponent_prev_move_nil",
@@ -19,7 +22,7 @@ STRATEGY_LEVELS = c("prev_move_positive", "prev_move_negative",
                     "outcome_transition_dual_dependency")
 
 
-# READ DATA ====
+# READ DATA ----
 # Note: the raw data csv has more unique participant data than we keep in this function.
 # Some participants did not complete the full set of rounds.
 # Several managed to complete 300 rounds twice with the same survey code.
@@ -65,8 +68,21 @@ read_bot_data = function(filename, strategy_levels, game_rounds) {
 
 
 # Read data
-human_data = read_bot_data(paste(DATA_PATH, DATA_FILE, sep = "/"),
+# NB: there are 3 participants who we have free resp (and slider) data but no trial data for,
+# and 4 participants who we have trial data but no free resp data for.
+# Below is not doing any filtering to remove people who aren't in intersection.
+human_trial_data = read_bot_data(paste(DATA_PATH, DATA_FILE, sep = "/"),
                            STRATEGY_LEVELS,
                            GAME_ROUNDS)
+human_free_resp_data = read_csv(paste(DATA_PATH, FREE_RESP_FILE, sep = "/"))
+human_slider_data = read_csv(paste(DATA_PATH, SLIDER_FILE, sep = "/"))
+
 # Save as RData
-save(human_data, file = "rps_human_data.RData")
+save(human_trial_data, file = "rps_human_trial_data.RData")
+save(human_free_resp_data, file = "rps_human_free_resp_data.RData")
+save(human_slider_data, file = "rps_human_slider_data.RData")
+
+
+
+
+
