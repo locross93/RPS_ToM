@@ -1,0 +1,7 @@
+,sequential_agent_class,tom_agent_class,round_index,sequential_agent_move,tom_agent_move,sequential_agent_reward,tom_agent_reward
+0,opponent_transition_stay,gpt35,0,paper,paper,0,0
+1,opponent_transition_stay,gpt35,1,paper,scissors,-1,3
+2,opponent_transition_stay,gpt35,2,scissors,scissors,0,0
+3,opponent_transition_stay,gpt35,3,scissors,rock,-1,3
+4,opponent_transition_stay,gpt35,4,rock,rock,0,0
+5,opponent_transition_stay,gpt35,5,rock,paper,-1,3

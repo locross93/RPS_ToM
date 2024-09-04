@@ -1,0 +1,11 @@
+hm_gpt35, playing rock paper scissors 
+
+Round 0, Total Inference Cost: 0, HM Reward: 0
+
+
+Tom agent played paper and received reward -1
+
+
+Sequential agent played scissors and received reward 3
+
+
