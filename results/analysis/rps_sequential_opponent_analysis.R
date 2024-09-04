@@ -187,7 +187,7 @@ tom_agent_win_pct_fig = tom_agent_win_pct_summary %>%
     # name = "win percentage",
     name = element_blank(),
     breaks = seq(0.0, 1.0, by = 0.25),
-    labels = seq(0.0, 1.0, by = 0.25),
+    labels = c("", "", "", "", ""),
     limits = c(0.0, 1.0)
   ) +
   scale_x_discrete(
@@ -210,8 +210,17 @@ tom_agent_win_pct_fig
 
 
 # Combine figures
-# TODO ggsave
-human_win_pct_fig + tom_agent_win_pct_fig
+win_pct_combined = human_win_pct_fig + tom_agent_win_pct_fig
+win_pct_combined
+ggsave(
+  win_pct_combined,
+  filename = "win_pct.pdf",
+  device = cairo_pdf,
+  path = "figures",
+  width = 12,
+  height = 6,
+  dpi = 300
+)
 
 
 # FIGURE: human learning curves ----
@@ -243,9 +252,9 @@ human_learning_curve_fig = human_block_win_pct_summary %>%
     breaks = seq(0, 9)) +
   scale_y_continuous(
     name = "win rate",
-    breaks = seq(0.3, 0.9, by = 0.1),
-    labels = c("", "", "", "", "", "", ""),
-    limits = c(0.3, 0.9)
+    breaks = seq(0.0, 1.0, by = 0.25),
+    labels = seq(0.0, 1.0, by = 0.25),
+    limits = c(0.0, 1.0)
   ) +
   PLOT_THEME_DEFAULT +
   theme(
@@ -285,9 +294,9 @@ tom_agent_learning_curve_fig = tom_agent_block_win_pct_summary %>%
     breaks = seq(0, 9)) +
   scale_y_continuous(
     name = element_blank(),
-    # breaks = seq(0.3, 0.9, by = 0.1),
-    # labels = c("", "", "", "", "", "", ""),
-    # limits = c(0.3, 0.9)
+    breaks = seq(0.0, 1.0, by = 0.25),
+    labels = c("", "", "", "", ""),
+    limits = c(0.0, 1.0)
   ) +
   PLOT_THEME_DEFAULT +
   theme(
@@ -302,8 +311,17 @@ tom_agent_learning_curve_fig
 
 
 # Combine figures
-# TODO ggsave
-human_learning_curve_fig + tom_agent_learning_curve_fig
+learning_curve_combined = human_learning_curve_fig + tom_agent_learning_curve_fig
+learning_curve_combined
+ggsave(
+  learning_curve_combined,
+  filename = "learning_curve.pdf",
+  device = cairo_pdf,
+  path = "figures",
+  width = 12,
+  height = 6,
+  dpi = 300
+)
 
 
 
