@@ -1,0 +1,446 @@
+hm_gpt35, playing rock paper scissors 
+
+Round 0, Total Inference Cost: 0, HM Reward: 0
+
+
+Tom agent played paper and received reward 0
+
+
+Sequential agent played paper and received reward 0
+
+
+User Message: Total Rewards:- player_0: 0
+
+            
+                An interaction with the other player has occurred at round 1, {'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}.
+                The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 1, {'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'My opponent may be playing a static strategy, as we both played "paper" and received a reward of 0.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {}
+
+My opponent is likely playing a static strategy, as we both played "paper" in the first round and received a reward of 0. This suggests that my opponent's strategy does not adapt to my plays. Since we received a neutral reward for playing the same choice, it's possible that my opponent is playing a static strategy. I will need more data to confirm this hypothesis.
+
+```python
+{
+'Opponent_strategy': 'My opponent may be playing a static strategy, as we both played "paper" and received a reward of 0.'
+}
+```
+
+1. 'predicted_opponent_next_play': Given that the opponent's strategy may be static and they played "paper" in the last round, it is likely that they will continue to play "paper" in the next round.
+2. 'my_next_play': Given that the opponent is likely to play "paper" again, you should play "scissors" to counter their play.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+
+
+
+
+Round 1, Total Inference Cost: 0.0014, HM Reward: 0
+
+
+Tom agent played scissors and received reward 3
+
+
+Sequential agent played paper and received reward -1
+
+
+User Message: Total Rewards:- player_0: 3
+
+            
+                An interaction with the other player has occurred at round 2, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+                The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {1: {'Opponent_strategy': 'My opponent may be playing a static strategy, as we both played "paper" and received a reward of 0.', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'paper', 'my_next_play': 'scissors'}}}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 2, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'I think my opponent is always playing paper.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {1: {'Opponent_strategy': 'My opponent may be playing a static strategy, as we both played "paper" and received a reward of 0.', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'paper', 'my_next_play': 'scissors'}}}
+
+Based on the interaction history, it seems that my opponent may be playing a static strategy. In the first round, both of us played "paper" and received a reward of 0. In the second round, I played "scissors" and my opponent played "paper," resulting in a reward of 3 for me. This indicates that my opponent may not be adapting their strategy based on my plays.
+
+Given this, I can hypothesize that my opponent is likely playing a static strategy of always choosing "paper." This hypothesis is supported by the consistent play of "paper" by my opponent and the positive reward I receive when countering it with "scissors."
+
+```python
+{
+'Opponent_strategy': 'I think my opponent is always playing paper.'
+}
+```
+
+1. 'predicted_opponent_next_play': Given that my opponent has played paper in the last round and my previous guess about their strategy is that they always play paper, I believe their next play will also be paper.
+2. 'my_next_play': Given that my opponent is likely to play paper again, I should play scissors to beat their paper.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+
+
+
+
+Round 2, Total Inference Cost: 0.0038, HM Reward: 3
+
+
+Tom agent played scissors and received reward 0
+
+
+Sequential agent played scissors and received reward 0
+
+
+User Message: Total Rewards:- player_0: 3
+
+            
+                An interaction with the other player has occurred at round 3, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}.
+                The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 3, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'I think my opponent is playing a static strategy and may be vulnerable to a counter strategy. I will exploit this by playing rock.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {}
+
+Based on the interaction history, my opponent has played paper, then scissors, and finally scissors again. In the first round, we both played paper and received a reward of 0. In the second round, I played scissors and my opponent played paper, resulting in a reward of 3 for me. In the third round, both my opponent and I played scissors, resulting in a reward of 0.
+
+From this data, it seems that my opponent is not consistently playing the same choice, as they have played paper and scissors. However, I have received positive rewards when playing scissors, which suggests that my opponent may be playing a static strategy. As a result, I can exploit this by playing the counter strategy, which is rock.
+
+```python
+{
+'Opponent_strategy': 'I think my opponent is playing a static strategy and may be vulnerable to a counter strategy. I will exploit this by playing rock.'
+}
+```
+
+1. 'predicted_opponent_next_play': Given the history of the opponent's plays, it seems that they might be playing a static strategy. If they continue with this pattern, their likely play in the next round will be scissors.
+
+2. 'my_next_play': If the opponent continues with their static strategy, my next play should be rock to counter their likely play.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+
+
+
+
+
+Round 3, Total Inference Cost: 0.0071, HM Reward: 3
+
+
+Tom agent played rock and received reward 3
+
+
+Sequential agent played scissors and received reward -1
+
+
+User Message: Total Rewards:- player_0: 6
+
+            
+                An interaction with the other player has occurred at round 4, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+                The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {3: {'Opponent_strategy': 'I think my opponent is playing a static strategy and may be vulnerable to a counter strategy. I will exploit this by playing rock.', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 1: {'Opponent_strategy': 'My opponent may be playing a static strategy, as we both played "paper" and received a reward of 0.', 'value': 0.237, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 4, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'I think my opponent is playing a static strategy and may be vulnerable to a counter strategy. I will exploit this by playing rock.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {3: {'Opponent_strategy': 'I think my opponent is playing a static strategy and may be vulnerable to a counter strategy. I will exploit this by playing rock.', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 1: {'Opponent_strategy': 'My opponent may be playing a static strategy, as we both played "paper" and received a reward of 0.', 'value': 0.237, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}}
+
+Based on the interaction history, it seems that my opponent is playing a static strategy. In the previous rounds, they played paper, scissors, and scissors, and I received positive rewards when playing rock. This suggests that my opponent may be vulnerable to a counter strategy. Therefore, I will exploit this by continuing to play rock.
+
+```python
+{
+'Opponent_strategy': 'I think my opponent is playing a static strategy and may be vulnerable to a counter strategy. I will exploit this by playing rock.'
+}
+```
+
+1. 'predicted_opponent_next_play': Given that my opponent has played scissors in the last round and my previous guess about their static strategy, I believe their next play will be scissors.
+2. 'my_next_play': Given that my opponent is likely to play scissors, I believe my next play should be rock.
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+
+
+
+
+
+Round 4, Total Inference Cost: 0.0112, HM Reward: 6
+
+
+Tom agent played rock and received reward 0
+
+
+Sequential agent played rock and received reward 0
+
+
+User Message: Total Rewards:- player_0: 6
+
+            
+                An interaction with the other player has occurred at round 5, {'round': 4, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+                The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 4, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 5, {'round': 4, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 4, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'I think my opponent is always playing rock.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {}
+
+Based on the interaction history, my opponent has played rock twice in a row and received a reward of 0 both times. This suggests that my opponent may be playing a static strategy of always choosing rock. This would result in a tie every time I play rock, which matches the observed rewards.
+
+Therefore, my hypothesis about my opponent's likely policy is that they are always playing rock.
+
+```python
+{
+'Opponent_strategy': 'I think my opponent is always playing rock.'
+}
+```
+
+1. 'predicted_opponent_next_play': Given that my opponent has been consistently playing rock, it is likely that they will continue with rock in the next round.
+2. 'my_next_play': Given that my opponent is likely to play rock, I should play paper in the next round to counter their play.
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+
+
+
+
+Round 5, Total Inference Cost: 0.0203, HM Reward: 6
+
+
+Tom agent played paper and received reward 3
+
+
+Sequential agent played rock and received reward -1
+
+
