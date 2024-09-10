@@ -26,66 +26,164 @@ TRANSITION_STAY_ACTION_MATRIX = pd.DataFrame(
     columns=ACTIONS
 )
 
-OUTCOME_TRANSITION_W_stay_L_up_T_down_ACTION_MATRIX = pd.DataFrame.from_dict({
-    'opponent_last_play': [
+OUTCOME_TRANSITION_W_stay_L_up_T_down_ACTION_MATRIX = pd.DataFrame(
+    [
         # opponent's last move was 'rock'
-        pd.DataFrame(
+        [pd.DataFrame(
             [[0.05, 0.05, 0.9],  # player's last move: rock
              [0.05, 0.9, 0.05],  # player's last move: paper
              [0.9, 0.05, 0.05]], # player's last move: scissors
              index=ACTIONS, # player's last move
              columns=ACTIONS # next move
-        ),
+        )],
         # opponent's last move was 'paper'
-        pd.DataFrame(
+        [pd.DataFrame(
             [[0.05, 0.9, 0.05],  # player's last move: rock
              [0.9, 0.05, 0.05],  # player's last move: paper
              [0.05, 0.05, 0.9]], # player's last move: scissors
              index=ACTIONS, # player's last move
              columns=ACTIONS # next move
-        ),
+        )],
         # opponent's last move was 'scissors'
-        pd.DataFrame(
+        [pd.DataFrame(
             [[0.9, 0.05, 0.05],  # player's last move: rock
              [0.05, 0.05, 0.9],  # player's last move: paper
              [0.05, 0.9, 0.05]], # player's last move: scissors
              index=ACTIONS, # player's last move
              columns=ACTIONS # next move
-        )
-    ]},
-    orient='index',
-    columns=ACTIONS # opponent's last move
+        )]
+    ],
+    index=ACTIONS # opponent's last move
 )
 
-OUTCOME_TRANSITION_W_up_L_down_T_stay_ACTION_MATRIX = pd.DataFrame.from_dict({
-    'opponent_last_play': [
+OUTCOME_TRANSITION_W_up_L_down_T_stay_ACTION_MATRIX = pd.DataFrame(
+    [
         # opponent's last move was 'rock'
-        pd.DataFrame(
+        [pd.DataFrame(
             [[0.9, 0.05, 0.05],  # player's last move: rock
              [0.05, 0.05, 0.9],  # player's last move: paper
              [0.05, 0.9, 0.05]], # player's last move: scissors
              index=ACTIONS, # player's last move
              columns=ACTIONS # next move
-        ),
+        )],
         # opponent's last move was 'paper'
-        pd.DataFrame(
+        [pd.DataFrame(
             [[0.05, 0.05, 0.9],  # player's last move: rock
              [0.05, 0.9, 0.05],  # player's last move: paper
              [0.9, 0.05, 0.05]], # player's last move: scissors
              index=ACTIONS, # player's last move
              columns=ACTIONS # next move
-        ),
+        )],
         # opponent's last move was 'scissors'
-        pd.DataFrame(
+        [pd.DataFrame(
             [[0.05, 0.9, 0.05],  # player's last move: rock
              [0.9, 0.05, 0.05],  # player's last move: paper
              [0.05, 0.05, 0.9]], # player's last move: scissors
              index=ACTIONS, # player's last move
              columns=ACTIONS # next move
-        )
-    ]},
-    orient='index',
-    columns=ACTIONS # opponent's last move
+        )]
+    ],
+    index=ACTIONS # opponent's last move
+)
+
+# player's move two moves prior was 'rock'
+PREV_OUTCOME_PREV_TRANSITION_R = pd.DataFrame(
+    [
+        # player's last move was 'rock'
+        [pd.DataFrame(
+            [[0.05, 0.9, 0.05],  # opponent's last move: rock
+             [0.05, 0.05, 0.9],  # opponent's last move: paper
+             [0.9, 0.05, 0.05]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )],
+        # player's last move was 'paper'
+        [pd.DataFrame(
+            [[0.05, 0.05, 0.9],  # opponent's last move: rock
+             [0.9, 0.05, 0.05],  # opponent's last move: paper
+             [0.05, 0.9, 0.05]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )],
+        # player's last move was 'scissors'
+        [pd.DataFrame(
+            [[0.9, 0.05, 0.05],  # opponent's last move: rock
+             [0.05, 0.9, 0.05],  # opponent's last move: paper
+             [0.05, 0.05, 0.9]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )]
+    ],
+    index=ACTIONS # player's last move
+)
+
+# player's move two moves prior was 'paper'
+PREV_OUTCOME_PREV_TRANSITION_P = pd.DataFrame(
+    [
+        # player's last move was 'rock'
+        [pd.DataFrame(
+            [[0.9, 0.05, 0.05],  # opponent's last move: rock
+             [0.05, 0.9, 0.05],  # opponent's last move: paper
+             [0.05, 0.05, 0.9]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )],
+        # player's last move was 'paper'
+        [pd.DataFrame(
+            [[0.05, 0.9, 0.05],  # opponent's last move: rock
+             [0.05, 0.05, 0.9],  # opponent's last move: paper
+             [0.9, 0.05, 0.05]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )],
+        # player's last move was 'scissors'
+        [pd.DataFrame(
+            [[0.05, 0.05, 0.9],  # opponent's last move: rock
+             [0.9, 0.05, 0.05],  # opponent's last move: paper
+             [0.05, 0.9, 0.05]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )]
+    ],
+    index=ACTIONS # player's last move
+)
+
+# player's move two moves prior was 'scissors'
+PREV_OUTCOME_PREV_TRANSITION_S = pd.DataFrame(
+    [
+        # player's last move was 'rock'
+        [pd.DataFrame(
+            [[0.05, 0.05, 0.9],  # opponent's last move: rock
+             [0.9, 0.05, 0.05],  # opponent's last move: paper
+             [0.05, 0.9, 0.05]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )],
+        # player's last move was 'paper'
+        [pd.DataFrame(
+            [[0.9, 0.05, 0.05],  # opponent's last move: rock
+             [0.05, 0.9, 0.05],  # opponent's last move: paper
+             [0.05, 0.05, 0.9]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )],
+        # player's last move was 'scissors'
+        [pd.DataFrame(
+            [[0.05, 0.9, 0.05],  # opponent's last move: rock
+             [0.05, 0.05, 0.9],  # opponent's last move: paper
+             [0.9, 0.05, 0.05]], # opponent's last move: scissors
+             index=ACTIONS, # opponent's last move
+             columns=ACTIONS # next move
+        )]
+    ],
+    index=ACTIONS # player's last move
+)
+
+PREV_OUTCOME_PREV_TRANSITION = pd.DataFrame(
+    [[PREV_OUTCOME_PREV_TRANSITION_R],
+     [PREV_OUTCOME_PREV_TRANSITION_P],
+     [PREV_OUTCOME_PREV_TRANSITION_S]],
+    index=ACTIONS
 )
 
 
@@ -98,8 +196,8 @@ SEQUENTIAL_OPPONENTS = [
     # win-stay, lose-shift variants
     'W_stay_L_up_T_down',
     'W_up_L_down_T_stay',
-    # TODO previous outcome, previous transition
-    # 'prev_outcome_prev_transition'
+    # previous outcome, previous transition
+    'prev_outcome_prev_transition'
 ]
 
 ACTION_MATRIX_LOOKUP = {
@@ -108,5 +206,6 @@ ACTION_MATRIX_LOOKUP = {
     'opponent_transition_up': TRANSITION_UP_ACTION_MATRIX,
     'opponent_transition_stay': TRANSITION_STAY_ACTION_MATRIX,
     'W_stay_L_up_T_down': OUTCOME_TRANSITION_W_stay_L_up_T_down_ACTION_MATRIX,
-    'W_up_L_down_T_stay': OUTCOME_TRANSITION_W_up_L_down_T_stay_ACTION_MATRIX
+    'W_up_L_down_T_stay': OUTCOME_TRANSITION_W_up_L_down_T_stay_ACTION_MATRIX,
+    'prev_outcome_prev_transition': PREV_OUTCOME_PREV_TRANSITION
 }

@@ -5,7 +5,7 @@ import json
 
 from environments.rps_sequential_opponent import run_episode, run_sequential_episode # TESTING
 from llm_plan.agent.rps.sequential_opponent_globals import ACTION_MATRIX_LOOKUP, SEQUENTIAL_OPPONENTS
-from llm_plan.agent.rps.sequential_opponent import SelfTransition, OppTransition, OutcomeTransition
+from llm_plan.agent.rps.sequential_opponent import SelfTransition, OppTransition, OutcomeTransition, PrevTransitionOutcomeTransition
 from llm_plan.agent.rps.rps_hypothetical_minds import DecentralizedAgent
 # TESTING: comment out everything below
 from llm_plan.agent.agent_config import agent_config
@@ -21,7 +21,8 @@ def setup_sequential_agent(sequential_agent, sequential_agent_actions):
         return OppTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
     elif sequential_agent in ['W_stay_L_up_T_down', 'W_up_L_down_T_stay']: # outcome transition agents
         return OutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
-    # TODO final agent: outcome previous transition
+    elif sequential_agent == 'prev_outcome_prev_transition': # previous outcome, previous transition agent
+        return PrevTransitionOutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
     else:
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
@@ -100,59 +101,59 @@ def main():
     parser = argparse.ArgumentParser(description='Run a game of rock paper scissors')
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
     parser.add_argument('--sequential_opponent', type=str, default='self_transition_up', help=f'Sequential opponent type: {SEQUENTIAL_OPPONENTS}')
+    parser.add_argument('--debug', type=bool, default=False, help='Run a game in debug mode with two paired sequential agents')
     args = parser.parse_args()
 
     # Initialize sequential agent
     sequential_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
 
     # Initialize tom agent
-    # TESTING: uncomment two lines below
-    # tom_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
-    # run_sequential_episode(tom_agent, sequential_agent, num_rounds=10)
-    # TESTING: comment out everything below
+    if args.debug:
+        tom_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
+        run_sequential_episode(tom_agent, sequential_agent, num_rounds=20)
+    else:
+        api_key = os.getenv('OPENAI_API_KEY')
+        api_key_path = './llm_plan/lc_api_key.json'
+        OPENAI_KEYS = json.load(open(api_key_path, 'r'))
+        api_key = OPENAI_KEYS['API_KEY']
+        model_id = 'player_0'
+        if args.llm_type == 'gpt4':
+            model_settings = {
+                "model": "gpt-4-1106-preview",
+                "max_tokens": 4000,
+                "temperature": 0.2,
+                "top_p": 1.0,
+                "n": 1,
+            }
+        elif args.llm_type == 'gpt4o':
+            model_settings = {
+                "model": "gpt-4o-2024-08-06",
+                "max_tokens": 4000,
+                "temperature": 0.2,
+                "top_p": 1.0,
+                "n": 1,
+            }
+        elif args.llm_type == 'gpt-4o-mini':
+            model_settings = {
+                "model": "gpt-4o-mini",
+                "max_tokens": 4000,
+                "temperature": 0.2,
+                "top_p": 1.0,
+                "n": 1,
+            }
+        elif args.llm_type == 'gpt35':
+            model_settings = {
+                "model": "gpt-3.5-turbo-1106",
+                "max_tokens": 2000,
+                "temperature": 0.2,
+                "top_p": 1.0,
+                "n": 1,
+            }
+        tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type=args.llm_type)
 
-    api_key = os.getenv('OPENAI_API_KEY')
-    api_key_path = './llm_plan/lc_api_key.json'
-    OPENAI_KEYS = json.load(open(api_key_path, 'r'))
-    api_key = OPENAI_KEYS['API_KEY']
-    model_id = 'player_0'
-    if args.llm_type == 'gpt4':
-        model_settings = {
-            "model": "gpt-4-1106-preview",
-            "max_tokens": 4000,
-            "temperature": 0.2,
-            "top_p": 1.0,
-            "n": 1,
-        }
-    elif args.llm_type == 'gpt4o':
-        model_settings = {
-            "model": "gpt-4o-2024-08-06",
-            "max_tokens": 4000,
-            "temperature": 0.2,
-            "top_p": 1.0,
-            "n": 1,
-        }
-    elif args.llm_type == 'gpt-4o-mini':
-        model_settings = {
-            "model": "gpt-4o-mini",
-            "max_tokens": 4000,
-            "temperature": 0.2,
-            "top_p": 1.0,
-            "n": 1,
-        }
-    elif args.llm_type == 'gpt35':
-        model_settings = {
-            "model": "gpt-3.5-turbo-1106",
-            "max_tokens": 2000,
-            "temperature": 0.2,
-            "top_p": 1.0,
-            "n": 1,
-        }
-    tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type=args.llm_type)
-
-    # Run game
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=300))
+        # Run game
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=300))
 
 if __name__ == "__main__":
     main()

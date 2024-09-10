@@ -52,17 +52,36 @@ class OppTransition(SequentialOpponent):
 
 class OutcomeTransition(SequentialOpponent):
     """
-    Same as SelfTransition, but uses the opponent's last move to determine its next move.
+    Uses the combination of both player's last move to determine the next move.
     """
     def get_action(self, action_history):
         if self.action_matrix is None or len(action_history) == 0:
             # randomly choose a move by using transition probabilities over randomly selected previous moves by each player
-            transition_matrix = self.action_matrix.loc['opponent_last_play', np.random.choice(self.action_matrix.loc['opponent_last_play'].index)]
-            transition_probs = transition_matrix.loc[np.random.choice(transition_matrix.index.values)]
+            transition_matrix = self.action_matrix.loc[np.random.choice(self.action_matrix.index), 0]
+            transition_probs = transition_matrix.loc[np.random.choice(transition_matrix.index)]
         else:
             # use combination of player's last move and opponent's last move to determine next move probabilities
-            transition_matrix = self.action_matrix.loc['opponent_last_play', action_history[-1]['opponent_last_play']]
+            transition_matrix = self.action_matrix.loc[action_history[-1]['opponent_last_play'], 0]
             transition_probs = transition_matrix.loc[action_history[-1]['my_last_play']]
 
         return np.random.choice(transition_probs.index.values, p=transition_probs.values)
 
+class PrevTransitionOutcomeTransition(SequentialOpponent):
+    """
+    Uses the combination of both player's last move, as well as the player's move two moves prior, to determine the next move.
+    """
+    def get_action(self, action_history):
+        if self.action_matrix is None or len(action_history) < 2: # NB: need at least two moves to determine next move
+            # randomly choose a move by using transition probabilities over randomly selected previous moves by each player
+            # and randomly selected player move two moves prior
+            outcome_transition_matrix = self.action_matrix.loc[np.random.choice(self.action_matrix.index), 0] # randomly selected two moves prior
+            transition_matrix = outcome_transition_matrix.loc[np.random.choice(outcome_transition_matrix.index), 0] # randomly selected previous move
+            transition_probs = transition_matrix.loc[np.random.choice(transition_matrix.index)] # randomly selected opponent previous move
+        else:
+            # use combination of player's last move and opponent's last move, and player's move two moves prior
+            # to determine next move probabilities
+            outcome_transition_matrix = self.action_matrix.loc[action_history[-2]['my_last_play'], 0] # player move two moves prior
+            transition_matrix = outcome_transition_matrix.loc[action_history[-1]['my_last_play'], 0] # player previous move
+            transition_probs = transition_matrix.loc[action_history[-1]['opponent_last_play']] # opponent previous move
+
+        return np.random.choice(transition_probs.index.values, p=transition_probs.values)
