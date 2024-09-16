@@ -13,8 +13,8 @@ library(viridis)
 library(patchwork)
 
 
-load("rps_human_trial_data.RData")
-load("rps_tom_agent_data.RData")
+load("data_processed/rps_human_trial_data.RData")
+load("data_processed/rps_tom_agent_data.RData")
 
 # GLOBALS ----
 
