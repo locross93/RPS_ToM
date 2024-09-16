@@ -2,7 +2,7 @@
 
 #'
 #' This script converts raw TOM Agent data in csv format to .RData
-#' NB: THIS ONLY NEEDS TO BE RUN ONCE
+#' NB: this only needs to be run once
 #'
 
 # TODO if we don't add complexity to this script, consider consolidating with `rps_human_data_processing.R`

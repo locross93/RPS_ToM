@@ -1,7 +1,7 @@
 
 #'
 #' This script converts raw human performance data in csv format to .RData
-#' NB: THIS ONLY NEEDS TO BE RUN ONCE
+#' NB: this only needs to be run once
 #'
 
 
@@ -11,8 +11,8 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 library(tidyverse)
 
 # Globals
-DATA_PATH = "../../.." # NB: this is just *outside* the root RPS_ToM directory
-DATA_FILE = "rps_human_data.csv" # name of file containing full trial dataset for all rounds
+DATA_PATH = "../human_data" # path to directory containing raw data files (csv)
+DATA_FILE = "rps_human_data_sparse.csv" # name of file containing full trial dataset for all rounds
 FREE_RESP_FILE = "rps_human_free_resp.csv" # name of file containing free response strategy data for all participants
 SLIDER_FILE = "rps_human_slider.csv" # name of file containing slider questionnaire data for all participants
 GAME_ROUNDS = 300
@@ -20,6 +20,7 @@ STRATEGY_LEVELS = c("prev_move_positive", "prev_move_negative",
                     "opponent_prev_move_positive", "opponent_prev_move_nil",
                     "win_nil_lose_positive", "win_positive_lose_negative",
                     "outcome_transition_dual_dependency")
+OUTPUT_PATH = "data_processed"
 
 
 # READ DATA ----
@@ -68,20 +69,80 @@ read_bot_data = function(filename, strategy_levels, game_rounds) {
 
 
 # Read data
-# NB: there are 3 participants who we have free resp (and slider) data but no trial data for,
-# and 4 participants who we have trial data but no free resp data for.
-# Below is not doing any filtering to remove people who aren't in intersection.
-human_trial_data = read_bot_data(paste(DATA_PATH, DATA_FILE, sep = "/"),
-                           STRATEGY_LEVELS,
-                           GAME_ROUNDS)
+human_trial_data = read_bot_data(
+  paste(DATA_PATH, DATA_FILE, sep = "/"),
+  STRATEGY_LEVELS,
+  GAME_ROUNDS
+)
 human_free_resp_data = read_csv(paste(DATA_PATH, FREE_RESP_FILE, sep = "/"))
 human_slider_data = read_csv(paste(DATA_PATH, SLIDER_FILE, sep = "/"))
 
-# Save as RData
-save(human_trial_data, file = "rps_human_trial_data.RData")
-save(human_free_resp_data, file = "rps_human_free_resp_data.RData")
-save(human_slider_data, file = "rps_human_slider_data.RData")
+# Summarize trial data, perform additional filtering to remove participants where outcomes weren't logged for all 300 rounds
+trial_data_summary = human_trial_data %>%
+  filter(is_bot == 0) %>%
+  group_by(
+    game_id, player_id, bot_strategy
+  ) %>%
+  summarize(
+    total_points = sum(player_points),
+    total_win = sum(player_outcome == "win", na.rm = T),
+    total_loss = sum(player_outcome == "loss", na.rm = T),
+    total_tie = sum(player_outcome == "tie", na.rm = T),
+    games = sum(total_win, total_loss, total_tie), # sanity check: how many NAs were removed in the above
+    win_pct = total_win / games
+  )
 
+# Sanity checks
+# glimpse(trial_data_summary)
+# trial_data_summary %>% filter(is.na(total_points))
+# trial_data_summary %>% filter(is.na(total_win))
+# trial_data_summary %>% filter(is.na(total_loss))
+# trial_data_summary %>% filter(is.na(total_tie))
+# table(trial_data_summary$games)
+# trial_data_summary %>% filter(games == 280)
+# human_trial_data %>% filter(player_id == "444b8794-cda5-4623-a981-9f1dc46c56ae") %>% print(n=nrow(.))
+
+
+# Filter out any participants for whom we did not capture outcomes for all 300 rounds
+trial_data_summary_clean = trial_data_summary %>%
+  filter(games == 300)
+human_trial_data_clean = human_trial_data %>%
+  filter(player_id %in% unique(trial_data_summary_clean$player_id)) # NB: this will remove all bot rows in addition to incomplete human rows
+
+# Summary: how many participants in each condition
+trial_data_summary_clean %>%
+  group_by(bot_strategy) %>%
+  summarize(
+    participants = n_distinct(player_id)
+  )
+
+
+# Filter free response and slider data to include only participants for whom we have summary win data above
+human_free_resp_data_clean = human_free_resp_data %>%
+  inner_join(
+    trial_data_summary_clean,
+    by = c("game_id", "player_id")
+  )
+glimpse(human_free_resp_data_clean)
+
+
+human_slider_data_clean = human_slider_data %>%
+  inner_join(
+    trial_data_summary_clean,
+    by = c("game_id", "player_id")
+  )
+glimpse(human_slider_data_clean)
+
+
+# Save as RData
+save(human_trial_data_clean, file = paste(OUTPUT_PATH, "rps_human_trial_data.RData", sep = "/"))
+save(human_free_resp_data_clean, file = paste(OUTPUT_PATH, "rps_human_free_resp_data.RData", sep = "/"))
+save(human_slider_data_clean, file = paste(OUTPUT_PATH, "rps_human_slider_data.RData", sep = "/"))
+
+# Save as CSV
+write_excel_csv(trial_data_summary_clean, file = paste(OUTPUT_PATH, "rps_human_trial_data_summary.csv", sep = "/"))
+write_excel_csv(human_free_resp_data_clean, file = paste(OUTPUT_PATH, "rps_human_free_resp_data.csv", sep = "/"))
+write_excel_csv(human_slider_data_clean, file = paste(OUTPUT_PATH, "rps_human_slider_data.csv", sep = "/"))
 
 
 
