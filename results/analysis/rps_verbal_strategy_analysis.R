@@ -10,8 +10,8 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 library(tidyverse)
 
-load("rps_human_free_resp_data.RData")
-load("rps_human_trial_data.RData")
+load("data_processed/rps_human_free_resp_data.RData")
+# load("data_processed/rps_human_trial_data.RData")
 
 
 # GLOBALS ----
