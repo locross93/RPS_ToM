@@ -77,6 +77,7 @@ human_trial_data = read_bot_data(
 human_free_resp_data = read_csv(paste(DATA_PATH, FREE_RESP_FILE, sep = "/"))
 human_slider_data = read_csv(paste(DATA_PATH, SLIDER_FILE, sep = "/"))
 
+# SUMMARIZE + FILTER ----
 # Summarize trial data, perform additional filtering to remove participants where outcomes weren't logged for all 300 rounds
 trial_data_summary = human_trial_data %>%
   filter(is_bot == 0) %>%
@@ -134,6 +135,7 @@ human_slider_data_clean = human_slider_data %>%
 glimpse(human_slider_data_clean)
 
 
+# SAVE ----
 # Save as RData
 save(human_trial_data_clean, file = paste(OUTPUT_PATH, "rps_human_trial_data.RData", sep = "/"))
 save(human_free_resp_data_clean, file = paste(OUTPUT_PATH, "rps_human_free_resp_data.RData", sep = "/"))

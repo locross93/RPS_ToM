@@ -306,12 +306,12 @@ tom_agent_win_pct_fig_gpt4
 
 # Combine figures
 win_pct_combined = human_win_pct_fig + tom_agent_win_pct_fig_gpt4
-win_pct_combined = human_win_pct_fig + tom_agent_win_pct_fig_gpt35
+# win_pct_combined = human_win_pct_fig + tom_agent_win_pct_fig_gpt35
 win_pct_combined
 # Save pdf
 ggsave(
   win_pct_combined,
-  filename = "win_pct_gpt35.pdf",
+  filename = "win_pct_gpt4o.pdf",
   device = cairo_pdf,
   path = "figures",
   width = 8.5, # orig: 12
@@ -321,7 +321,7 @@ ggsave(
 # Save png
 ggsave(
   win_pct_combined,
-  filename = "win_pct_gpt35.png",
+  filename = "win_pct_gpt4o.png",
   path = "figures",
   width = 12, # original: 12
   height = 6,
@@ -428,7 +428,15 @@ ggsave(
   height = 6,
   dpi = 300
 )
-
+# Save png
+ggsave(
+  learning_curve_combined,
+  filename = "learning_curve.png",
+  path = "figures",
+  width = 12, # original: 12
+  height = 6,
+  dpi = 300
+)
 
 
 
