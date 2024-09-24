@@ -1,0 +1,4 @@
+,sequential_agent_class,tom_agent_class,round_index,sequential_agent_move,tom_agent_move,sequential_agent_reward,tom_agent_reward
+0,self_transition_down,gpt-4o-mini,0,rock,scissors,3,-1
+1,self_transition_down,gpt-4o-mini,1,scissors,paper,3,-1
+2,self_transition_down,gpt-4o-mini,2,scissors,paper,3,-1

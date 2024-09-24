@@ -145,6 +145,14 @@ def main():
             "top_p": 1.0,
             "n": 1,
         }
+    elif args.llm_type == 'llama3':
+        model_settings = {
+            "model": "meta-llama/Meta-Llama-3-70B-Instruct",
+            "max_tokens": 2000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
     tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type=args.llm_type)
 
     # Run game
