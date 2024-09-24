@@ -8,15 +8,62 @@
 rm(list=ls())
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
+library(patchwork)
 library(tidyverse)
 library(viridis)
-library(patchwork)
 
 
 load("data_processed/rps_human_trial_data.RData")
 load("data_processed/rps_tom_agent_data.RData")
 
+
 # GLOBALS ----
+
+STRATEGY_LABELS = c(
+  "Self-transition (+)",
+  "Self-transition (−)",
+  "Opponent-transition (+)",
+  "Opponent-transition (0)",
+  "Previous outcome (W0L+T−)",
+  "Previous outcome (W+L−T0)",
+  "Previous outcome, \nprevious transition"
+)
+
+HUMAN_TRIAL_STRATEGY_LOOKUP = list("prev_move_positive" = "Self-transition (+)",
+                                   "prev_move_negative" = "Self-transition (−)",
+                                   "opponent_prev_move_positive" = "Opponent-transition (+)",
+                                   "opponent_prev_move_nil" = "Opponent-transition (0)",
+                                   "win_nil_lose_positive" = "Previous outcome (W0L+T−)",
+                                   "win_positive_lose_negative" = "Previous outcome (W+L−T0)",
+                                   "outcome_transition_dual_dependency" = "Previous outcome, \nprevious transition"
+)
+
+TOM_AGENT_STRATEGY_LOOKUP = list("self_transition_up" = "Self-transition (+)",
+                                 "self_transition_down" = "Self-transition (−)",
+                                 "opponent_transition_up" = "Opponent-transition (+)",
+                                 "opponent_transition_stay" = "Opponent-transition (0)",
+                                 "W_stay_L_up_T_down" = "Previous outcome (W0L+T−)",
+                                 "W_up_L_down_T_stay" = "Previous outcome (W+L−T0)",
+                                 "prev_outcome_prev_transition" = "Previous outcome, \nprevious transition"
+)
+
+COLORS = scales::viridis_pal()(length(STRATEGY_LABELS))
+HUMAN_TRIAL_COLOR_LOOKUP = list("prev_move_positive" = COLORS[1],
+                                "prev_move_negative" = COLORS[2],
+                                "opponent_prev_move_positive" = COLORS[3],
+                                "opponent_prev_move_nil" = COLORS[4],
+                                "win_nil_lose_positive" = COLORS[5],
+                                "win_positive_lose_negative" = COLORS[6],
+                                "outcome_transition_dual_dependency" = COLORS[7]
+)
+TOM_AGENT_COLOR_LOOKUP = list("self_transition_up" = COLORS[1],
+                              "self_transition_down" = COLORS[2],
+                              "opponent_transition_up" = COLORS[3],
+                              "opponent_transition_stay" = COLORS[4],
+                              "W_stay_L_up_T_down" = COLORS[5],
+                              "W_up_L_down_T_stay" = COLORS[6],
+                              "prev_outcome_prev_transition" = COLORS[7]
+)
 
 PLOT_THEME_DEFAULT = theme(
   # text
@@ -38,33 +85,6 @@ PLOT_THEME_DEFAULT = theme(
   axis.ticks = element_line(color = "black")
 )
 
-STRATEGY_LABELS = c(
-  "Self-transition (+)",
-  "Self-transition (−)",
-  "Opponent-transition (+)",
-  "Opponent-transition (0)",
-  "Previous outcome (W0L+T−)",
-  "Previous outcome (W+L−T0)"
-  # "Previous outcome, \nprevious transition"
-)
-
-HUMAN_TRIAL_STRATEGY_LOOKUP = list("prev_move_positive" = "Self-transition (+)",
-                                   "prev_move_negative" = "Self-transition (−)",
-                                   "opponent_prev_move_positive" = "Opponent-transition (+)",
-                                   "opponent_prev_move_nil" = "Opponent-transition (0)",
-                                   "win_nil_lose_positive" = "Previous outcome (W0L+T−)",
-                                   "win_positive_lose_negative" = "Previous outcome (W+L−T0)"
-                                   # "outcome_transition_dual_dependency" = "Previous outcome, \nprevious transition"
-                                   )
-
-TOM_AGENT_STRATEGY_LOOKUP = list("self_transition_up" = "Self-transition (+)",
-                                 "self_transition_down" = "Self-transition (−)",
-                                 "opponent_transition_up" = "Opponent-transition (+)",
-                                 "opponent_transition_stay" = "Opponent-transition (0)",
-                                 "W_stay_L_up_T_down" = "Previous outcome (W0L+T−)",
-                                 "W_up_L_down_T_stay" = "Previous outcome (W+L−T0)"
-                                 # "outcome_transition_dual_dependency" = "Previous outcome, \nprevious transition"
-                                 )
 
 
 # ANALYSIS FUNCTIONS ----
@@ -121,11 +141,19 @@ get_tom_agent_win_pct_summary = function(subject_block_data) {
 
 
 # FIGURE: Human win percentages overall ----
-# NB: filtering out most complex bot to align figure legends
-human_trial_data = human_trial_data %>%
-  filter(bot_strategy != "outcome_transition_dual_dependency")
 
-human_win_pct = get_subject_block_win_pct(human_trial_data, blocksize = 300)
+# Sanity checks
+glimpse(human_trial_data_clean)
+sum(is.na(human_trial_data_clean$player_outcome))
+length(unique(human_trial_data_clean$player_id))
+human_trial_data_clean %>%
+  group_by(bot_strategy) %>%
+  summarize(
+    participants = n_distinct(player_id)
+  )
+
+
+human_win_pct = get_subject_block_win_pct(human_trial_data_clean, blocksize = 300)
 human_win_pct_summary = get_subject_win_pct_summary(human_win_pct)
 human_win_pct_summary = human_win_pct_summary %>%
   rowwise() %>%
@@ -142,8 +170,6 @@ human_win_pct_fig = human_win_pct_summary %>%
   geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
   ggtitle("Humans") +
-  scale_color_viridis(discrete = TRUE,
-                      name = element_blank()) +
   scale_y_continuous(
     name = "win rate",
     breaks = seq(0.0, 1.0, by = 0.25),
@@ -154,6 +180,14 @@ human_win_pct_fig = human_win_pct_summary %>%
     name = element_blank(),
     labels = element_blank()
   ) +
+  scale_color_viridis(discrete = TRUE,
+                      name = element_blank()) +
+  # scale_color_manual(
+  #   limits = names(HUMAN_TRIAL_COLOR_LOOKUP),
+  #   labels = names(HUMAN_TRIAL_COLOR_LOOKUP),
+  #   breaks = names(HUMAN_TRIAL_COLOR_LOOKUP),
+  #   values = unname(unlist(HUMAN_TRIAL_COLOR_LOOKUP)),
+  # ) +
   PLOT_THEME_DEFAULT +
   theme(
     # remove X axis text and ticks
@@ -164,23 +198,84 @@ human_win_pct_fig = human_win_pct_summary %>%
 human_win_pct_fig
 
 
-# FIGURE: ToM Agent win percentages overall ----
-tom_agent_win_pct = get_tom_agent_block_win_pct(tom_agent_data, blocksize = 300)
-tom_agent_win_pct_summary = get_tom_agent_win_pct_summary(tom_agent_win_pct)
-tom_agent_win_pct_summary = tom_agent_win_pct_summary %>%
+
+# FIGURE: ToM Agent win percentages overall (gpt3.5) ----
+
+# Sanity checks
+glimpse(tom_agent_data_clean)
+tom_agent_data_clean %>%
+  group_by(tom_agent_class, sequential_agent_class) %>%
+  summarize(games = n_distinct(timestamp))
+
+
+tom_agent_data_gpt35 = tom_agent_data_clean %>% filter(tom_agent_class == "gpt35")
+tom_agent_win_pct_gpt35 = get_tom_agent_block_win_pct(tom_agent_data_gpt35, blocksize = 300)
+tom_agent_win_pct_summary_gpt35 = get_tom_agent_win_pct_summary(tom_agent_win_pct_gpt35)
+tom_agent_win_pct_summary_gpt35 = tom_agent_win_pct_summary_gpt35 %>%
   rowwise() %>%
   mutate(
     sequential_agent_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[sequential_agent_class]],
                                   levels = STRATEGY_LABELS)
   )
-tom_agent_win_pct_fig = tom_agent_win_pct_summary %>%
+tom_agent_win_pct_fig_gpt35 = tom_agent_win_pct_summary_gpt35 %>%
   ggplot(aes(x = sequential_agent_str, y = mean_win_pct, color = sequential_agent_str)) +
   geom_point(size = 6) +
   geom_errorbar(aes(ymin = mean_win_pct - se_win_pct, ymax = mean_win_pct + se_win_pct),
                 width = 0, linewidth = 1) +
   geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
-  ggtitle("ToM agent") +
+  ggtitle("ToM agent: GPT3.5") +
+  scale_y_continuous(
+    # name = "win percentage",
+    name = element_blank(),
+    breaks = seq(0.0, 1.0, by = 0.25),
+    labels = c("", "", "", "", ""),
+    limits = c(0.0, 1.0)
+  ) +
+  scale_x_discrete(
+    name = element_blank(),
+    labels = element_blank()
+  ) +
+  # scale_color_viridis(discrete = TRUE,
+  #                     name = element_blank()) +
+  scale_color_manual(
+    name = element_blank(),
+    values = c(COLORS[1], COLORS[2], COLORS[3], COLORS[6], COLORS[7])
+  ) +
+  PLOT_THEME_DEFAULT +
+  theme(
+    # remove X axis text and ticks
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    legend.position = "none"
+    # Add legend formatting
+    # legend.position = "right",
+    # legend.key = element_rect(colour = "transparent", fill = "transparent"),
+    # legend.spacing.y = unit(0, "lines"),
+    # legend.key.size = unit(3, "lines")
+  )
+tom_agent_win_pct_fig_gpt35
+
+
+# FIGURE: ToM Agent win percentages overall (gpt4o) ----
+
+tom_agent_data_gpt4 = tom_agent_data_clean %>% filter(tom_agent_class == "gpt4o")
+tom_agent_win_pct_gpt4 = get_tom_agent_block_win_pct(tom_agent_data_gpt4, blocksize = 300)
+tom_agent_win_pct_summary_gpt4 = get_tom_agent_win_pct_summary(tom_agent_win_pct_gpt4)
+tom_agent_win_pct_summary_gpt4 = tom_agent_win_pct_summary_gpt4 %>%
+  rowwise() %>%
+  mutate(
+    sequential_agent_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[sequential_agent_class]],
+                                  levels = STRATEGY_LABELS)
+  )
+tom_agent_win_pct_fig_gpt4 = tom_agent_win_pct_summary_gpt4 %>%
+  ggplot(aes(x = sequential_agent_str, y = mean_win_pct, color = sequential_agent_str)) +
+  geom_point(size = 6) +
+  geom_errorbar(aes(ymin = mean_win_pct - se_win_pct, ymax = mean_win_pct + se_win_pct),
+                width = 0, linewidth = 1) +
+  geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
+  geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
+  ggtitle("ToM agent: GPT4o") +
   scale_color_viridis(discrete = TRUE,
                       name = element_blank()) +
   scale_y_continuous(
@@ -206,25 +301,36 @@ tom_agent_win_pct_fig = tom_agent_win_pct_summary %>%
     legend.spacing.y = unit(0, "lines"),
     legend.key.size = unit(3, "lines")
   )
-tom_agent_win_pct_fig
+tom_agent_win_pct_fig_gpt4
 
 
 # Combine figures
-win_pct_combined = human_win_pct_fig + tom_agent_win_pct_fig
+win_pct_combined = human_win_pct_fig + tom_agent_win_pct_fig_gpt4
+# win_pct_combined = human_win_pct_fig + tom_agent_win_pct_fig_gpt35
 win_pct_combined
+# Save pdf
 ggsave(
   win_pct_combined,
-  filename = "win_pct.pdf",
+  filename = "win_pct_gpt4o.pdf",
   device = cairo_pdf,
   path = "figures",
-  width = 12,
+  width = 8.5, # orig: 12
+  height = 6,
+  dpi = 300
+)
+# Save png
+ggsave(
+  win_pct_combined,
+  filename = "win_pct_gpt4o.png",
+  path = "figures",
+  width = 12, # original: 12
   height = 6,
   dpi = 300
 )
 
 
 # FIGURE: human learning curves ----
-human_block_win_pct = get_subject_block_win_pct(human_trial_data, blocksize = 30)
+human_block_win_pct = get_subject_block_win_pct(human_trial_data_clean, blocksize = 30)
 human_block_win_pct_summary = get_subject_win_pct_summary(human_block_win_pct)
 human_block_win_pct_summary = human_block_win_pct_summary %>%
   rowwise() %>%
@@ -265,8 +371,8 @@ human_learning_curve_fig = human_block_win_pct_summary %>%
 human_learning_curve_fig
 
 
-# FIGURE: ToM Agent learning curves ----
-tom_agent_block_win_pct = get_tom_agent_block_win_pct(tom_agent_data, blocksize = 30)
+# FIGURE: ToM Agent learning curves (gpt4o) ----
+tom_agent_block_win_pct = get_tom_agent_block_win_pct(tom_agent_data_gpt4, blocksize = 30)
 tom_agent_block_win_pct_summary = get_tom_agent_win_pct_summary(tom_agent_block_win_pct)
 tom_agent_block_win_pct_summary = tom_agent_block_win_pct_summary %>%
   rowwise() %>%
@@ -283,7 +389,7 @@ tom_agent_learning_curve_fig = tom_agent_block_win_pct_summary %>%
   geom_errorbar(aes(ymin = mean_win_pct - se_win_pct, ymax = mean_win_pct + se_win_pct), linewidth = 1, width = 0) +
   geom_hline(yintercept = 1/3, linewidth = 0.75, linetype = "dashed", color = "black") +
   geom_hline(yintercept = 0.9, linewidth = 0.75, linetype = "solid", color = "black") +
-  ggtitle("ToM Agent") +
+  ggtitle("ToM Agent (GPT4o)") +
   scale_color_viridis(discrete = T,
                       name = "Sequential pattern",
                       labels = function(x) str_wrap(x, width = 24)
@@ -322,7 +428,15 @@ ggsave(
   height = 6,
   dpi = 300
 )
-
+# Save png
+ggsave(
+  learning_curve_combined,
+  filename = "learning_curve.png",
+  path = "figures",
+  width = 12, # original: 12
+  height = 6,
+  dpi = 300
+)
 
 
 
