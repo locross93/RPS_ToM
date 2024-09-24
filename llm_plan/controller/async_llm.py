@@ -1,7 +1,6 @@
 import os
 from typing import List, Dict
 from openai import AsyncClient
-from omegaconf import OmegaConf
 
 gpt_models = ["gpt-4-1106-preview", "gpt-4o", "gpt-4o-2024-08-06", "gpt-4o-mini", "gpt-3.5-turbo-1106"]
 

@@ -1,11 +1,11 @@
 import os
 import asyncio
 import argparse
-import numpy as np
+import json
 
 from environments.rps_sequential_opponent import run_episode, run_sequential_episode # TESTING
 from llm_plan.agent.rps.sequential_opponent_globals import ACTION_MATRIX_LOOKUP, SEQUENTIAL_OPPONENTS
-from llm_plan.agent.rps.sequential_opponent import SelfTransition, OppTransition, OutcomeTransition
+from llm_plan.agent.rps.sequential_opponent import SelfTransition, OppTransition, OutcomeTransition, PrevTransitionOutcomeTransition
 from llm_plan.agent.rps.rps_hypothetical_minds import DecentralizedAgent
 # TESTING: comment out everything below
 from llm_plan.agent.agent_config import agent_config
@@ -21,7 +21,8 @@ def setup_sequential_agent(sequential_agent, sequential_agent_actions):
         return OppTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
     elif sequential_agent in ['W_stay_L_up_T_down', 'W_up_L_down_T_stay']: # outcome transition agents
         return OutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
-    # TODO final agent: outcome previous transition
+    elif sequential_agent == 'prev_outcome_prev_transition': # previous outcome, previous transition agent
+        return PrevTransitionOutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
     else:
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
@@ -100,6 +101,7 @@ def main():
     parser = argparse.ArgumentParser(description='Run a game of rock paper scissors')
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
     parser.add_argument('--sequential_opponent', type=str, default='self_transition_up', help=f'Sequential opponent type: {SEQUENTIAL_OPPONENTS}')
+    parser.add_argument('--debug', type=bool, default=False, help='Run a game in debug mode with two paired sequential agents')
     args = parser.parse_args()
 
     # Initialize sequential agent
