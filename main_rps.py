@@ -108,6 +108,60 @@ def main():
     sequential_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
 
     # Initialize tom agent
+<<<<<<< HEAD
+    # TESTING: uncomment two lines below
+    # tom_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
+    # run_sequential_episode(tom_agent, sequential_agent, num_rounds=10)
+    # TESTING: comment out everything below
+
+    api_key = os.getenv('OPENAI_API_KEY')
+    model_id = 'player_0'
+    if args.llm_type == 'gpt4':
+        model_settings = {
+            "model": "gpt-4-1106-preview",
+            "max_tokens": 4000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    elif args.llm_type == 'gpt4o':
+        model_settings = {
+            "model": "gpt-4o-2024-08-06",
+            "max_tokens": 4000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    elif args.llm_type == 'gpt-4o-mini':
+        model_settings = {
+            "model": "gpt-4o-mini",
+            "max_tokens": 4000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    elif args.llm_type == 'gpt35':
+        model_settings = {
+            "model": "gpt-3.5-turbo-1106",
+            "max_tokens": 2000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    elif args.llm_type == 'llama3':
+        model_settings = {
+            "model": "meta-llama/Meta-Llama-3-70B-Instruct",
+            "max_tokens": 2000,
+            "temperature": 0.2,
+            "top_p": 1.0,
+            "n": 1,
+        }
+    tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type=args.llm_type)
+
+    # Run game
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=300))
+=======
     if args.debug:
         tom_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
         run_sequential_episode(tom_agent, sequential_agent, num_rounds=20)
@@ -154,6 +208,7 @@ def main():
         # Run game
         loop = asyncio.get_event_loop()
         loop.run_until_complete(run_episode(tom_agent, sequential_agent, num_rounds=300))
+>>>>>>> 93c36bf0f465a220afd3107019e98541942343d9
 
 if __name__ == "__main__":
     main()
