@@ -114,6 +114,8 @@ async def run_episode(tom_agent, sequential_agent, num_rounds):
         if round_idx > 0:
             print_and_save(f"User Message: {tom_agent_user_msg}")
             print_and_save(f"Response: {tom_agent_resp}")
+            time_elapsed = round((datetime.datetime.now() - now).total_seconds() / 60,1)
+            print_and_save(f"Time Elapsed: {time_elapsed} minutes")
             print_and_save(f"\n")
         total_cost = round(tom_agent.controller.total_inference_cost, 4)
         hm_reward = tom_agent.reward_tracker[tom_agent.agent_id]

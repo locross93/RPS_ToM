@@ -32,6 +32,7 @@ class DecentralizedAgent(abc.ABC):
         self.correct_guess_reward = 1
         self.good_hypothesis_thr = 0.7
         self.top_k = 5 # number of top hypotheses to evaluate
+        self.n = config['n']
         self.self_improve = config['self_improve']
         player_key = self.agent_id
         opponent_key = ['player_1' if self.agent_id == 'player_0' else 'player_0'][0]
@@ -78,7 +79,7 @@ class DecentralizedAgent(abc.ABC):
                 Example summary:
                 ```python
                 {{
-                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                'Opponent_strategy': ''
                 }}
                 ```
                 
@@ -102,7 +103,7 @@ class DecentralizedAgent(abc.ABC):
                 Example summary:
                 ```python
                 {{
-                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                'Opponent_strategy': ''
                 }}
                 ```
                 
@@ -164,7 +165,10 @@ class DecentralizedAgent(abc.ABC):
                 *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg1])]
             )
             response = responses[0][0]
-            possible_opponent_strategy = self.extract_dict(response)
+            if self.n == 1:
+                possible_opponent_strategy = self.extract_dict(response)
+            else:
+                response, possible_opponent_strategy = self.parse_multiple_llm_responses(response)
             self.possible_opponent_strategy = deepcopy(possible_opponent_strategy)
             self.opponent_hypotheses[self.interaction_num] = deepcopy(possible_opponent_strategy)
             # initialize the value of this hypothesis
@@ -200,7 +204,10 @@ class DecentralizedAgent(abc.ABC):
                     )           
                 for i in range(len(responses)):
                     response = responses[i][0]
-                    next_plays = self.extract_dict(response)
+                    if self.n == 1:
+                        next_plays = self.extract_dict(response)
+                    else:
+                        response, next_plays = self.parse_multiple_llm_responses(response, response_type='next_plays')
                     both_keys_present = ('predicted_opponent_next_play' in next_plays) and ('my_next_play' in next_plays)
                     # check for correct formatting, next plays should contain the keys 'my_next_play' and 'predicted_opponent_next_play'
                     correct_format = 'my_next_play' in next_plays and 'predicted_opponent_next_play' in next_plays
@@ -210,6 +217,7 @@ class DecentralizedAgent(abc.ABC):
                     if not both_keys_present or not correct_format:
                         correct_syntax = False
                         print(f"Error parsing dictionary when extracting next plays, retrying...")
+                        breakpoint()
                         break
                     if i == 0:
                         self.next_plays = deepcopy(next_plays)
@@ -245,7 +253,10 @@ class DecentralizedAgent(abc.ABC):
                     *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg2])]
                     )
                 response = responses[0][0]
-                next_plays = self.extract_dict(response)
+                if self.n == 1:
+                    next_plays = self.extract_dict(response)
+                else:
+                    response, next_plays = self.parse_multiple_llm_responses(response, response_type='next_plays')
                 both_keys_present = ('predicted_opponent_next_play' in next_plays) and ('my_next_play' in next_plays)
                 # check for correct formatting, 'my_next_play' should be either 'rock', 'paper', or 'scissors'
                 correct_format = next_plays['my_next_play'] in ['rock', 'paper', 'scissors'] and next_plays['predicted_opponent_next_play'] in ['rock', 'paper', 'scissors']
@@ -334,3 +345,26 @@ class DecentralizedAgent(abc.ABC):
         except Exception as e:
             print(f"Error parsing dictionary: {e}")
             return {}
+
+    def parse_multiple_llm_responses(self, responses, response_type=None, state=None):
+        """Parses the llms multiple responses when n > 1."""
+        if response_type == 'next_plays':
+            for i, response in enumerate(responses):
+                response_dict = self.extract_dict(response)
+                if response_dict == {}:
+                    continue
+                elif 'predicted_opponent_next_play' not in response_dict:
+                    continue
+                elif 'my_next_play' not in response_dict:
+                    continue
+                else:
+                    return response, response_dict
+        else:
+            for i, response in enumerate(responses):
+                response_dict = self.extract_dict(response)
+                if response_dict == {}:
+                    continue
+                else:
+                    return response, response_dict
+                
+            return '', {}
