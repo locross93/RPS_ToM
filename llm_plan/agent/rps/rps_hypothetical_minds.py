@@ -62,7 +62,7 @@ class DecentralizedAgent(abc.ABC):
         
         if self.self_improve:
             strategy_request = f"""
-                An interaction with the other player has occurred at round {step}, {self.interaction_history[-1]}.
+                An interaction with the other player has occurred at round {step-1}, {self.interaction_history[-1]}.
                 The total interaction history is: {self.interaction_history}.
                 Here are your previous hypotheses about the algorithm your opponent is playing: {self.top_hypotheses}.
                 What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
@@ -87,7 +87,7 @@ class DecentralizedAgent(abc.ABC):
                 """
         else:
             strategy_request = f"""
-                An interaction with the other player has occurred at round {step}, {self.interaction_history[-1]}.
+                An interaction with the other player has occurred at round {step-1}, {self.interaction_history[-1]}.
                 The total interaction history is: {self.interaction_history}.
                 What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
                 If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.

@@ -9,15 +9,47 @@ from typing import List, Dict, Any, Tuple, Optional
 
 from llm_plan.agent import action_funcs
 
+win_outcome = "win"
+tie_outcome = "tie"
+loss_outcome = "loss"
+up_transition = "plays the move that would beat their last rounds move"
+down_transition = "plays the move that would lose to their last rounds move"
+stay_transition = "plays the same move as they did in the last round"
+opponent_up_transition = "plays the move that would beat their opponents last rounds move"
+opponent_stay_transition = "plays the same move as their opponents last rounds move"
+
+prev_up_transition = "played the move in the last round that would beat the opponent's move two rounds ago"
+prev_down_transition = "played the move in the last round that would lose to the opponent's move two rounds ago"
+prev_stay_transition = "played the same move in the last round as the opponent played two rounds ago"
+
 given_hypotheses = {
-    'self_transition_up': {'The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move': 1.0},
-    'self_transition_down': {'The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move': 1.0},
-    'opponent_transition_up': {'The opponent plays the best response to my last move': 1.0},
-    'opponent_transition_stay': {'The opponent copies me and plays the same move as I did in the last round': 1.0},
-    'W_stay_L_up_T_down': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0},
-    'W_up_L_down_T_stay': {'After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round': 1.0},
-    'prev_outcome_prev_transition': {'The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.': 1.0}
+    'self_transition_up': {f'The opponent {up_transition}': 1.0},
+    'self_transition_down': {f'The opponent {down_transition}': 1.0},
+    'opponent_transition_up': {f'The opponent {opponent_up_transition}': 1.0},
+    'opponent_transition_stay': {f'The opponent {opponent_stay_transition}': 1.0},
+    'W_stay_L_up_T_down': {f'After a {win_outcome} the opponent {stay_transition}. After a {loss_outcome} the opponent {up_transition}. After a {tie_outcome} the opponent {down_transition}': 1.0},
+    'W_up_L_down_T_stay': {f'After a {win_outcome} the opponent {up_transition}. After a {loss_outcome} the opponent {down_transition}. After a {tie_outcome} the opponent {stay_transition}': 1.0},
+    'prev_outcome_prev_transition': {f'The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made. \
+    After a {win_outcome} in which the opponent {prev_up_transition}, the opponent {up_transition}.\
+    After a {win_outcome} in which the opponent {prev_down_transition}, the opponent {down_transition}. \
+    After a {win_outcome} in which the opponent {prev_stay_transition}, the opponent {stay_transition}. \
+    After a {loss_outcome} in which the opponent {prev_up_transition}, the opponent {stay_transition}.\
+    After a {loss_outcome} in which the opponent {prev_down_transition}, the opponent {up_transition}. \
+    After a {loss_outcome} in which the opponent {prev_stay_transition}, the opponent {down_transition}. \
+    After a {tie_outcome} in which the opponent {prev_up_transition}, the opponent {down_transition}.\
+    After a {tie_outcome} in which the opponent {prev_down_transition}, the opponent {stay_transition}. \
+    After a {tie_outcome} in which the opponent {prev_stay_transition}, the opponent {up_transition}.': 1.0}
 }
+
+# given_hypotheses = {
+#     'self_transition_up': {'The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move': 1.0},
+#     'self_transition_down': {'The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move': 1.0},
+#     'opponent_transition_up': {'The opponent plays the best response to my last move': 1.0},
+#     'opponent_transition_stay': {'The opponent copies me and plays the same move as I did in the last round': 1.0},
+#     'W_stay_L_up_T_down': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0},
+#     'W_up_L_down_T_stay': {'After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round': 1.0},
+#     'prev_outcome_prev_transition': {'The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.': 1.0}
+# }
 
 
 class DecentralizedAgent(abc.ABC):
@@ -61,7 +93,7 @@ class DecentralizedAgent(abc.ABC):
         if possible_opponent_strategy is None:
             possible_opponent_strategy = self.possible_opponent_strategy
         user_message = f"""
-            An interaction with the other player has occurred at round {step}, {self.interaction_history[-1]}.
+            An interaction with the other player has occurred at round {step-1}, {self.interaction_history[-1]}.
             The total interaction history is: {self.interaction_history}.
             You last played: {self.interaction_history[-1]['my_play']}
             You previously guessed that their policy or strategy is: {possible_opponent_strategy}.

@@ -105,7 +105,7 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     
     agent = agent_class(agent_config_obj, controller)
 
-    agent.agent_type = agent_type
+    agent.agent_type = agent_type # add any changes from default
     agent.sequential_opponent = sequential_opponent
     agent.llm_type = llm_type
     return agent
@@ -124,13 +124,9 @@ def main():
     # Initialize sequential agent
     sequential_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
 
-    # Initialize tom agent
-    # TESTING: uncomment two lines below
-    # tom_agent = setup_sequential_agent(args.sequential_opponent, ACTION_MATRIX_LOOKUP[args.sequential_opponent])
-    # run_sequential_episode(tom_agent, sequential_agent, num_rounds=10)
-    # TESTING: comment out everything below
-
-    api_key = os.getenv('OPENAI_API_KEY')
+    api_key_path = './llm_plan/lc_api_key.json'
+    OPENAI_KEYS = json.load(open(api_key_path, 'r'))
+    api_key = OPENAI_KEYS['API_KEY']
     model_id = 'player_0'
     if args.llm_type == 'gpt4':
         model_settings = {

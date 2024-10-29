@@ -22,7 +22,6 @@ class DecentralizedAgent:
         self.interaction_num = 0
         self.reward_tracker = {self.agent_id: 0}
         self.n = config['n']
-        self.sequential_opponent = config['sequential_opponent']
         
         # Define the fixed set of possible strategies
         self.possible_strategies = {
@@ -81,7 +80,7 @@ class DecentralizedAgent:
         if possible_opponent_strategy is None:
             possible_opponent_strategy = self.possible_opponent_strategy
         user_message = f"""
-            An interaction with the other player has occurred at round {step}, {self.interaction_history[-1]}.
+            An interaction with the other player has occurred at round {step-1}, {self.interaction_history[-1]}.
             The total interaction history is: {self.interaction_history}.
             You last played: {self.interaction_history[-1]['my_play']}
             You previously guessed that their policy or strategy is: {possible_opponent_strategy}.
@@ -123,10 +122,7 @@ class DecentralizedAgent:
             response, strategy_selection = self.parse_multiple_llm_responses(response)
             
         # Get the selected strategy description
-        self.possible_opponent_strategy = strategy_selection['selected_strategy']
-        self.possible_opponent_strategy = {
-            'Opponent_strategy': self.possible_strategies[selected_strategy]
-        }
+        self.possible_opponent_strategy = strategy_selection
 
         # Now do action selection based on selected strategy
         hls_user_msg2 = self.generate_interaction_feedback_user_message(step)
@@ -160,7 +156,7 @@ class DecentralizedAgent:
             counter += 1
 
         next_play = self.next_plays['my_next_play']
-        response = f"{response}\n\nSelected strategy: {selected_strategy}"
+        response = f"{response}\n\nSelected strategy: {strategy_selection['Opponent_strategy']}"
         hls_user_msg2 = strategy_msg + "\n\n" + hls_user_msg2
 
         return response, hls_user_msg2, next_play

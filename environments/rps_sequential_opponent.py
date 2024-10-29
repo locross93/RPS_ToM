@@ -106,7 +106,7 @@ async def run_episode(tom_agent, sequential_agent, num_rounds):
             'opponent_play': sequential_agent_move,
             'my_reward': int(tom_agent_reward)
         })
-        df_results = df_results._append({'sequential_agent_class': str(sequential_agent.id), 'tom_agent_class': str(tom_agent.llm_type),
+        df_results = df_results._append({'sequential_agent_class': str(sequential_agent.id), 'tom_agent_class': run_label,
                            'round_index': round_idx, 'sequential_agent_move': sequential_agent_move, 'tom_agent_move': tom_agent_move,
                            'sequential_agent_reward': sequential_agent_reward, 'tom_agent_reward': tom_agent_reward}, ignore_index=True)
 
