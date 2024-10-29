@@ -1,6 +1,7 @@
 import os
 import asyncio
 import argparse
+import importlib
 import json
 
 from environments.rps_sequential_opponent import run_episode, run_sequential_episode # TESTING
@@ -104,6 +105,8 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     
     agent = agent_class(agent_config_obj, controller)
 
+    agent.agent_type = agent_type
+    agent.sequential_opponent = sequential_opponent
     agent.llm_type = llm_type
     return agent
 

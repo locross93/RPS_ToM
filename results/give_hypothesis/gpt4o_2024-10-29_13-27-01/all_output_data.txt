@@ -1,0 +1,358 @@
+give_hypothesis_gpt4o, playing rock paper scissors 
+
+Round 0, Total Inference Cost: 0, HM Reward: 0
+
+
+Tom agent played paper and received reward 3
+
+
+Sequential agent played rock and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 1, {'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given the opponent's strategy, after a loss, they play the option that would beat their last round's move. Since they played 'rock' and lost, they are likely to play 'paper' in the next round.
+2. 'my_next_play': Given that the opponent is likely to play 'paper', my next play should be 'scissors' to counter it.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+Time Elapsed: 0.0 minutes
+
+
+
+
+
+
+Round 1, Total Inference Cost: 0.0025, HM Reward: 3
+
+
+Tom agent played scissors and received reward 3
+
+
+Sequential agent played paper and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 2, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy, after a loss they play the option that would beat their last round's move. In the last round, they played 'paper' and lost, so they are likely to play 'scissors' next to beat their previous move 'paper'.
+
+2. 'my_next_play': Given that the opponent is likely to play 'scissors', I should play 'rock' to counter this.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+
+Time Elapsed: 0.1 minutes
+
+
+
+
+
+
+Round 2, Total Inference Cost: 0.0051, HM Reward: 6
+
+
+Tom agent played rock and received reward 3
+
+
+Sequential agent played scissors and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 3, {'round': 2, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy, after a loss, they play the option that would beat their last round's move. In the last round, they played scissors and lost, so they are likely to play rock next.
+
+2. 'my_next_play': Given that the opponent is likely to play rock, my best counter move would be paper.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+Time Elapsed: 0.1 minutes
+
+
+
+
+
+
+Round 3, Total Inference Cost: 0.0076, HM Reward: 9
+
+
+Tom agent played paper and received reward 3
+
+
+Sequential agent played rock and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 4, {'round': 3, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 3, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy, after a loss, they play the option that would beat their last round's move. In the last round, they played 'rock' and lost. Therefore, they are likely to play 'paper' in the next round to beat 'rock'.
+
+2. 'my_next_play': Given that the opponent is likely to play 'paper', my next play should be 'scissors' to counter their 'paper'.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+Time Elapsed: 0.1 minutes
+
+
+
+
+
+
+Round 4, Total Inference Cost: 0.0104, HM Reward: 12
+
+
+Tom agent played scissors and received reward 3
+
+
+Sequential agent played paper and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 5, {'round': 4, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 3, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 4, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy, after losing the last round (since they played paper and I played scissors), they will play the option that would beat their last round's move, which is rock.
+2. 'my_next_play': Given that the opponent is likely to play rock, my next play should be paper to counter this.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+Time Elapsed: 0.2 minutes
+
+
+
+
+
+
+Round 5, Total Inference Cost: 0.013, HM Reward: 15
+
+
+Tom agent played paper and received reward -1
+
+
+Sequential agent played scissors and received reward 3
+
+
+User Message: 
+            An interaction with the other player has occurred at round 6, {'round': 5, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 3, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 4, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy, after a win, they play the same move as they did in the last round. In the last round, they played scissors and won. Therefore, I predict their next play will be scissors.
+
+2. 'my_next_play': To counter the predicted opponent's play of scissors, I should play rock, as rock beats scissors.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+
+Time Elapsed: 0.2 minutes
+
+
+
+
+
+
+Round 6, Total Inference Cost: 0.0158, HM Reward: 14
+
+
+Tom agent played rock and received reward 3
+
+
+Sequential agent played scissors and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 7, {'round': 6, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 1, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 2, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 3, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 4, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy, after a loss, they play the option that would beat their last round's move. In the last round, they played scissors and lost, so they are likely to play rock next.
+2. 'my_next_play': Given that the opponent is likely to play rock, I should play paper to counter this.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+Time Elapsed: 0.2 minutes
+
+
+
+
+
+
+Round 7, Total Inference Cost: 0.0186, HM Reward: 17
+
+
+Tom agent played paper and received reward 3
+
+
+Sequential agent played rock and received reward -1
+
+

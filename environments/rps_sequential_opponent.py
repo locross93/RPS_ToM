@@ -64,14 +64,14 @@ async def run_episode(tom_agent, sequential_agent, num_rounds):
     # Initialize results files
     now = datetime.datetime.now()
     date_time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
-    agent_label = 'hm_'+tom_agent.llm_type
-    results_folder = f'./results/agent_{agent_label}_{date_time_str}'
+    results_folder = f'./results/{tom_agent.agent_type}/{tom_agent.sequential_opponent}_{date_time_str}'
+    run_label = tom_agent.agent_type+'_'+tom_agent.llm_type
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
     global all_output_file
     all_output_file = os.path.join(results_folder, 'all_output_data.txt')
     with open(all_output_file, 'w') as file:
-        file.write(f"{agent_label}, playing rock paper scissors \n\n")
+        file.write(f"{run_label}, playing rock paper scissors vs. {tom_agent.sequential_opponent}\n")
     results_file = os.path.join(results_folder, 'rps_scores.csv')
     # Initialize game history
     df_results = pd.DataFrame(columns=['sequential_agent_class', 'tom_agent_class',
