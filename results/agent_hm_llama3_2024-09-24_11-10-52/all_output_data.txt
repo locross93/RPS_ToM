@@ -24297,3 +24297,100 @@ Tom agent played rock and received reward 3
 Sequential agent played scissors and received reward -1
 
 
+User Message: Total Rewards:- player_0: 159
+
+            
+                An interaction with the other player has occurred at round 268, {'round': 267, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+                The total interaction history is: [{'round': 218, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 219, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 220, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 221, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 222, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 223, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 224, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 225, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 226, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 227, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 228, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 229, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 230, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 231, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 232, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 233, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 234, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 235, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 236, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 237, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 238, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 239, 'my_play': 'scissors', 'opponent_play': 'rock', 'my_reward': -1}, {'round': 240, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 241, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 242, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 243, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 244, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 245, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 246, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 247, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 248, 'my_play': 'scissors', 'opponent_play': 'rock', 'my_reward': -1}, {'round': 249, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 250, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 251, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 252, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 253, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 254, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 255, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 256, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 257, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 258, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 259, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 260, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 261, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 262, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 263, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 264, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 265, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 266, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 267, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+                Here are your previous hypotheses about the algorithm your opponent is playing: {260: {'Opponent_strategy': 'My opponent is playing a dynamic strategy with a bias towards scissors, combining counter-strategies with randomness and deviations.', 'value': 0.382551, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 264: {'Opponent_strategy': 'My opponent is playing a dynamic strategy that involves mirroring and countering my moves, with some degree of randomness and occasional deviations.', 'value': 0.33990000000000004, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 267: {'Opponent_strategy': 'My opponent is playing a dynamic strategy that involves counter-strategies with some degree of randomness and occasional deviations.', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 265: {'Opponent_strategy': 'My opponent is playing a dynamic strategy with a mix of mirroring, countering, and random moves, with a tendency to counter rock with paper and take advantage of scissors with paper.', 'value': 0.237, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 240: {'Opponent_strategy': 'My opponent is playing a dynamic strategy that tries to counter my moves, but with some degree of randomness and occasional deviations.', 'value': 0.2025079523632881, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}}.
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
+                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
+                Are you getting positive or negative reward when playing the same choice? 
+                For example getting positive reward every time you play rock. 
+                If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+                This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
+                Example summary:
+                ```python
+                {
+                'Opponent_strategy': 'I think my opponent is always playing scissors.'
+                }
+                ```
+                
+                You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
+                
+            
+
+
+            An interaction with the other player has occurred at round 268, {'round': 267, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 218, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 219, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 220, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 221, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 222, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 223, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 224, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 225, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 226, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 227, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 228, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 229, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 230, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 231, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 232, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 233, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 234, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 235, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 236, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 237, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 238, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 239, 'my_play': 'scissors', 'opponent_play': 'rock', 'my_reward': -1}, {'round': 240, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 241, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 242, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 243, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 244, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 245, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 246, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 247, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 248, 'my_play': 'scissors', 'opponent_play': 'rock', 'my_reward': -1}, {'round': 249, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 250, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 251, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 252, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 253, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 254, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 255, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 256, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 257, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 258, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 259, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 260, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 261, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 262, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 263, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 264, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 265, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 266, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 267, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'My opponent is playing a dynamic strategy with a bias towards scissors, combining counter-strategies with randomness and deviations.'}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {260: {'Opponent_strategy': 'My opponent is playing a dynamic strategy with a bias towards scissors, combining counter-strategies with randomness and deviations.', 'value': 0.382551, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 264: {'Opponent_strategy': 'My opponent is playing a dynamic strategy that involves mirroring and countering my moves, with some degree of randomness and occasional deviations.', 'value': 0.33990000000000004, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 267: {'Opponent_strategy': 'My opponent is playing a dynamic strategy that involves counter-strategies with some degree of randomness and occasional deviations.', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 265: {'Opponent_strategy': 'My opponent is playing a dynamic strategy with a mix of mirroring, countering, and random moves, with a tendency to counter rock with paper and take advantage of scissors with paper.', 'value': 0.237, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 240: {'Opponent_strategy': 'My opponent is playing a dynamic strategy that tries to counter my moves, but with some degree of randomness and occasional deviations.', 'value': 0.2025079523632881, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}}
+
+Based on the interaction history, I notice that my opponent has been playing a mix of strategies, but with a bias towards scissors. In the last few rounds, they have been playing scissors frequently, and I have been able to exploit this by playing rock and getting a positive reward.
+
+One pattern I observe is that when I play rock, my opponent tends to play scissors, which allows me to win. This suggests that my opponent may be playing a strategy that involves counter-strategies, but with a bias towards scissors.
+
+Another pattern I notice is that my opponent occasionally deviates from their usual strategy, which makes it difficult to predict their next move. This suggests that they may be incorporating some degree of randomness into their strategy.
+
+Given these observations, my hypothesis about my opponent's strategy is that they are playing a dynamic strategy that involves counter-strategies with a bias towards scissors, combined with some degree of randomness and occasional deviations.
+
+Here is a concise summary of my hypothesis in Python dictionary format:
+
+```python
+{
+    'Opponent_strategy': 'My opponent is playing a dynamic strategy with a bias towards scissors, combining counter-strategies with randomness and deviations.'
+}
+```
+
+I will use this hypothesis to inform my strategy in the next round.
+
+1. 'predicted_opponent_next_play': Given the opponent's dynamic strategy with a bias towards scissors, and considering their last response to my rock was scissors, I believe their next play will be paper. They might try to counter my recent rock plays with paper.
+
+2. 'my_next_play': Given that my opponent's likely play in the next round is paper, I believe my next play should be scissors. This will allow me to take advantage of their potential paper play and gain a win.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+
+
+
+
+Round 268, Total Inference Cost: 0.0, HM Reward: 159
+
+
+Tom agent played scissors and received reward -1
+
+
+Sequential agent played rock and received reward 3
+
+
