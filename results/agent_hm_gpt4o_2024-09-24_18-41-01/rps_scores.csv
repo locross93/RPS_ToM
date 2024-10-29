@@ -1,0 +1,16 @@
+,sequential_agent_class,tom_agent_class,round_index,sequential_agent_move,tom_agent_move,sequential_agent_reward,tom_agent_reward
+0,opponent_transition_stay,gpt4o,0,scissors,rock,-1,3
+1,opponent_transition_stay,gpt4o,1,rock,rock,0,0
+2,opponent_transition_stay,gpt4o,2,rock,rock,0,0
+3,opponent_transition_stay,gpt4o,3,rock,paper,-1,3
+4,opponent_transition_stay,gpt4o,4,paper,paper,0,0
+5,opponent_transition_stay,gpt4o,5,scissors,paper,3,-1
+6,opponent_transition_stay,gpt4o,6,paper,paper,0,0
+7,opponent_transition_stay,gpt4o,7,paper,scissors,-1,3
+8,opponent_transition_stay,gpt4o,8,scissors,paper,3,-1
+9,opponent_transition_stay,gpt4o,9,paper,scissors,-1,3
+10,opponent_transition_stay,gpt4o,10,scissors,paper,3,-1
+11,opponent_transition_stay,gpt4o,11,paper,rock,3,-1
+12,opponent_transition_stay,gpt4o,12,rock,rock,0,0
+13,opponent_transition_stay,gpt4o,13,rock,paper,-1,3
+14,opponent_transition_stay,gpt4o,14,paper,paper,0,0

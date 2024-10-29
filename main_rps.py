@@ -27,7 +27,7 @@ def setup_sequential_agent(sequential_agent, sequential_agent_actions):
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
 
-def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type='gpt4'):
+def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, sequential_opponent):
     if llm_type == 'gpt4':
         llm = AsyncChatLLM(kwargs={'api_key': api_key, 'model': 'gpt-4-1106-preview'})
         controller = AsyncGPTController(
@@ -91,7 +91,19 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type='gpt
     if 'hypothetical_minds' in agent_type or 'hm' in agent_type:
         agent_config_obj['self_improve'] = True
 
-    agent = DecentralizedAgent(agent_config_obj, controller)
+    agent_class_path = agent_config[agent_type]
+    agent_module_path, agent_class_name = agent_class_path.rsplit('.', 1)
+    agent_module = importlib.import_module(agent_module_path)
+    agent_class = getattr(agent_module, agent_class_name)
+    
+    if 'hypothetical_minds' in agent_type or 'hm' in agent_type:
+        agent_config_obj['self_improve'] = True
+
+    if 'give_hypothesis' in agent_type:
+        agent_config_obj['sequential_opponent'] = sequential_opponent
+    
+    agent = agent_class(agent_config_obj, controller)
+
     agent.llm_type = llm_type
     return agent
 
@@ -100,6 +112,7 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type='gpt
 
 def main():
     parser = argparse.ArgumentParser(description='Run a game of rock paper scissors')
+    parser.add_argument('--agent_type', type=str, default='hm', help='Agent type')
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
     parser.add_argument('--sequential_opponent', type=str, default='self_transition_up', help=f'Sequential opponent type: {SEQUENTIAL_OPPONENTS}')
     parser.add_argument('--debug', type=bool, default=False, help='Run a game in debug mode with two paired sequential agents')
@@ -156,7 +169,7 @@ def main():
             "top_p": 1.0,
             "n": 10,
         }
-    tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type='hm', llm_type=args.llm_type)
+    tom_agent = setup_tom_agent(api_key, model_id, model_settings, args.agent_type, args.llm_type, args.sequential_opponent)
 
     # Run game
     loop = asyncio.get_event_loop()
