@@ -48,7 +48,8 @@ class DecentralizedAgent:
             """
 
     def generate_strategy_selection_message(self, step):
-        strategies_str = "\n".join([f"{k}: {v}" for k, v in self.possible_strategies.items()])
+        #strategies_str = "\n".join([f"{k}: {v}" for k, v in self.possible_strategies.items()])
+        strategies_str = "\n".join([f"{v}" for k, v in self.possible_strategies.items()])
         
         user_message = f"""
             An interaction with the other player has occurred at round {step}, {self.interaction_history[-1]}.
@@ -63,7 +64,7 @@ class DecentralizedAgent:
             2. Does their behavior change based on wins, losses, or ties?
             3. Which strategy would predict their observed moves most accurately?
 
-            After your reasoning, select one strategy and output it in the following Python dictionary format, parsable by ast.literal_eval():
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
             ```python
             {{
                 'Opponent_strategy': ''
@@ -102,6 +103,60 @@ class DecentralizedAgent:
 
         return user_message
 
+    async def parse_and_validate_response(self, response_type, system_message, user_message, initial_response, max_retries=20):
+        """
+        Parse and validate responses, retrying if necessary.
+        response_type: 'strategy' or 'next_plays'
+        """
+        correct_syntax = False
+        counter = 0
+        response = initial_response
+        
+        while not correct_syntax and counter < max_retries:
+            try:
+                if self.n == 1:
+                    parsed_dict = self.extract_dict(response)
+                else:
+                    response, parsed_dict = self.parse_multiple_llm_responses(response, response_type=response_type)
+                
+                if response_type == 'strategy':
+                    # Validate strategy selection
+                    if 'Opponent_strategy' in parsed_dict:
+                        correct_syntax = True
+                        return response, parsed_dict
+                
+                elif response_type == 'next_plays':
+                    # Validate next plays
+                    both_keys_present = ('predicted_opponent_next_play' in parsed_dict) and ('my_next_play' in parsed_dict)
+                    correct_format = parsed_dict['my_next_play'] in ['rock', 'paper', 'scissors'] and \
+                                parsed_dict['predicted_opponent_next_play'] in ['rock', 'paper', 'scissors']
+                    
+                    if both_keys_present and correct_format:
+                        correct_syntax = True
+                        return response, parsed_dict
+                
+                # If we get here, validation failed
+                print(f"Error parsing {response_type} dictionary, retrying...")
+                responses = await asyncio.gather(
+                    *[self.controller.async_batch_prompt(system_message, [user_message])]
+                )
+                response = responses[0][0]
+                
+            except Exception as e:
+                print(f"Error parsing response: {e}, retrying...")
+                responses = await asyncio.gather(
+                    *[self.controller.async_batch_prompt(system_message, [user_message])]
+                )
+                response = responses[0][0]
+            
+            counter += 1
+        
+        # If we've exhausted retries, return default values
+        if response_type == 'strategy':
+            return response, {'Opponent_strategy': ''}  # Default strategy
+        else:
+            return response, {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}  # Default moves
+
     async def tom_module(self, interaction_history, step):
         if len(interaction_history) > 50:
             self.interaction_history = interaction_history[-50:]
@@ -114,52 +169,83 @@ class DecentralizedAgent:
         responses = await asyncio.gather(
             *[self.controller.async_batch_prompt(self.system_message, [strategy_msg])]
         )
-        response = responses[0][0]
+        initial_response = responses[0][0]
         
-        if self.n == 1:
-            strategy_selection = self.extract_dict(response)
-        else:
-            response, strategy_selection = self.parse_multiple_llm_responses(response)
-            
+        # Parse and validate strategy selection
+        response, strategy_selection = await self.parse_and_validate_response(
+            'strategy', 
+            self.system_message, 
+            strategy_msg,
+            initial_response
+        )
+        
         # Get the selected strategy description
-        self.possible_opponent_strategy = strategy_selection
+        self.possible_opponent_strategy = strategy_selection['Opponent_strategy']
 
         # Now do action selection based on selected strategy
         hls_user_msg2 = self.generate_interaction_feedback_user_message(step)
         responses = await asyncio.gather(
             *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg2])]
         )
-        response = responses[0][0]
+        initial_response = responses[0][0]
         
-        # Parse response and ensure correct formatting
-        correct_syntax = False
-        counter = 0
-        while not correct_syntax and counter < 20:
-            if self.n == 1:
-                next_plays = self.extract_dict(response)
-            else:
-                response, next_plays = self.parse_multiple_llm_responses(response, response_type='next_plays')
-            
-            both_keys_present = ('predicted_opponent_next_play' in next_plays) and ('my_next_play' in next_plays)
-            correct_format = next_plays['my_next_play'] in ['rock', 'paper', 'scissors'] and \
-                            next_plays['predicted_opponent_next_play'] in ['rock', 'paper', 'scissors']
-            
-            if both_keys_present and correct_format:
-                correct_syntax = True
-                self.next_plays = deepcopy(next_plays)
-            else:
-                print(f"Error parsing dictionary when extracting next plays, retrying...")
-                responses = await asyncio.gather(
-                    *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg2])]
-                )
-                response = responses[0][0]
-            counter += 1
-
+        # Parse and validate next plays
+        response, next_plays = await self.parse_and_validate_response(
+            'next_plays',
+            self.system_message,
+            hls_user_msg2,
+            initial_response
+        )
+        
+        self.next_plays = deepcopy(next_plays)
         next_play = self.next_plays['my_next_play']
-        response = f"{response}\n\nSelected strategy: {strategy_selection['Opponent_strategy']}"
-        hls_user_msg2 = strategy_msg + "\n\n" + hls_user_msg2
+        
+        final_response = f"{response}\n\nSelected strategy: {self.possible_opponent_strategy}"
+        return final_response, strategy_msg + "\n\n" + hls_user_msg2, next_play
 
-        return response, hls_user_msg2, next_play
+    # async def tom_module(self, interaction_history, step):
+    #     if len(interaction_history) > 50:
+    #         self.interaction_history = interaction_history[-50:]
+    #     else:
+    #         self.interaction_history = interaction_history
+    #     self.reward_tracker[self.agent_id] += interaction_history[-1]['my_reward']
+
+    #     # First select which strategy opponent is using
+    #     strategy_msg = self.generate_strategy_selection_message(step)
+    #     responses = await asyncio.gather(
+    #         *[self.controller.async_batch_prompt(self.system_message, [strategy_msg])]
+    #     )
+    #     response = responses[0][0]
+        
+    #     # Parse and validate strategy selection
+    #     response, strategy_selection = await self.parse_and_validate_response(
+    #         'strategy', 
+    #         self.system_message, 
+    #         strategy_msg
+    #     )
+        
+    #     # Get the selected strategy description
+    #     self.possible_opponent_strategy = strategy_selection['Opponent_strategy']
+
+    #     # Now do action selection based on selected strategy
+    #     hls_user_msg2 = self.generate_interaction_feedback_user_message(step)
+    #     responses = await asyncio.gather(
+    #         *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg2])]
+    #     )
+    #     response = responses[0][0]
+        
+    #     # Parse and validate next plays
+    #     response, next_plays = await self.parse_and_validate_response(
+    #         'next_plays',
+    #         self.system_message,
+    #         hls_user_msg2
+    #     )
+        
+    #     self.next_plays = deepcopy(next_plays)
+    #     next_play = self.next_plays['my_next_play']
+        
+    #     final_response = f"{response}\n\nSelected strategy: {selected_strategy}"
+    #     return final_response, strategy_msg + "\n\n" + hls_user_msg2, next_play
 
     def extract_dict(self, response):
         try:

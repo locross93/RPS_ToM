@@ -79,6 +79,7 @@ async def run_episode(tom_agent, sequential_agent, num_rounds):
                                     'sequential_agent_reward', 'tom_agent_reward'])
     sequential_agent_history = []
     tom_agent_history = []
+    num_rounds = 10
     for round_idx in range(num_rounds):
         # Get move from sequential agent
         sequential_agent_move = sequential_agent.get_action(sequential_agent_history)
@@ -133,7 +134,6 @@ async def run_episode(tom_agent, sequential_agent, num_rounds):
     else:
         df_all_results = df_results
     df_all_results.to_csv(all_results_file)
-
 
 
 # TESTING: replace call to `run_episode` with this function to play two sequential agents against each other
