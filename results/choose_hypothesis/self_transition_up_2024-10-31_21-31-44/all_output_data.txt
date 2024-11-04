@@ -1,0 +1,712 @@
+choose_hypothesis_gpt4o, playing rock paper scissors vs. self_transition_up
+Round 0, Total Inference Cost: 0, HM Reward: 0
+
+
+Tom agent played rock and received reward 0
+
+
+Sequential agent played rock and received reward 0
+
+
+User Message: 
+            An interaction with the other player has occurred at round 1, {'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 0, {'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given that the last round ended in a tie with both of us playing rock, and based on the opponent's strategy of playing the same move after a tie, I believe their next play will be rock.
+2. 'my_next_play': Given that the opponent is likely to play rock, I should play paper to counter it.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+Selected strategy: After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+
+
+Time Elapsed: 0.1 minutes
+
+
+
+
+
+
+Round 1, Total Inference Cost: 0.0091, HM Reward: 0
+
+
+Tom agent played paper and received reward 0
+
+
+Sequential agent played paper and received reward 0
+
+
+User Message: 
+            An interaction with the other player has occurred at round 2, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 1, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given the opponent's strategy of playing the same move after a tie, and since the last round was a tie with both playing paper, I predict their next play will be paper.
+2. 'my_next_play': To counter the predicted opponent's play of paper, my next play should be scissors.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+Selected strategy: After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+
+
+Time Elapsed: 0.3 minutes
+
+
+
+
+
+
+Round 2, Total Inference Cost: 0.0199, HM Reward: 0
+
+
+Tom agent played scissors and received reward 0
+
+
+Sequential agent played scissors and received reward 0
+
+
+User Message: 
+            An interaction with the other player has occurred at round 3, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 2, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: The opponent copies me and plays the same move as I did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given that my opponent copies my last move, I believe their next play will be scissors, as that was my last play.
+2. 'my_next_play': Given that my opponent is likely to play scissors, I should play rock to counter it and win the round.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+Selected strategy: The opponent copies me and plays the same move as I did in the last round
+
+
+Time Elapsed: 0.4 minutes
+
+
+
+
+
+
+Round 3, Total Inference Cost: 0.029, HM Reward: 0
+
+
+Tom agent played rock and received reward 0
+
+
+Sequential agent played rock and received reward 0
+
+
+User Message: 
+            An interaction with the other player has occurred at round 4, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 3, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: The opponent copies me and plays the same move as I did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given that my opponent copies my last move, and my last move was rock, I predict their next play will be rock.
+2. 'my_next_play': To counter their predicted rock, my next play should be paper, as paper beats rock.
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+Selected strategy: The opponent copies me and plays the same move as I did in the last round
+
+
+Time Elapsed: 0.6 minutes
+
+
+
+
+
+
+Round 4, Total Inference Cost: 0.0387, HM Reward: 0
+
+
+Tom agent played paper and received reward 0
+
+
+Sequential agent played paper and received reward 0
+
+
+User Message: 
+            An interaction with the other player has occurred at round 5, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 4, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: The opponent copies me and plays the same move as I did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given that my opponent copies my last move, and my last play was paper, I believe their next play will be paper.
+2. 'my_next_play': Given that my opponent is likely to play paper, I should play scissors to counter it.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+Selected strategy: The opponent copies me and plays the same move as I did in the last round
+
+
+Time Elapsed: 0.7 minutes
+
+
+
+
+
+
+Round 5, Total Inference Cost: 0.0466, HM Reward: 0
+
+
+Tom agent played scissors and received reward 0
+
+
+Sequential agent played scissors and received reward 0
+
+
+User Message: 
+            An interaction with the other player has occurred at round 6, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 5, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: The opponent copies me and plays the same move as I did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given that my opponent copies my last move, and my last play was scissors, I predict their next play will be scissors.
+2. 'my_next_play': To counter their predicted play of scissors, my next play should be rock.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+Selected strategy: The opponent copies me and plays the same move as I did in the last round
+
+
+Time Elapsed: 0.9 minutes
+
+
+
+
+
+
+Round 6, Total Inference Cost: 0.0555, HM Reward: 0
+
+
+Tom agent played rock and received reward -1
+
+
+Sequential agent played paper and received reward 3
+
+
+User Message: 
+            An interaction with the other player has occurred at round 7, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 6, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: The opponent copies me and plays the same move as I did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given that my opponent seems to be copying my previous move, and I played rock in the last round, I predict their next play will be rock.
+2. 'my_next_play': To counter their predicted rock play, I should play paper, as paper beats rock.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+Selected strategy: The opponent copies me and plays the same move as I did in the last round
+
+
+Time Elapsed: 1.2 minutes
+
+
+
+
+
+
+Round 7, Total Inference Cost: 0.0666, HM Reward: -1
+
+
+Tom agent played paper and received reward -1
+
+
+Sequential agent played scissors and received reward 3
+
+
+User Message: 
+            An interaction with the other player has occurred at round 8, {'round': 7, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 7, {'round': 7, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: The opponent plays the best response to my last move.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Given that my opponent plays the best response to my last move, and I last played paper, I predict their next play will be scissors.
+2. 'my_next_play': Given that my opponent is likely to play scissors, I should play rock to counter this.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+Selected strategy: The opponent plays the best response to my last move
+
+
+Time Elapsed: 1.3 minutes
+
+
+
+
+
+
+Round 8, Total Inference Cost: 0.0757, HM Reward: -2
+
+
+Tom agent played rock and received reward 0
+
+
+Sequential agent played rock and received reward 0
+
+
+User Message: 
+            An interaction with the other player has occurred at round 9, {'round': 8, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 8, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move
+The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move
+The opponent plays the best response to my last move
+The opponent copies me and plays the same move as I did in the last round
+After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move
+After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 8, {'round': 8, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 5, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 8, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy, after a tie, they play the same move as they did in the last round. Since the last round was a tie and they played 'rock', I predict their next play will be 'rock'.
+
+2. 'my_next_play': Given that the opponent is likely to play 'rock', my next play should be 'paper' to counter it and win the round.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+Selected strategy: After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round
+
+
+Time Elapsed: 1.5 minutes
+
+
+
+
+
+
+Round 9, Total Inference Cost: 0.0874, HM Reward: -2
+
+
+Tom agent played paper and received reward 0
+
+
+Sequential agent played paper and received reward 0
+
+

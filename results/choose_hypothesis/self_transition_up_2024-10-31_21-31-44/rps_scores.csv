@@ -1,0 +1,11 @@
+,sequential_agent_class,tom_agent_class,round_index,sequential_agent_move,tom_agent_move,sequential_agent_reward,tom_agent_reward
+0,self_transition_up,choose_hypothesis_gpt4o,0,rock,rock,0,0
+1,self_transition_up,choose_hypothesis_gpt4o,1,paper,paper,0,0
+2,self_transition_up,choose_hypothesis_gpt4o,2,scissors,scissors,0,0
+3,self_transition_up,choose_hypothesis_gpt4o,3,rock,rock,0,0
+4,self_transition_up,choose_hypothesis_gpt4o,4,paper,paper,0,0
+5,self_transition_up,choose_hypothesis_gpt4o,5,scissors,scissors,0,0
+6,self_transition_up,choose_hypothesis_gpt4o,6,paper,rock,3,-1
+7,self_transition_up,choose_hypothesis_gpt4o,7,scissors,paper,3,-1
+8,self_transition_up,choose_hypothesis_gpt4o,8,rock,rock,0,0
+9,self_transition_up,choose_hypothesis_gpt4o,9,paper,paper,0,0

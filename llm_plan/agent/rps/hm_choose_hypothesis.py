@@ -203,50 +203,6 @@ class DecentralizedAgent:
         final_response = f"{response}\n\nSelected strategy: {self.possible_opponent_strategy}"
         return final_response, strategy_msg + "\n\n" + hls_user_msg2, next_play
 
-    # async def tom_module(self, interaction_history, step):
-    #     if len(interaction_history) > 50:
-    #         self.interaction_history = interaction_history[-50:]
-    #     else:
-    #         self.interaction_history = interaction_history
-    #     self.reward_tracker[self.agent_id] += interaction_history[-1]['my_reward']
-
-    #     # First select which strategy opponent is using
-    #     strategy_msg = self.generate_strategy_selection_message(step)
-    #     responses = await asyncio.gather(
-    #         *[self.controller.async_batch_prompt(self.system_message, [strategy_msg])]
-    #     )
-    #     response = responses[0][0]
-        
-    #     # Parse and validate strategy selection
-    #     response, strategy_selection = await self.parse_and_validate_response(
-    #         'strategy', 
-    #         self.system_message, 
-    #         strategy_msg
-    #     )
-        
-    #     # Get the selected strategy description
-    #     self.possible_opponent_strategy = strategy_selection['Opponent_strategy']
-
-    #     # Now do action selection based on selected strategy
-    #     hls_user_msg2 = self.generate_interaction_feedback_user_message(step)
-    #     responses = await asyncio.gather(
-    #         *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg2])]
-    #     )
-    #     response = responses[0][0]
-        
-    #     # Parse and validate next plays
-    #     response, next_plays = await self.parse_and_validate_response(
-    #         'next_plays',
-    #         self.system_message,
-    #         hls_user_msg2
-    #     )
-        
-    #     self.next_plays = deepcopy(next_plays)
-    #     next_play = self.next_plays['my_next_play']
-        
-    #     final_response = f"{response}\n\nSelected strategy: {selected_strategy}"
-    #     return final_response, strategy_msg + "\n\n" + hls_user_msg2, next_play
-
     def extract_dict(self, response):
         try:
             # Find the start of the dictionary by looking for the "```python\n" or "\n```" delimiter
