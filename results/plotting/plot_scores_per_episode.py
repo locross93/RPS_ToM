@@ -9,6 +9,9 @@ file_path = os.path.join(current_dir, '..', 'all_models', 'rps_scores_per_episod
 # Load the data
 df_results = pd.read_csv(file_path)
 
+# do not plot these tom agents - hm_gpt35
+df_results = df_results[~df_results['tom_agent_class'].str.contains('hm_gpt35')]
+
 # Create the bar plot
 plt.figure(figsize=(12, 6))
 sns.barplot(x='sequential_agent_class', y='win_percentage', hue='tom_agent_class', data=df_results)
