@@ -47,6 +47,11 @@ grouped_df['total_cost'] = np.nan  # Placeholder for missing total cost data
 grouped_df = grouped_df[['sequential_agent_class', 'tom_agent_class', 'timestamp', 'total_wins', 'total_losses', 
                          'win_percentage', 'total_ties', 'loss_percentage', 'tie_percentage', 'seed', 'total_cost']]
 
+# Remove any existing entries in df_per_episode with the same timestamp and tom_agent_class
+df_per_episode = df_per_episode[~df_per_episode.set_index(['timestamp', 'tom_agent_class']).index.isin(
+    grouped_df.set_index(['timestamp', 'tom_agent_class']).index
+)]
+
 # Append to the per-episode DataFrame
 df_per_episode = pd.concat([df_per_episode, grouped_df], ignore_index=True)
 
