@@ -16,6 +16,8 @@ async def run_experiments(agent_type, llm_type, num_seeds, num_rounds):
         df_results = pd.DataFrame()
 
     # Loop over each opponent type
+    #for opponent_type in SEQUENTIAL_OPPONENTS:
+    SEQUENTIAL_OPPONENTS = ['prev_outcome_prev_transition']
     for opponent_type in SEQUENTIAL_OPPONENTS:
         # Filter existing results for current agent and opponent
         existing_results = df_results[(df_results['tom_agent_class'] == f"{agent_type}_{llm_type}") & (df_results['sequential_agent_class'] == opponent_type)]
