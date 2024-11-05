@@ -188,35 +188,37 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, seed=None):
     plt.close()
 
     # Update the all_rounds CSV file
-    all_results_file = './results/all_models/rps_scores_all_rounds.csv'
-    if os.path.exists(all_results_file):
-        df_all_results = pd.read_csv(all_results_file, index_col=0)
-        df_all_results = pd.concat([df_all_results, df_results], ignore_index=True)
-    else:
-        df_all_results = df_results
-    df_all_results.to_csv(all_results_file)
+    # only save to all_models if 300 rounds
+    if num_rounds == 300:
+        all_results_file = './results/all_models/rps_scores_all_rounds.csv'
+        if os.path.exists(all_results_file):
+            df_all_results = pd.read_csv(all_results_file, index_col=0)
+            df_all_results = pd.concat([df_all_results, df_results], ignore_index=True)
+        else:
+            df_all_results = df_results
+        df_all_results.to_csv(all_results_file)
 
-    # Create or update the per-episode summary CSV file
-    df_episode_summary = pd.DataFrame({
-        'sequential_agent_class': [str(sequential_agent.id)],
-        'tom_agent_class': [run_label],
-        'timestamp': [date_time_str],
-        'seed': [seed],
-        'total_wins': [total_wins],
-        'total_losses': [total_losses],
-        'total_ties': [total_ties],
-        'win_percentage': [win_percentage],
-        'loss_percentage': [loss_percentage],
-        'tie_percentage': [tie_percentage],
-        'total_cost': [total_cost],
-        'total_time': [time_elapsed]
-    })
-    per_episode_file = './results/all_models/rps_scores_per_episode.csv'
-    if os.path.exists(per_episode_file):
-        df_all_episode_results = pd.read_csv(per_episode_file, index_col=0)
-        df_all_episode_results = pd.concat([df_all_episode_results, df_episode_summary], ignore_index=True)
-    else:
-        df_all_episode_results = df_episode_summary
-    df_all_episode_results.to_csv(per_episode_file)
+        # Create or update the per-episode summary CSV file
+        df_episode_summary = pd.DataFrame({
+            'sequential_agent_class': [str(sequential_agent.id)],
+            'tom_agent_class': [run_label],
+            'timestamp': [date_time_str],
+            'seed': [seed],
+            'total_wins': [total_wins],
+            'total_losses': [total_losses],
+            'total_ties': [total_ties],
+            'win_percentage': [win_percentage],
+            'loss_percentage': [loss_percentage],
+            'tie_percentage': [tie_percentage],
+            'total_cost': [total_cost],
+            'total_time': [time_elapsed]
+        })
+        per_episode_file = './results/all_models/rps_scores_per_episode.csv'
+        if os.path.exists(per_episode_file):
+            df_all_episode_results = pd.read_csv(per_episode_file, index_col=0)
+            df_all_episode_results = pd.concat([df_all_episode_results, df_episode_summary], ignore_index=True)
+        else:
+            df_all_episode_results = df_episode_summary
+        df_all_episode_results.to_csv(per_episode_file)
 
 

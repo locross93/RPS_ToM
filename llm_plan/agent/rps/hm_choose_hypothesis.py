@@ -218,21 +218,22 @@ class DecentralizedAgent:
         responses = await asyncio.gather(
             *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg2])]
         )
-        initial_response = responses[0][0]
+        action_response = responses[0][0]
         
         # Parse and validate next plays
         response, next_plays = await self.parse_and_validate_response(
             'next_plays',
             self.system_message,
             hls_user_msg2,
-            initial_response
+            action_response
         )
         
         self.next_plays = deepcopy(next_plays)
         next_play = self.next_plays['my_next_play']
         
-        final_response = f"{response}\n\nSelected strategy: {self.possible_opponent_strategy}"
-        return final_response, strategy_msg + "\n\n" + hls_user_msg2, next_play
+        full_response = f"{initial_response}\n\n{action_response}"
+        #final_response = f"{response}\n\nSelected strategy: {self.possible_opponent_strategy}"
+        return full_response, strategy_msg + "\n\n" + hls_user_msg2, next_play
 
     def extract_dict(self, response):
         try:
