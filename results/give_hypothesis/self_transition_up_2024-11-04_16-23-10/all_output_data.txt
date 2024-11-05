@@ -3864,3 +3864,53 @@ Tom agent played scissors and received reward 3
 Sequential agent played paper and received reward -1
 
 
+User Message: 
+            An interaction with the other player has occurred at round 78, {'round': 78, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+            The total interaction history is: [{'round': 29, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 30, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 31, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 32, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 33, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 34, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 35, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 36, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 37, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 38, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 40, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 41, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 42, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 43, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 44, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 45, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 46, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 47, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 48, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 49, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 50, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 51, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 52, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 53, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 54, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 55, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 56, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 57, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 58, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 59, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 60, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 61, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 62, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 63, 'my_play': 'scissors', 'opponent_play': 'rock', 'my_reward': -1}, {'round': 64, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 65, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 66, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 67, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 68, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 69, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 70, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 71, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 72, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 73, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 74, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 75, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 76, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 77, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 78, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': {'The opponent plays the move that would beat their last rounds move': 1.0}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 1. 'predicted_opponent_next_play': Based on the opponent's strategy of playing the move that would beat their last round's move, and given that they played 'paper' in the last round, their next move is likely to be 'scissors' to beat 'paper'.
+
+2. 'my_next_play': To counter the opponent's likely play of 'scissors', my next play should be 'rock', as rock beats scissors.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+
+Time Elapsed: 3.7 minutes
+
+
+
+
+
+
+Round 79, Total Inference Cost: 0.3748, HM Reward: 201
+
+
+Tom agent played rock and received reward 3
+
+
+Sequential agent played scissors and received reward -1
+
+

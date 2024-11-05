@@ -78,3 +78,4 @@
 76,self_transition_up,give_hypothesis_gpt4o,76,scissors,paper,3,-1
 77,self_transition_up,give_hypothesis_gpt4o,77,rock,paper,-1,3
 78,self_transition_up,give_hypothesis_gpt4o,78,paper,scissors,-1,3
+79,self_transition_up,give_hypothesis_gpt4o,79,scissors,rock,-1,3
