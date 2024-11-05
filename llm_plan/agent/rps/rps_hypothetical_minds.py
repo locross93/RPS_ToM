@@ -217,7 +217,7 @@ class DecentralizedAgent(abc.ABC):
                     if not both_keys_present or not correct_format:
                         correct_syntax = False
                         print(f"Error parsing dictionary when extracting next plays, retrying...")
-                        breakpoint()
+                        #breakpoint()
                         break
                     if i == 0:
                         self.next_plays = deepcopy(next_plays)
