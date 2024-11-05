@@ -2075,3 +2075,537 @@ Tom agent played paper and received reward 3
 Sequential agent played rock and received reward -1
 
 
+User Message: 
+            An interaction with the other player has occurred at round 40, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 2, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 3, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 8, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 9, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 10, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 11, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 12, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 13, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 14, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 15, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 16, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 17, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 18, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 19, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 20, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 21, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 22, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 23, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 24, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 25, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 26, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 27, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 28, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 29, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 30, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 31, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 32, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 33, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 34, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 35, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 36, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 37, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 38, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            {'The opponent plays the move that would beat their last rounds move': 1.0}
+{'The opponent plays the move that would lose to their last rounds move': 1.0}
+{'The opponent plays the move that would beat their opponents last rounds move': 1.0}
+{'The opponent plays the same move as their opponents last rounds move': 1.0}
+{'After a win the opponent plays the same move as they did in the last round. After a loss the opponent plays the move that would beat their last rounds move. After a tie the opponent plays the move that would lose to their last rounds move': 1.0}
+{'After a win the opponent plays the move that would beat their last rounds move. After a loss the opponent plays the move that would lose to their last rounds move. After a tie the opponent plays the same move as they did in the last round': 1.0}
+{"The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.             After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.            After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round.             After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.            After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.             After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.            After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.             After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move.": 1.0}
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 39, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 2, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 3, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 8, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 9, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 10, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 11, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 12, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 13, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 14, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 15, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 16, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 17, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 18, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 19, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 20, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 21, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 22, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 23, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 24, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 25, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 26, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 27, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 28, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 29, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 30, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 31, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 32, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 33, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 34, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 35, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 36, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 37, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 38, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: The opponent plays the move that would beat their last rounds move.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: To determine the opponent's strategy, let's analyze their behavior based on the interaction history:
+
+1. **Round 0 to 1**: Opponent played 'paper' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+2. **Round 1 to 2**: Opponent played 'rock' after winning with 'scissors' against my 'paper'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+3. **Round 2 to 3**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+4. **Round 3 to 4**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+5. **Round 4 to 5**: Opponent played 'rock' after winning with 'scissors' against my 'paper'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+6. **Round 5 to 6**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+7. **Round 6 to 7**: Opponent played 'scissors' after winning with 'paper' against my 'rock'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+8. **Round 7 to 8**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+9. **Round 8 to 9**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+10. **Round 9 to 10**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+11. **Round 10 to 11**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+12. **Round 11 to 12**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+13. **Round 12 to 13**: Opponent played 'scissors' after winning with 'paper' against my 'rock'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+14. **Round 13 to 14**: Opponent played 'rock' after tying with 'scissors' against my 'scissors'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+15. **Round 14 to 15**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+16. **Round 15 to 16**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+17. **Round 16 to 17**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+18. **Round 17 to 18**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+19. **Round 18 to 19**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+20. **Round 19 to 20**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+21. **Round 20 to 21**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+22. **Round 21 to 22**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+23. **Round 22 to 23**: Opponent played 'rock' after winning with 'scissors' against my 'paper'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+24. **Round 23 to 24**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+25. **Round 24 to 25**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+26. **Round 25 to 26**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+27. **Round 26 to 27**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+28. **Round 27 to 28**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+29. **Round 28 to 29**: Opponent played 'rock' after winning with 'scissors' against my 'paper'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+30. **Round 29 to 30**: Opponent played 'paper' after tying with 'rock' against my 'rock'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+31. **Round 30 to 31**: Opponent played 'scissors' after tying with 'paper' against my 'paper'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+32. **Round 31 to 32**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+33. **Round 32 to 33**: Opponent played 'paper' after losing with 'rock' to my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+34. **Round 33 to 34**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+35. **Round 34 to 35**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+36. **Round 35 to 36**: Opponent played 'paper' after winning with 'rock' against my 'paper'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+37. **Round 36 to 37**: Opponent played 'scissors' after losing with 'paper' to my 'scissors'. This suggests they might be playing the move that beats their last move ('scissors' beats 'paper').
+
+38. **Round 37 to 38**: Opponent played 'rock' after losing with 'scissors' to my 'rock'. This suggests they might be playing the move that beats their last move ('rock' beats 'scissors').
+
+39. **Round 38 to 39**: Opponent played 'paper' after winning with 'rock' against my 'scissors'. This suggests they might be playing the move that beats their last move ('paper' beats 'rock').
+
+Throughout the rounds, the opponent consistently plays the move that would beat their last move. This pattern aligns with the strategy: "The opponent plays the move that would beat their last rounds move."
+
+Therefore, the strategy that best explains the opponent's behavior is:
+
+```python
+{
+    'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move'
+}
+```
+
+1. 'predicted_opponent_next_play': Based on the opponent's strategy of playing the move that would beat their last round's move, and considering their last play was 'scissors', I predict their next play will be 'rock' to beat 'scissors'.
+2. 'my_next_play': To counter the predicted 'rock' play by the opponent, my next play should be 'paper'.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+Time Elapsed: 16.1 minutes
+
+
+
+
+
+
+Round 40, Total Inference Cost: 0.7124, HM Reward: 79
+
+
+Tom agent played paper and received reward 3
+
+
+Sequential agent played rock and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 41, {'round': 40, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 2, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 3, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 8, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 9, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 10, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 11, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 12, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 13, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 14, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 15, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 16, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 17, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 18, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 19, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 20, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 21, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 22, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 23, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 24, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 25, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 26, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 27, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 28, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 29, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 30, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 31, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 32, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 33, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 34, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 35, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 36, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 37, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 38, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 40, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            {'The opponent plays the move that would beat their last rounds move': 1.0}
+{'The opponent plays the move that would lose to their last rounds move': 1.0}
+{'The opponent plays the move that would beat their opponents last rounds move': 1.0}
+{'The opponent plays the same move as their opponents last rounds move': 1.0}
+{'After a win the opponent plays the same move as they did in the last round. After a loss the opponent plays the move that would beat their last rounds move. After a tie the opponent plays the move that would lose to their last rounds move': 1.0}
+{'After a win the opponent plays the move that would beat their last rounds move. After a loss the opponent plays the move that would lose to their last rounds move. After a tie the opponent plays the same move as they did in the last round': 1.0}
+{"The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.             After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.            After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round.             After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.            After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.             After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.            After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.             After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move.": 1.0}
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 40, {'round': 40, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 2, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 3, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 8, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 9, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 10, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 11, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 12, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 13, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 14, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 15, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 16, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 17, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 18, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 19, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 20, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 21, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 22, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 23, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 24, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 25, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 26, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 27, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 28, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 29, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 30, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 31, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 32, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 33, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 34, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 35, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 36, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 37, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 38, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 40, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made. After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move. After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move. After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round. After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round. After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move. After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move. After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move. After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round. After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move..
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: To determine the opponent's strategy, let's analyze the interaction history and compare it with the possible strategies.
+
+1. **Initial Observations:**
+   - The opponent's moves are: paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, paper, scissors, rock, rock, paper, rock, paper, rock, paper, rock, paper, rock, paper.
+   - The opponent seems to follow a pattern of cycling through paper, scissors, and rock, but there are deviations (e.g., two consecutive 'rock' plays at rounds 30 and 31).
+
+2. **Strategy Analysis:**
+   - **Strategy 1:** "The opponent plays the move that would beat their last rounds move."
+     - This strategy doesn't fit because the opponent is not consistently playing moves that would beat their previous move.
+   - **Strategy 2:** "The opponent plays the move that would lose to their last rounds move."
+     - This strategy doesn't fit because the opponent is not consistently playing moves that would lose to their previous move.
+   - **Strategy 3:** "The opponent plays the move that would beat their opponent's last rounds move."
+     - This strategy doesn't fit because the opponent is not consistently playing moves that would beat my last move.
+   - **Strategy 4:** "The opponent plays the same move as their opponent's last rounds move."
+     - This strategy doesn't fit because the opponent is not consistently mirroring my last move.
+   - **Strategy 5:** "After a win, the opponent plays the same move as they did in the last round. After a loss, the opponent plays the move that would beat their last rounds move. After a tie, the opponent plays the move that would lose to their last rounds move."
+     - This strategy doesn't fit because the opponent's moves don't consistently follow this pattern after wins, losses, or ties.
+   - **Strategy 6:** "After a win, the opponent plays the move that would beat their last rounds move. After a loss, the opponent plays the move that would lose to their last rounds move. After a tie, the opponent plays the same move as they did in the last round."
+     - This strategy doesn't fit because the opponent's moves don't consistently follow this pattern after wins, losses, or ties.
+   - **Strategy 7:** Complex transition strategy based on previous outcomes and transitions.
+     - This strategy is complex and could potentially explain the observed behavior, especially given the deviations from a simple cycle.
+
+3. **Conclusion:**
+   - The opponent's behavior is not explained by simple strategies (1-6).
+   - The complex transition strategy (7) could potentially explain the observed behavior, as it accounts for different transitions based on previous outcomes and moves.
+
+Given the analysis, the most fitting strategy is the complex transition strategy (7). Therefore, the opponent's strategy is:
+
+```python
+{
+    'Opponent_strategy': "The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made. After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move. After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move. After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round. After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round. After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move. After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move. After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move. After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round. After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move."
+}
+```
+
+1. 'predicted_opponent_next_play': Based on the opponent's strategy, after a loss where they played a move that would lose to my move two rounds ago, they tend to play the move that would beat their last round's move. In the last round, they played 'rock' and lost to my 'paper'. Two rounds ago, they played 'scissors', which would lose to my 'rock'. Therefore, they are likely to play 'paper' next.
+
+2. 'my_next_play': Given that the opponent is likely to play 'paper', my best counter would be to play 'scissors' to beat their 'paper'.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+Time Elapsed: 16.5 minutes
+
+
+
+
+
+
+Round 41, Total Inference Cost: 0.7341, HM Reward: 82
+
+
+Tom agent played scissors and received reward 3
+
+
+Sequential agent played paper and received reward -1
+
+
+User Message: 
+            An interaction with the other player has occurred at round 42, {'round': 41, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 2, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 3, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 8, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 9, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 10, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 11, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 12, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 13, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 14, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 15, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 16, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 17, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 18, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 19, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 20, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 21, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 22, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 23, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 24, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 25, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 26, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 27, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 28, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 29, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 30, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 31, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 32, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 33, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 34, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 35, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 36, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 37, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 38, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 40, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 41, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+
+            Above is the history of interactions. Below are the possible strategies your opponent could be using:
+            {'The opponent plays the move that would beat their last rounds move': 1.0}
+{'The opponent plays the move that would lose to their last rounds move': 1.0}
+{'The opponent plays the move that would beat their opponents last rounds move': 1.0}
+{'The opponent plays the same move as their opponents last rounds move': 1.0}
+{'After a win the opponent plays the same move as they did in the last round. After a loss the opponent plays the move that would beat their last rounds move. After a tie the opponent plays the move that would lose to their last rounds move': 1.0}
+{'After a win the opponent plays the move that would beat their last rounds move. After a loss the opponent plays the move that would lose to their last rounds move. After a tie the opponent plays the same move as they did in the last round': 1.0}
+{"The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.             After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.            After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round.             After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.            After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.             After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.            After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.             After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move.": 1.0}
+
+            Think step by step about which strategy best explains your opponent's behavior so far.
+            Consider:
+            1. Are there patterns in how they respond to your moves?
+            2. Does their behavior change based on wins, losses, or ties?
+            3. Which strategy would predict their observed moves most accurately?
+
+            After your reasoning, select one strategy and output its description in the following Python dictionary format, parsable by ast.literal_eval():
+            ```python
+            {
+                'Opponent_strategy': ''
+            }
+            ```
+            
+
+
+            An interaction with the other player has occurred at round 41, {'round': 41, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 2, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 3, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 4, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 5, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 6, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 7, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 8, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 9, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 10, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 11, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 12, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 13, 'my_play': 'scissors', 'opponent_play': 'scissors', 'my_reward': 0}, {'round': 14, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 15, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 16, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 17, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 18, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 19, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 20, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 21, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 22, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 23, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 24, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 25, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 26, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 27, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 28, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 29, 'my_play': 'paper', 'opponent_play': 'scissors', 'my_reward': -1}, {'round': 30, 'my_play': 'rock', 'opponent_play': 'rock', 'my_reward': 0}, {'round': 31, 'my_play': 'paper', 'opponent_play': 'paper', 'my_reward': 0}, {'round': 32, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 33, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 34, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 35, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 36, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 37, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 38, 'my_play': 'rock', 'opponent_play': 'paper', 'my_reward': -1}, {'round': 39, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 40, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 41, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: The opponent plays the move that would beat their last rounds move.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0. 
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: To determine which strategy best explains the opponent's behavior, let's analyze the interaction history step by step:
+
+1. **Round 0 to 1**: 
+   - Opponent played 'paper' after 'paper' was beaten by 'scissors'. 
+   - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+2. **Round 1 to 2**:
+   - Opponent played 'scissors' after 'scissors' beat 'paper'.
+   - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+3. **Round 2 to 3**:
+   - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+   - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+4. **Round 3 to 4**:
+   - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+   - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+5. **Round 4 to 5**:
+   - Opponent played 'scissors' after 'scissors' beat 'paper'.
+   - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+6. **Round 5 to 6**:
+   - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+   - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+7. **Round 6 to 7**:
+   - Opponent played 'paper' after 'paper' was beaten by 'rock'.
+   - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+8. **Round 7 to 8**:
+   - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+   - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+9. **Round 8 to 9**:
+   - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+   - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+10. **Round 9 to 10**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+11. **Round 10 to 11**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+12. **Round 11 to 12**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+13. **Round 12 to 13**:
+    - Opponent played 'paper' after 'paper' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+14. **Round 13 to 14**:
+    - Opponent played 'scissors' after 'scissors' tied with 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+15. **Round 14 to 15**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+16. **Round 15 to 16**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+17. **Round 16 to 17**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+18. **Round 17 to 18**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+19. **Round 18 to 19**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+20. **Round 19 to 20**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+21. **Round 20 to 21**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+22. **Round 21 to 22**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+23. **Round 22 to 23**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+24. **Round 23 to 24**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+25. **Round 24 to 25**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+26. **Round 25 to 26**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+27. **Round 26 to 27**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+28. **Round 27 to 28**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+29. **Round 28 to 29**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+30. **Round 29 to 30**:
+    - Opponent played 'rock' after 'rock' tied with 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+31. **Round 30 to 31**:
+    - Opponent played 'paper' after 'paper' tied with 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+32. **Round 31 to 32**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+33. **Round 32 to 33**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+34. **Round 33 to 34**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+35. **Round 34 to 35**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+36. **Round 35 to 36**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+37. **Round 36 to 37**:
+    - Opponent played 'paper' after 'paper' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+38. **Round 37 to 38**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+39. **Round 38 to 39**:
+    - Opponent played 'rock' after 'rock' was beaten by 'paper'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+40. **Round 39 to 40**:
+    - Opponent played 'paper' after 'paper' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('scissors' beats 'paper').
+
+41. **Round 40 to 41**:
+    - Opponent played 'scissors' after 'scissors' was beaten by 'rock'.
+    - This suggests they might be playing the move that would beat their last move ('rock' beats 'scissors').
+
+42. **Round 41 to 42**:
+    - Opponent played 'rock' after 'rock' was beaten by 'scissors'.
+    - This suggests they might be playing the move that would beat their last move ('paper' beats 'rock').
+
+From the analysis, it seems that the opponent consistently plays the move that would beat their last move. This pattern fits the strategy: "The opponent plays the move that would beat their last rounds move."
+
+Therefore, the strategy that best explains the opponent's behavior is:
+
+```python
+{
+    'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move'
+}
+```
+
+1. 'predicted_opponent_next_play': Given the opponent's strategy of playing the move that would beat their last round's move, and since they played 'paper' last round, I predict their next play will be 'rock' to beat 'scissors'.
+
+2. 'my_next_play': Given that I predict the opponent will play 'rock', my next play should be 'paper' to counter it.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+Time Elapsed: 17.2 minutes
+
+
+
+
+
+
+Round 42, Total Inference Cost: 0.7683, HM Reward: 85
+
+
+Tom agent played paper and received reward -1
+
+
+Sequential agent played scissors and received reward 3
+
+
