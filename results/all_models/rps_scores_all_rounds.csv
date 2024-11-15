@@ -26134,8 +26134,6 @@
 26132,prev_outcome_prev_transition,choose_hypothesis_gpt4o,297,scissors,paper,3,-1,2024-11-05_11-36-34,,False,True,0.2966666666666667,False,0.32,0.3833333333333333
 26133,prev_outcome_prev_transition,choose_hypothesis_gpt4o,298,scissors,rock,-1,3,2024-11-05_11-36-34,,True,False,0.2966666666666667,False,0.32,0.3833333333333333
 26134,prev_outcome_prev_transition,choose_hypothesis_gpt4o,299,paper,paper,0,0,2024-11-05_11-36-34,,False,False,0.2966666666666667,True,0.32,0.3833333333333333
-26135,self_transition_up,hm_gpt4o,0,paper,scissors,-1,3,2024-11-05_15-30-55,,True,False,0.5,False,0.0,0.5
-26136,self_transition_up,hm_gpt4o,1,scissors,scissors,0,0,2024-11-05_15-30-55,,False,False,0.5,True,0.0,0.5
 26135,prev_outcome_prev_transition,hm_llama3,0,scissors,paper,3,-1,2024-11-05_10-28-26,,False,True,0.2533333333333333,False,0.4933333333333333,0.2533333333333333
 26136,prev_outcome_prev_transition,hm_llama3,1,scissors,rock,-1,3,2024-11-05_10-28-26,,True,False,0.2533333333333333,False,0.4933333333333333,0.2533333333333333
 26137,prev_outcome_prev_transition,hm_llama3,2,paper,rock,3,-1,2024-11-05_10-28-26,,False,True,0.2533333333333333,False,0.4933333333333333,0.2533333333333333
