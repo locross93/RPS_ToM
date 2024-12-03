@@ -12,6 +12,14 @@ from llm_plan.agent.agent_config import agent_config
 from llm_plan.controller.async_llm import AsyncChatLLM
 from llm_plan.controller.async_gpt_controller import AsyncGPTController
 
+
+# TODO: put this somewhere sensible
+SOFTMAX_LOOKUP = {
+    'default': {'gpt4': 0.2, 'gpt4o': 0.2, 'gpt-4o-mini': 0.2, 'gpt35': 0.2, 'llama3': 0.7},
+    'high': {'gpt4': 0.8, 'gpt4o': 0.8, 'gpt-4o-mini': 0.8, 'gpt35': 0.8, 'llama3': 1.0} # TODO set values here
+}
+
+
 def setup_sequential_agent(sequential_agent, sequential_agent_actions):
     if sequential_agent in ['self_transition_up', 'self_transition_down']:  # self transition agents
         return SelfTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
@@ -84,7 +92,7 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     agent.llm_type = llm_type
     return agent
 
-async def main_async(agent_type, llm_type, sequential_opponent, num_rounds=300, seed=None):
+async def main_async(agent_type, llm_type, sequential_opponent, softmax_region, num_rounds=300, seed=None):
     # Set random seed for reproducibility if needed
     if seed is not None:
         np.random.seed(seed)
@@ -103,7 +111,7 @@ async def main_async(agent_type, llm_type, sequential_opponent, num_rounds=300, 
         model_settings = {
             "model": "gpt-4-1106-preview",
             "max_tokens": 4000,
-            "temperature": 0.2,
+            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
             "top_p": 1.0,
             "n": 1,
         }
@@ -111,7 +119,7 @@ async def main_async(agent_type, llm_type, sequential_opponent, num_rounds=300, 
         model_settings = {
             "model": "gpt-4o-2024-08-06",
             "max_tokens": 4000,
-            "temperature": 0.2,
+            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
             "top_p": 1.0,
             "n": 1,
         }
@@ -119,7 +127,7 @@ async def main_async(agent_type, llm_type, sequential_opponent, num_rounds=300, 
         model_settings = {
             "model": "gpt-4o-mini",
             "max_tokens": 4000,
-            "temperature": 0.2,
+            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
             "top_p": 1.0,
             "n": 1,
         }
@@ -127,7 +135,7 @@ async def main_async(agent_type, llm_type, sequential_opponent, num_rounds=300, 
         model_settings = {
             "model": "gpt-3.5-turbo-1106",
             "max_tokens": 2000,
-            "temperature": 0.2,
+            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
             "top_p": 1.0,
             "n": 1,
         }
@@ -135,7 +143,7 @@ async def main_async(agent_type, llm_type, sequential_opponent, num_rounds=300, 
         model_settings = {
             "model": "meta-llama/Meta-Llama-3-70B-Instruct",
             "max_tokens": 2000,
-            "temperature": 0.7,
+            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
             "top_p": 1.0,
             "n": 10,
         }
@@ -153,12 +161,14 @@ def main():
     parser.add_argument('--agent_type', type=str, default='hm', help='Agent type')
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
     parser.add_argument('--sequential_opponent', type=str, default='self_transition_up', help=f'Sequential opponent type: {SEQUENTIAL_OPPONENTS}')
+    parser.add_argument('--softmax_region', type=str, choices=['default', 'high'], default='default', help='Softmax temperature: `default` or `high`')
+    parser.add_argument('--hypothesis_set', type=str, choices=['default', 'high'], default='default', help='Number of hypotheses to consider: `default` or `high`')
     parser.add_argument('--num_rounds', type=int, default=300, help='Number of rounds to play')
     args = parser.parse_args()
 
     # Run the game
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main_async(args.agent_type, args.llm_type, args.sequential_opponent, args.num_rounds))
+    loop.run_until_complete(main_async(args.agent_type, args.llm_type, args.sequential_opponent, args.softmax_region, args.hypothesis_set, args.num_rounds))
 
 if __name__ == "__main__":
     main()
