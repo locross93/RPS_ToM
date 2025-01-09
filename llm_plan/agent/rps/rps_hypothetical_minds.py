@@ -41,7 +41,7 @@ class DecentralizedAgent(abc.ABC):
 
     def generate_system_message(self):
         self.system_message = f"""
-            You are Agent {self.agent_id} in the two player iterated game of rock paper scisssors
+            You are Agent {self.agent_id} in the two player iterated game of rock paper scissors
             Rock beats scissors, paper beats rock, and scissors beats paper.
             Winner gets 3 reward, loser gets -1 reward, and tie gives 0 reward.
             You will be playing the same opponent for 300 rounds.
@@ -90,8 +90,6 @@ class DecentralizedAgent(abc.ABC):
                 An interaction with the other player has occurred at round {step-1}, {self.interaction_history[-1]}.
                 The total interaction history is: {self.interaction_history}.
                 What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
-                If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
-                If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
                 They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
                 They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
                 Are you getting positive or negative reward when playing the same choice? 
