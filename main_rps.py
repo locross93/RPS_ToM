@@ -33,6 +33,7 @@ def setup_sequential_agent(sequential_agent, sequential_agent_actions):
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
 def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, sequential_opponent):
+    # configure llm
     if llm_type == 'gpt4':
         llm = AsyncChatLLM(kwargs={'api_key': api_key, 'model': 'gpt-4-1106-preview'})
     elif llm_type == 'gpt4o':
@@ -62,14 +63,11 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     else:
         raise ValueError(f"Unknown LLM type: {llm_type}")
 
-    controller = AsyncGPTController(
-        llm=llm,
-        model_id=model_id,
-        **model_settings
-    )
-
+    # configure agent
     agent_config_obj = {'agent_id': model_id}
     agent_config_obj['n'] = model_settings['n']
+    agent_config_obj['temperature'] = model_settings['temperature'] # eb
+    agent_config_obj['top_k'] = model_settings['top_k'] # eb
 
     if 'hypothetical_minds' in agent_type or 'hm' in agent_type:
         agent_config_obj['self_improve'] = True
@@ -85,6 +83,14 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     if 'give_hypothesis' in agent_type:
         agent_config_obj['sequential_opponent'] = sequential_opponent
 
+    # configure controller
+    del model_settings['top_k'] # eb: remove so we don't mess up downstream controller behavior
+    controller = AsyncGPTController(
+        llm=llm,
+        model_id=model_id,
+        **model_settings
+    )
+
     agent = agent_class(agent_config_obj, controller)
 
     agent.agent_type = agent_type  # add any changes from default
@@ -92,7 +98,7 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     agent.llm_type = llm_type
     return agent
 
-async def main_async(agent_type, llm_type, sequential_opponent, softmax_region, num_rounds=300, seed=None):
+async def main_async(agent_type, llm_type, sequential_opponent, softmax, num_hypotheses, num_rounds=300, seed=None):
     # Set random seed for reproducibility if needed
     if seed is not None:
         np.random.seed(seed)
@@ -111,41 +117,46 @@ async def main_async(agent_type, llm_type, sequential_opponent, softmax_region, 
         model_settings = {
             "model": "gpt-4-1106-preview",
             "max_tokens": 4000,
-            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
+            "temperature": softmax,
             "top_p": 1.0,
             "n": 1,
+            "top_k": num_hypotheses, # eb: num hypotheses
         }
     elif llm_type == 'gpt4o':
         model_settings = {
             "model": "gpt-4o-2024-08-06",
             "max_tokens": 4000,
-            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
+            "temperature": softmax,
             "top_p": 1.0,
             "n": 1,
+            "top_k": num_hypotheses, # eb: num hypotheses
         }
     elif llm_type == 'gpt-4o-mini':
         model_settings = {
             "model": "gpt-4o-mini",
             "max_tokens": 4000,
-            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
+            "temperature": softmax,
             "top_p": 1.0,
             "n": 1,
+            "top_k": num_hypotheses, # eb: num hypotheses
         }
     elif llm_type == 'gpt35':
         model_settings = {
             "model": "gpt-3.5-turbo-1106",
             "max_tokens": 2000,
-            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
+            "temperature": softmax,
             "top_p": 1.0,
             "n": 1,
+            "top_k": num_hypotheses, # eb: num hypotheses
         }
     elif llm_type == 'llama3':
         model_settings = {
             "model": "meta-llama/Meta-Llama-3-70B-Instruct",
             "max_tokens": 2000,
-            "temperature": SOFTMAX_LOOKUP[softmax_region][llm_type],
+            "temperature": softmax,
             "top_p": 1.0,
             "n": 10,
+            "top_k": num_hypotheses, # eb: num hypotheses
         }
     else:
         raise ValueError(f"Unknown llm_type: {llm_type}")
@@ -161,14 +172,14 @@ def main():
     parser.add_argument('--agent_type', type=str, default='hm', help='Agent type')
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
     parser.add_argument('--sequential_opponent', type=str, default='self_transition_up', help=f'Sequential opponent type: {SEQUENTIAL_OPPONENTS}')
-    parser.add_argument('--softmax_region', type=str, choices=['default', 'high'], default='default', help='Softmax temperature: `default` or `high`')
-    parser.add_argument('--hypothesis_set', type=str, choices=['default', 'high'], default='default', help='Number of hypotheses to consider: `default` or `high`')
+    parser.add_argument('--softmax', type=float, default=0.2, help='Softmax temperature (default: 1)')
+    parser.add_argument('--num_hypotheses', type=int, default=5, help='Number of hypotheses to consider (default: 5)')
     parser.add_argument('--num_rounds', type=int, default=300, help='Number of rounds to play')
     args = parser.parse_args()
 
     # Run the game
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main_async(args.agent_type, args.llm_type, args.sequential_opponent, args.softmax_region, args.hypothesis_set, args.num_rounds))
+    loop.run_until_complete(main_async(args.agent_type, args.llm_type, args.sequential_opponent, args.softmax, args.num_hypotheses, args.num_rounds))
 
 if __name__ == "__main__":
     main()
