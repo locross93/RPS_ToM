@@ -32,8 +32,7 @@ def setup_sequential_agent(sequential_agent, sequential_agent_actions):
     else:
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
-def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, sequential_opponent):
-    # configure llm
+def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, sequential_opponent, no_self_improve):
     if llm_type == 'gpt4':
         llm = AsyncChatLLM(kwargs={'api_key': api_key, 'model': 'gpt-4-1106-preview'})
     elif llm_type == 'gpt4o':
@@ -69,16 +68,16 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     agent_config_obj['temperature'] = model_settings['temperature'] # eb
     agent_config_obj['top_k'] = model_settings['top_k'] # eb
 
-    if 'hypothetical_minds' in agent_type or 'hm' in agent_type:
-        agent_config_obj['self_improve'] = True
-
     agent_class_path = agent_config[agent_type]
     agent_module_path, agent_class_name = agent_class_path.rsplit('.', 1)
     agent_module = importlib.import_module(agent_module_path)
     agent_class = getattr(agent_module, agent_class_name)
 
-    if 'hypothetical_minds' in agent_type or 'hm' in agent_type:
+    hm = 'hypothetical_minds' in agent_type or 'hm' in agent_type
+    if hm and not no_self_improve:
         agent_config_obj['self_improve'] = True
+    else:
+        agent_config_obj['self_improve'] = False
 
     if 'give_hypothesis' in agent_type:
         agent_config_obj['sequential_opponent'] = sequential_opponent
@@ -93,12 +92,12 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
 
     agent = agent_class(agent_config_obj, controller)
 
-    agent.agent_type = agent_type  # add any changes from default
+    agent.agent_type = agent_type
     agent.sequential_opponent = sequential_opponent
     agent.llm_type = llm_type
     return agent
 
-async def main_async(agent_type, llm_type, sequential_opponent, softmax, num_hypotheses, num_rounds=300, seed=None):
+async def main_async(agent_type, llm_type, sequential_opponent, softmax, num_hypotheses, num_rounds=300, seed=None, no_self_improve=False):
     # Set random seed for reproducibility if needed
     if seed is not None:
         np.random.seed(seed)
@@ -162,7 +161,7 @@ async def main_async(agent_type, llm_type, sequential_opponent, softmax, num_hyp
         raise ValueError(f"Unknown llm_type: {llm_type}")
 
     # Set up TOM agent
-    tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, sequential_opponent)
+    tom_agent = setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, sequential_opponent, no_self_improve)
 
     # Run the game
     await run_episode(tom_agent, sequential_agent, num_rounds=num_rounds, seed=seed)
@@ -175,11 +174,13 @@ def main():
     parser.add_argument('--softmax', type=float, default=0.2, help='Softmax temperature (default: 1)')
     parser.add_argument('--num_hypotheses', type=int, default=5, help='Number of hypotheses to consider (default: 5)')
     parser.add_argument('--num_rounds', type=int, default=300, help='Number of rounds to play')
+    parser.add_argument('--no_self_improve', action='store_true', default=False,
+                       help='Disable self-improvement (enabled by default)')
     args = parser.parse_args()
 
     # Run the game
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main_async(args.agent_type, args.llm_type, args.sequential_opponent, args.softmax, args.num_hypotheses, args.num_rounds))
+    loop.run_until_complete(main_async(args.agent_type, args.llm_type, args.sequential_opponent, args.softmax, args.num_hypotheses, args.num_rounds, no_self_improve=args.no_self_improve))
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,10 @@
+hm_mod_memory_gpt4o, playing rock paper scissors vs. opponent_transition_stay
+Round 0, Total Inference Cost: 0, HM Reward: 0
+
+
+Tom agent played scissors and received reward -1
+
+
+Sequential agent played rock and received reward 3
+
+

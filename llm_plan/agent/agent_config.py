@@ -3,4 +3,5 @@ agent_config = {
     'give_hypothesis': 'llm_plan.agent.rps.hm_give_hypothesis.DecentralizedAgent',
     'choose_hypothesis': 'llm_plan.agent.rps.hm_choose_hypothesis.DecentralizedAgent',
     'react': 'llm_plan.agent.rps.react.DecentralizedAgent', # to do
+    'hm_mod_memory': 'llm_plan.agent.rps.hm_mod_memory.DecentralizedAgent',
 }
