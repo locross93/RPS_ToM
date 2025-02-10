@@ -19,21 +19,6 @@ REWARD_LOOKUP = pd.DataFrame(
 )
 
 
-def save_game_results(sequential_agent, tom_agent, sequential_agent_history, tom_agent_history):
-    with open('game_results.csv', 'w') as csvfile:
-        file = csv.writer(csvfile)
-        # Write headers
-        file.writerow(['sequential_agent_class', 'tom_agent_class',
-                       'round_index', 'sequential_agent_move', 'tom_agent_move',
-                       'sequential_agent_reward', 'tom_agent_reward'])
-        # Write data
-        for round_idx in range(len(sequential_agent_history)):
-            file.writerow([str(sequential_agent.id), 'gpt_3.5', # TODO make this an attribute of tom_agent
-                           round_idx, sequential_agent_history[round_idx]['my_last_play'], tom_agent_history[round_idx]['my_last_play'],
-                           sequential_agent_history[round_idx]['reward'], tom_agent_history[round_idx]['reward']])
-
-
-
 # NB: copied over from `running_with_scissors_in_the_matrix__repeated.py`
 def print_and_save(*args, new_line=True, **kwargs):
     global all_output_file
@@ -42,20 +27,6 @@ def print_and_save(*args, new_line=True, **kwargs):
         print(*args, **kwargs, file=file)
         if new_line:
             print('\n', file=file)
-
-
-def save_game_results(sequential_agent, tom_agent, sequential_agent_history, tom_agent_history):
-    with open('game_results.csv', 'w') as csvfile:
-        file = csv.writer(csvfile)
-        # Write headers
-        file.writerow(['sequential_agent_class', 'tom_agent_class',
-                       'round_index', 'sequential_agent_move', 'tom_agent_move',
-                       'sequential_agent_reward', 'tom_agent_reward'])
-        # Write data
-        for round_idx in range(len(sequential_agent_history)):
-            file.writerow([str(sequential_agent.id), 'gpt3.5', # TODO make this an attribute of tom_agent
-                           round_idx, sequential_agent_history[round_idx]['my_last_play'], tom_agent_history[round_idx]['my_last_play'],
-                           sequential_agent_history[round_idx]['reward'], tom_agent_history[round_idx]['reward']])
 
 
 def get_reward(player_move, opponent_move):
@@ -68,6 +39,8 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, seed=None):
     date_time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
     results_folder = f'./results/{tom_agent.agent_type}/{tom_agent.sequential_opponent}_{date_time_str}'
     run_label = tom_agent.agent_type + '_' + tom_agent.llm_type
+    softmax_temp = tom_agent.config['temperature'] # eb
+    num_hypotheses = tom_agent.config['top_k'] # eb
     if not os.path.exists(results_folder):
         os.makedirs(results_folder)
     global all_output_file
@@ -75,9 +48,10 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, seed=None):
     with open(all_output_file, 'w') as file:
         file.write(f"{run_label}, playing rock paper scissors vs. {tom_agent.sequential_opponent}\n")
     results_file = os.path.join(results_folder, 'rps_scores.csv')
-    
+
     # Initialize game history
     df_results = pd.DataFrame(columns=['sequential_agent_class', 'tom_agent_class',
+                                       'tom_agent_softmax_temp', 'tom_agent_num_hypotheses',
                                        'round_index', 'sequential_agent_move', 'tom_agent_move',
                                        'sequential_agent_reward', 'tom_agent_reward'])
     sequential_agent_history = []
@@ -113,6 +87,8 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, seed=None):
         df_results = pd.concat([df_results, pd.DataFrame({
             'sequential_agent_class': [str(sequential_agent.id)],
             'tom_agent_class': [run_label],
+            'tom_agent_softmax_temp': [softmax_temp],
+            'tom_agent_num_hypotheses': [num_hypotheses],
             'round_index': [round_idx],
             'sequential_agent_move': [sequential_agent_move],
             'tom_agent_move': [tom_agent_move],

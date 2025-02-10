@@ -1,0 +1,10 @@
+hm_gpt35, playing rock paper scissors vs. self_transition_up
+Round 0, Total Inference Cost: 0, HM Reward: 0
+
+
+Tom agent played scissors and received reward -1
+
+
+Sequential agent played rock and received reward 3
+
+

@@ -12,13 +12,13 @@ from llm_plan.agent import action_funcs
 
 class DecentralizedAgent(abc.ABC):
     def __init__(
-            self, 
+            self,
             config: Dict[str, Any],
             controller: Any,
             ) -> None:
         self.agent_id = config['agent_id']
         self.config = config
-        self.controller = controller        
+        self.controller = controller
         self.all_actions = Queue()
         self.generate_system_message()
         self.memory_states = {}
@@ -31,7 +31,7 @@ class DecentralizedAgent(abc.ABC):
         self.alpha = 0.3 # learning rate for updating hypothesis values
         self.correct_guess_reward = 1
         self.good_hypothesis_thr = 0.7
-        self.top_k = 5 # number of top hypotheses to evaluate
+        self.top_k = config.get('top_k', 5) # eb
         self.n = config['n']
         self.self_improve = config['self_improve']
         player_key = self.agent_id
@@ -48,32 +48,32 @@ class DecentralizedAgent(abc.ABC):
             """
 
     def generate_interaction_feedback_user_message1(
-            self, 
+            self,
             total_rewards,
             step):
         rewards_str = "\n".join(f"- {player}: {reward}" for player, reward in total_rewards.items())
         # get the top N hypotheses
         sorted_keys = sorted([key for key in self.opponent_hypotheses],
-                    key=lambda x: self.opponent_hypotheses[x]['value'], 
+                    key=lambda x: self.opponent_hypotheses[x]['value'],
                     reverse=True)
         top_keys = sorted_keys[:self.top_k]
         # show top hypotheses with value > 0
         self.top_hypotheses = {key: self.opponent_hypotheses[key] for key in top_keys if self.opponent_hypotheses[key]['value'] > 0}
-        
+
         if self.self_improve:
             strategy_request = f"""
                 An interaction with the other player has occurred at round {step-1}, {self.interaction_history[-1]}.
                 The total interaction history is: {self.interaction_history}.
                 Here are your previous hypotheses about the algorithm your opponent is playing: {self.top_hypotheses}.
-                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history.
                 If your previous hypotheses are useful, you can iterate and refine them to get a better explanation of the data observed so far.
                 If a hypothesis already explains the data very well, then repeat the hypothesis in this response.
-                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
-                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
-                Are you getting positive or negative reward when playing the same choice? 
-                For example getting positive reward every time you play rock. 
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between.
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm.
+                Are you getting positive or negative reward when playing the same choice?
+                For example getting positive reward every time you play rock.
                 If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
-                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy.
                 In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
                 This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
                 Example summary:
@@ -82,20 +82,20 @@ class DecentralizedAgent(abc.ABC):
                 'Opponent_strategy': ''
                 }}
                 ```
-                
+
                 You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
                 """
         else:
             strategy_request = f"""
                 An interaction with the other player has occurred at round {step-1}, {self.interaction_history[-1]}.
                 The total interaction history is: {self.interaction_history}.
-                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history. 
-                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between. 
-                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm. 
-                Are you getting positive or negative reward when playing the same choice? 
-                For example getting positive reward every time you play rock. 
+                What is your opponent's likely policy given their plays? Think step by step about this given the interaction history.
+                They may be playing the same static policy every time, a complex strategy to counter you, or anything in between.
+                They are not necessarily a smart agent that adapts to your strategy, you are just playing an algorithm.
+                Are you getting positive or negative reward when playing the same choice?
+                For example getting positive reward every time you play rock.
                 If so, your opponent may be playing a static strategy and you can exploit this by playing the counter strategy.
-                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy. 
+                Once you have output a hypothesis about your opponent's strategy with step by step reasoning, you can use hypothesis to inform your strategy.
                 In the 2nd part of your response, summarize your hypothesis in a concise message following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
                 This summary will be shown to you in the future in order for you to select the appropriate counter strategy.
                 Example summary:
@@ -104,7 +104,7 @@ class DecentralizedAgent(abc.ABC):
                 'Opponent_strategy': ''
                 }}
                 ```
-                
+
                 You will be prompted again shortly to select your next play, so do not include that in your response yet right now.
                 """
 
@@ -115,10 +115,10 @@ class DecentralizedAgent(abc.ABC):
         return user_message
 
     def generate_interaction_feedback_user_message2(
-            self, 
+            self,
             step,
             possible_opponent_strategy=None):
-        
+
         if possible_opponent_strategy is None:
             possible_opponent_strategy = self.possible_opponent_strategy
         user_message = f"""
@@ -127,7 +127,7 @@ class DecentralizedAgent(abc.ABC):
             You last played: {self.interaction_history[-1]['my_play']}
             You previously guessed that their policy or strategy is: {possible_opponent_strategy}.
             High-level strategy Request:
-            Provide the next high-level strategy for player {self.agent_id}. 
+            Provide the next high-level strategy for player {self.agent_id}.
             Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
             1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
             2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
@@ -157,7 +157,7 @@ class DecentralizedAgent(abc.ABC):
         if self.interaction_num > 1:
             self.eval_hypotheses()
         if not self.good_hypothesis_found:
-            hls_user_msg1 = self.generate_interaction_feedback_user_message1(self.reward_tracker, step) 
+            hls_user_msg1 = self.generate_interaction_feedback_user_message1(self.reward_tracker, step)
             hls_user_msg = hls_user_msg + hls_user_msg1
             responses = await asyncio.gather(
                 *[self.controller.async_batch_prompt(self.system_message, [hls_user_msg1])]
@@ -181,7 +181,7 @@ class DecentralizedAgent(abc.ABC):
             user_messages = [hls_user_msg2]
             # Sort the keys of self.opponent_hypotheses based on 'value', in descending order
             sorted_keys = sorted([key for key in self.opponent_hypotheses if key != self.interaction_num],
-                    key=lambda x: self.opponent_hypotheses[x]['value'], 
+                    key=lambda x: self.opponent_hypotheses[x]['value'],
                     reverse=True)
             # Loop through the top k keys
             for key in sorted_keys[:self.top_k]:
@@ -197,9 +197,9 @@ class DecentralizedAgent(abc.ABC):
                 correct_syntax = True
                 # Gathering responses asynchronously
                 responses = await asyncio.gather(
-                    *[self.controller.async_batch_prompt(self.system_message, [user_msg]) 
+                    *[self.controller.async_batch_prompt(self.system_message, [user_msg])
                     for user_msg in user_messages]
-                    )           
+                    )
                 for i in range(len(responses)):
                     response = responses[i][0]
                     if self.n == 1:
@@ -275,7 +275,7 @@ class DecentralizedAgent(abc.ABC):
         latest_key = max(self.opponent_hypotheses.keys()) # should this be evaluated when hypothesis is good?
         # Sort the keys of self.opponent_hypotheses based on 'value', in descending order
         sorted_keys = sorted([key for key in self.opponent_hypotheses if key != latest_key],
-                    key=lambda x: self.opponent_hypotheses[x]['value'], 
+                    key=lambda x: self.opponent_hypotheses[x]['value'],
                     reverse=True)
         keys2eval = sorted_keys[:self.top_k] + [latest_key]
         # Loop through the top N keys and the latest key
@@ -315,11 +315,11 @@ class DecentralizedAgent(abc.ABC):
                     start_index += len(start_marker)
                 else:
                     raise ValueError("Python dictionary markers not found in GPT-4's response.")
-            
+
             end_index = response.find(end_marker, start_index)
             if end_index == -1:
                 raise ValueError("Python dictionary markers not found in GPT-4's response.")
-            
+
             dict_str = response[start_index: end_index].strip()
 
             # Process each line, skipping lines that are comments
@@ -336,7 +336,7 @@ class DecentralizedAgent(abc.ABC):
 
             # Reassemble the cleaned string
             cleaned_dict_str = ' '.join(cleaned_lines)
-            
+
             # Convert the string representation of a dictionary into an actual dictionary
             extracted_dict = ast.literal_eval(cleaned_dict_str)
             return extracted_dict
@@ -364,5 +364,5 @@ class DecentralizedAgent(abc.ABC):
                     continue
                 else:
                     return response, response_dict
-                
+
             return '', {}
