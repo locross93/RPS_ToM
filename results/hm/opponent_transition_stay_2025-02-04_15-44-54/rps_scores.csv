@@ -1,0 +1,2 @@
+,sequential_agent_class,tom_agent_class,round_index,sequential_agent_move,tom_agent_move,sequential_agent_reward,tom_agent_reward
+0,opponent_transition_stay,hm_gpt4o,0,rock,rock,0,0

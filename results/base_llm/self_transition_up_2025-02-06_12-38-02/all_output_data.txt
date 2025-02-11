@@ -1,0 +1,1 @@
+base_llm_gpt4o, playing rock paper scissors vs. self_transition_up

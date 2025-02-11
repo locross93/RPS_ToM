@@ -16,10 +16,10 @@ opponents = [
 ]
 
 # Number of seeds/runs per opponent
-num_seeds = 1
+num_seeds = 2
 
 # LLM type
-llm_type = 'gpt35'
+llm_type = 'llama3'
 
 # Function to run the experiment
 def run_experiment(opponent, seed):
