@@ -7,6 +7,7 @@ import numpy as np
 
 from environments.rps_sequential_opponent import run_episode
 from llm_plan.agent.rps.sequential_opponent_globals import ACTION_MATRIX_LOOKUP, SEQUENTIAL_OPPONENTS
+from llm_plan.agent.rps.sequential_opponent_globals_deterministic import ACTION_MATRIX_LOOKUP_DETERMINISTIC
 from llm_plan.agent.rps.sequential_opponent import SelfTransition, OppTransition, OutcomeTransition, PrevTransitionOutcomeTransition
 from llm_plan.agent.agent_config import agent_config
 from llm_plan.controller.async_llm import AsyncChatLLM
@@ -20,15 +21,18 @@ SOFTMAX_LOOKUP = {
 }
 
 
-def setup_sequential_agent(sequential_agent, sequential_agent_actions):
+def setup_sequential_agent(sequential_agent, sequential_agent_actions, deterministic_opponent=False):
+    agent_id = sequential_agent
+    if deterministic_opponent:
+        agent_id += '_deterministic'
     if sequential_agent in ['self_transition_up', 'self_transition_down']:  # self transition agents
-        return SelfTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return SelfTransition(id=agent_id, action_matrix=sequential_agent_actions)
     elif sequential_agent in ['opponent_transition_up', 'opponent_transition_stay']:  # opponent transition agents
-        return OppTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return OppTransition(id=agent_id, action_matrix=sequential_agent_actions)
     elif sequential_agent in ['W_stay_L_up_T_down', 'W_up_L_down_T_stay']:  # outcome transition agents
-        return OutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return OutcomeTransition(id=agent_id, action_matrix=sequential_agent_actions)
     elif sequential_agent == 'prev_outcome_prev_transition':  # previous outcome, previous transition agent
-        return PrevTransitionOutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return PrevTransitionOutcomeTransition(id=agent_id, action_matrix=sequential_agent_actions)
     else:
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
@@ -97,13 +101,16 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     agent.llm_type = llm_type
     return agent
 
-async def main_async(agent_type, llm_type, sequential_opponent, softmax=0.2, num_hypotheses=5, num_rounds=300, seed=None, no_self_improve=False):
+async def main_async(agent_type, llm_type, sequential_opponent, softmax=0.2, num_hypotheses=5, num_rounds=300, seed=None, no_self_improve=False, deterministic_opponent=False):
     # Set random seed for reproducibility if needed
     if seed is not None:
         np.random.seed(seed)
 
     # Initialize sequential agent
-    sequential_agent = setup_sequential_agent(sequential_opponent, ACTION_MATRIX_LOOKUP[sequential_opponent])
+    if deterministic_opponent:
+        sequential_agent = setup_sequential_agent(sequential_opponent, ACTION_MATRIX_LOOKUP_DETERMINISTIC[sequential_opponent], deterministic_opponent=True)
+    else:
+        sequential_agent = setup_sequential_agent(sequential_opponent, ACTION_MATRIX_LOOKUP[sequential_opponent], deterministic_opponent=False)
 
     # Load API key
     api_key_path = './llm_plan/lc_api_key.json'
@@ -176,11 +183,20 @@ def main():
     parser.add_argument('--num_rounds', type=int, default=300, help='Number of rounds to play')
     parser.add_argument('--no_self_improve', action='store_true', default=False,
                        help='Disable self-improvement (enabled by default)')
+    parser.add_argument('--deterministic_opponent', action='store_true', default=False,
+                       help='Sequential opponent chooses moves without any noise (disabled by default)')
     args = parser.parse_args()
 
     # Run the game
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main_async(args.agent_type, args.llm_type, args.sequential_opponent, args.softmax, args.num_hypotheses, args.num_rounds, no_self_improve=args.no_self_improve))
+    loop.run_until_complete(
+        main_async(
+            args.agent_type, args.llm_type, args.sequential_opponent,
+            args.softmax, args.num_hypotheses, args.num_rounds,
+            no_self_improve=args.no_self_improve,
+            deterministic_opponent=args.deterministic_opponent
+        )
+    )
 
 if __name__ == "__main__":
     main()
