@@ -84,7 +84,7 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, seed=None):
             'opponent_play': sequential_agent_move,
             'my_reward': int(tom_agent_reward)
         })
-        df_results = pd.concat([df_results, pd.DataFrame({
+        new_row = pd.DataFrame({
             'sequential_agent_class': [str(sequential_agent.id)],
             'tom_agent_class': [run_label],
             'tom_agent_softmax_temp': [softmax_temp],
@@ -94,7 +94,12 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, seed=None):
             'tom_agent_move': [tom_agent_move],
             'sequential_agent_reward': [sequential_agent_reward],
             'tom_agent_reward': [tom_agent_reward]
-        })], ignore_index=True)
+        })
+        
+        if df_results.empty:
+            df_results = new_row
+        else:
+            df_results = pd.concat([df_results, new_row], ignore_index=True)
 
         # Log results
         if round_idx > 0:

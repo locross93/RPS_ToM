@@ -1,0 +1,17 @@
+import pandas as pd
+
+# Process rps_scores_per_episode.csv
+df_episode = pd.read_csv('results/all_models/rps_scores_per_episode.csv')
+# Insert new empty columns after tom_agent_class
+df_episode.insert(df_episode.columns.get_loc('tom_agent_class') + 1, 'tom_agent_softmax_temp', '')
+df_episode.insert(df_episode.columns.get_loc('tom_agent_softmax_temp') + 1, 'tom_agent_num_hypotheses', '')
+df_episode.to_csv('results/all_models/rps_scores_per_episode.csv', index=False)
+
+# Process rps_scores_all_rounds.csv
+df_rounds = pd.read_csv('results/all_models/rps_scores_all_rounds.csv')
+# Insert new empty columns after tom_agent_class
+df_rounds.insert(df_rounds.columns.get_loc('tom_agent_class') + 1, 'tom_agent_softmax_temp', '')
+df_rounds.insert(df_rounds.columns.get_loc('tom_agent_softmax_temp') + 1, 'tom_agent_num_hypotheses', '')
+df_rounds.to_csv('results/all_models/rps_scores_all_rounds.csv', index=False)
+
+print("Added new columns to both CSV files!")

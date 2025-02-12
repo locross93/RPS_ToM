@@ -27,8 +27,13 @@ async def run_experiments(agent_type, llm_type, num_seeds, num_rounds, softmax, 
         'prev_outcome_prev_transition'
     ]
     for opponent_type in SEQUENTIAL_OPPONENTS:
-        # Filter existing results for current agent and opponent
-        existing_results = df_results[(df_results['tom_agent_class'] == f"{agent_type}_{llm_type}") & (df_results['sequential_agent_class'] == opponent_type)]
+        # Filter existing results for current agent, opponent, and hyperparameters
+        existing_results = df_results[
+            (df_results['tom_agent_class'] == f"{agent_type}_{llm_type}") & 
+            (df_results['sequential_agent_class'] == opponent_type) &
+            (df_results['tom_agent_softmax_temp'] == softmax) &
+            (df_results['tom_agent_num_hypotheses'] == num_hypotheses)
+        ]
 
         existing_seeds = len(existing_results)
         seeds_needed = num_seeds - existing_seeds
