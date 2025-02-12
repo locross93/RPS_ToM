@@ -21,15 +21,18 @@ SOFTMAX_LOOKUP = {
 }
 
 
-def setup_sequential_agent(sequential_agent, sequential_agent_actions):
+def setup_sequential_agent(sequential_agent, sequential_agent_actions, deterministic_opponent=False):
+    agent_id = sequential_agent
+    if deterministic_opponent:
+        agent_id += '_deterministic'
     if sequential_agent in ['self_transition_up', 'self_transition_down']:  # self transition agents
-        return SelfTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return SelfTransition(id=agent_id, action_matrix=sequential_agent_actions)
     elif sequential_agent in ['opponent_transition_up', 'opponent_transition_stay']:  # opponent transition agents
-        return OppTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return OppTransition(id=agent_id, action_matrix=sequential_agent_actions)
     elif sequential_agent in ['W_stay_L_up_T_down', 'W_up_L_down_T_stay']:  # outcome transition agents
-        return OutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return OutcomeTransition(id=agent_id, action_matrix=sequential_agent_actions)
     elif sequential_agent == 'prev_outcome_prev_transition':  # previous outcome, previous transition agent
-        return PrevTransitionOutcomeTransition(id=sequential_agent, action_matrix=sequential_agent_actions)
+        return PrevTransitionOutcomeTransition(id=agent_id, action_matrix=sequential_agent_actions)
     else:
         raise ValueError(f"Unknown opponent type: {sequential_agent}")
 
@@ -105,9 +108,9 @@ async def main_async(agent_type, llm_type, sequential_opponent, softmax, num_hyp
 
     # Initialize sequential agent
     if deterministic_opponent:
-        sequential_agent = setup_sequential_agent(sequential_opponent, ACTION_MATRIX_LOOKUP_DETERMINISTIC[sequential_opponent])
+        sequential_agent = setup_sequential_agent(sequential_opponent, ACTION_MATRIX_LOOKUP_DETERMINISTIC[sequential_opponent], deterministic_opponent=True)
     else:
-        sequential_agent = setup_sequential_agent(sequential_opponent, ACTION_MATRIX_LOOKUP[sequential_opponent])
+        sequential_agent = setup_sequential_agent(sequential_opponent, ACTION_MATRIX_LOOKUP[sequential_opponent], deterministic_opponent=False)
 
     # Load API key
     api_key_path = './llm_plan/lc_api_key.json'
