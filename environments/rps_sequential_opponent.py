@@ -178,6 +178,8 @@ async def run_episode(tom_agent, sequential_agent, num_rounds, seed=None):
         df_episode_summary = pd.DataFrame({
             'sequential_agent_class': [str(sequential_agent.id)],
             'tom_agent_class': [run_label],
+            'tom_agent_softmax_temp': [softmax_temp],
+            'tom_agent_num_hypotheses': [num_hypotheses],
             'timestamp': [date_time_str],
             'seed': [seed],
             'total_wins': [total_wins],

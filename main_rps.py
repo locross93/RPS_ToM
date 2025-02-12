@@ -171,7 +171,7 @@ def main():
     parser.add_argument('--agent_type', type=str, default='hm', help='Agent type')
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM Type')
     parser.add_argument('--sequential_opponent', type=str, default='self_transition_up', help=f'Sequential opponent type: {SEQUENTIAL_OPPONENTS}')
-    parser.add_argument('--softmax', type=float, default=0.2, help='Softmax temperature (default: 1)')
+    parser.add_argument('--softmax', type=float, default=0.2, help='Softmax temperature (default: 0.2)')
     parser.add_argument('--num_hypotheses', type=int, default=5, help='Number of hypotheses to consider (default: 5)')
     parser.add_argument('--num_rounds', type=int, default=300, help='Number of rounds to play')
     parser.add_argument('--no_self_improve', action='store_true', default=False,
