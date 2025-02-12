@@ -7,7 +7,7 @@ import os
 from main_rps import main_async
 from llm_plan.agent.rps.sequential_opponent_globals import SEQUENTIAL_OPPONENTS
 
-async def run_experiments(agent_type, llm_type, num_seeds, num_rounds):
+async def run_experiments(agent_type, llm_type, num_seeds, num_rounds, softmax, num_hypotheses):
     # Load existing results
     per_episode_file = './results/all_models/rps_scores_per_episode.csv'
     if os.path.exists(per_episode_file):
@@ -42,7 +42,7 @@ async def run_experiments(agent_type, llm_type, num_seeds, num_rounds):
                 np.random.seed(seed)
 
                 # Run the game
-                await main_async(agent_type, llm_type, opponent_type, num_rounds=num_rounds, seed=seed)
+                await main_async(agent_type, llm_type, opponent_type, softmax, num_hypotheses, num_rounds=num_rounds, seed=seed)
 
         else:
             print(f"No additional seeds needed for Agent: {agent_type}, Opponent: {opponent_type}")
@@ -53,9 +53,11 @@ def main():
     parser.add_argument('--llm_type', type=str, default='gpt4o', help='LLM type (default: gpt4o)')
     parser.add_argument('--num_seeds', type=int, default=3, help='Number of seeds per opponent (default: 3)')
     parser.add_argument('--num_rounds', type=int, default=300, help='Number of rounds per game (default: 300)')
+    parser.add_argument('--softmax', type=float, default=0.2, help='Softmax temperature (default: 0.2)')
+    parser.add_argument('--num_hypotheses', type=int, default=5, help='Number of hypotheses to consider (default: 5)')
     args = parser.parse_args()
 
-    asyncio.run(run_experiments(args.agent_type, args.llm_type, args.num_seeds, args.num_rounds))
+    asyncio.run(run_experiments(args.agent_type, args.llm_type, args.num_seeds, args.num_rounds, args.softmax, args.num_hypotheses))
 
 if __name__ == '__main__':
     main()
