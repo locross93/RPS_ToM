@@ -16,23 +16,18 @@ class DecentralizedAgent:
         self.controller = controller        
         self.all_actions = Queue()
         self.generate_system_message()
-        self.memory_states = {}
         self.interact_steps = 0
         self.interaction_history = []
         self.interaction_num = 0
         self.reward_tracker = {self.agent_id: 0}
         self.n = config['n']
+        self.good_hypothesis_found = False
+        self.alpha = 0.3 # learning rate for updating hypothesis values
+        self.correct_guess_reward = 1
+        self.good_hypothesis_thr = 0.7
+        self.top_k = config.get('top_k', 5)
         
         # Define the fixed set of possible strategies
-        # self.possible_strategies = {
-        #     'self_transition_up': 'The opponent cycles through strategies in a fixed order, picking the option that would beat their last rounds move',
-        #     'self_transition_down': 'The opponent cycles through strategies in a fixed order, picking the option that would lose to their last rounds move',
-        #     'opponent_transition_up': 'The opponent plays the best response to my last move',
-        #     'opponent_transition_stay': 'The opponent copies me and plays the same move as I did in the last round',
-        #     'W_stay_L_up_T_down': 'After a win the opponent plays the same move as they did in the last round. After a loss they play the option that would beat their last rounds move. After a tie they play the option that would lose to their last rounds move',
-        #     'W_up_L_down_T_stay': 'After a win the opponent plays the option that would beat their last rounds move. After a loss they play the option that would lose to their last rounds move. After a tie they play the same move as they did in the last round',
-        #     'prev_outcome_prev_transition': 'The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made'
-        # }
         win_outcome = "win"
         tie_outcome = "tie"
         loss_outcome = "loss"
@@ -64,11 +59,6 @@ class DecentralizedAgent:
             After a {tie_outcome} in which the opponent {prev_down_transition}, the opponent {stay_transition}. \
             After a {tie_outcome} in which the opponent {prev_stay_transition}, the opponent {up_transition}.': 1.0}
         }
-
-        player_key = self.agent_id
-        opponent_key = ['player_1' if self.agent_id == 'player_0' else 'player_0'][0]
-        for entity_type in ['yellow_box', 'blue_box', 'purple_box', 'ground', player_key, opponent_key]:
-            self.memory_states[entity_type] = []
 
     def generate_system_message(self):
         self.system_message = f"""

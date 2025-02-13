@@ -63,7 +63,6 @@ class DecentralizedAgent(abc.ABC):
         self.controller = controller        
         self.all_actions = Queue()
         self.generate_system_message()
-        self.memory_states = {}
         self.interact_steps = 0
         self.interaction_history = []
         self.opponent_hypotheses = {}
@@ -72,10 +71,6 @@ class DecentralizedAgent(abc.ABC):
         self.n = config['n']
         self.sequential_opponent = config['sequential_opponent']
         self.possible_opponent_strategy = {'Opponent_strategy': given_hypotheses[self.sequential_opponent]}
-        player_key = self.agent_id
-        opponent_key = ['player_1' if self.agent_id == 'player_0' else 'player_0'][0]
-        for entity_type in ['yellow_box', 'blue_box', 'purple_box', 'ground', player_key, opponent_key]:
-            self.memory_states[entity_type] = []
 
     def generate_system_message(self):
         self.system_message = f"""
