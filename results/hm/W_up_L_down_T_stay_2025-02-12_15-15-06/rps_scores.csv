@@ -279,3 +279,4 @@
 277,W_up_L_down_T_stay,hm_gpt4o,0.2,3,277,rock,paper,-1,3
 278,W_up_L_down_T_stay,hm_gpt4o,0.2,3,278,scissors,paper,3,-1
 279,W_up_L_down_T_stay,hm_gpt4o,0.2,3,279,paper,paper,0,0
+280,W_up_L_down_T_stay,hm_gpt4o,0.2,3,280,paper,paper,0,0
