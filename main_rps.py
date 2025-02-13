@@ -49,7 +49,7 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
         kwargs = {
             'api_key': "EMPTY",
             'base_url': "http://localhost",
-            'port': 8000,
+            'port': 8001,
             'version': 'v1',
             'model': 'meta-llama/Meta-Llama-3-70B-Instruct'
         }

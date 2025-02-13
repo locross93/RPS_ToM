@@ -30,8 +30,9 @@ class DecentralizedAgent(abc.ABC):
         self.alpha = 0.3 # learning rate for updating hypothesis values
         self.correct_guess_reward = 1
         self.good_hypothesis_thr = 0.7
-        self.top_k = config.get('top_k', 5) # eb
+        self.top_k = config.get('top_k', 5)
         self.n = config['n']
+        self.t = config.get('t', 50) # show last t rounds of interaction history
         self.self_improve = config['self_improve']
 
     def generate_system_message(self):
@@ -141,8 +142,8 @@ class DecentralizedAgent(abc.ABC):
 
     async def tom_module(self, interaction_history, step):
         # if interaction history longer than 50 rounds, just show last 50 rounds
-        if len(interaction_history) > 50:
-            self.interaction_history = interaction_history[-50:]
+        if len(interaction_history) > self.t:
+            self.interaction_history = interaction_history[-self.t:]
         else:
             self.interaction_history = interaction_history
         self.reward_tracker[self.agent_id] += interaction_history[-1]['my_reward']
@@ -210,7 +211,6 @@ class DecentralizedAgent(abc.ABC):
                     if not both_keys_present or not correct_format:
                         correct_syntax = False
                         print(f"Error parsing dictionary when extracting next plays, retrying...")
-                        #breakpoint()
                         break
                     if i == 0:
                         self.next_plays = deepcopy(next_plays)
@@ -219,6 +219,17 @@ class DecentralizedAgent(abc.ABC):
                     else:
                         self.opponent_hypotheses[sorted_keys[i-1]]['next_plays'] = deepcopy(next_plays)
                 counter += 1
+
+            if counter >= 20 and not correct_syntax:
+                print("All attempts failed. Using default values.")
+                default_plays = {
+                    'predicted_opponent_next_play': 'rock',
+                    'my_next_play': 'paper'
+                }
+                self.next_plays = deepcopy(default_plays)
+                self.opponent_hypotheses[self.interaction_num]['next_plays'] = deepcopy(default_plays)
+                next_play_response = "Failed to get valid response. Using default values."
+
             # add response to hls after two new lines
             hls_response = hls_response + '\n\n' + next_play_response
         else:

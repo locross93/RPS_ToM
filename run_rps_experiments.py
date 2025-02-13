@@ -16,26 +16,29 @@ async def run_experiments(agent_type, llm_type, num_seeds, num_rounds, softmax, 
         df_results = pd.DataFrame()
 
     # Loop over each opponent type
-    #for opponent_type in SEQUENTIAL_OPPONENTS:
+    SEQUENTIAL_OPPONENTS = [
+        'W_stay_L_up_T_down',
+        'opponent_transition_stay',
+        'W_up_L_down_T_stay',
+        'opponent_transition_up',
+        'self_transition_up',
+        'self_transition_down',
+        'prev_outcome_prev_transition'
+    ]
     # SEQUENTIAL_OPPONENTS = [
-    #     'self_transition_up',
-    #     'self_transition_down',
-    #     'opponent_transition_up',
-    #     'opponent_transition_stay',
     #     'W_stay_L_up_T_down',
     #     'W_up_L_down_T_stay',
     #     'prev_outcome_prev_transition'
     # ]
-    SEQUENTIAL_OPPONENTS = [
-        'W_stay_L_up_T_down',
-        'W_up_L_down_T_stay',
-        'prev_outcome_prev_transition'
-    ]
     for opponent_type in SEQUENTIAL_OPPONENTS:
         # Filter existing results for current agent, opponent, and hyperparameters
+        if deterministic_opponent:
+            opponent_label = f'{opponent_type}_deterministic'
+        else:
+            opponent_label = opponent_type
         existing_results = df_results[
             (df_results['tom_agent_class'] == f"{agent_type}_{llm_type}") & 
-            (df_results['sequential_agent_class'] == opponent_type) &
+            (df_results['sequential_agent_class'] == opponent_label ) &
             (df_results['tom_agent_softmax_temp'] == softmax) &
             (df_results['tom_agent_num_hypotheses'] == num_hypotheses)
         ]
