@@ -1,0 +1,2 @@
+,sequential_agent_class,tom_agent_class,tom_agent_softmax_temp,tom_agent_num_hypotheses,round_index,sequential_agent_move,tom_agent_move,sequential_agent_reward,tom_agent_reward
+0,self_transition_up,choose_hyp_gpt4o,0.2,5,0,rock,scissors,3,-1
