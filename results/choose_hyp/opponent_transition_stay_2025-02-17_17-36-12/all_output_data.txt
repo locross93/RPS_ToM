@@ -1,0 +1,234 @@
+choose_hyp_gpt4o, playing rock paper scissors vs. opponent_transition_stay
+Round 0, Total Inference Cost: 0, HM Reward: 0
+
+
+Tom agent played rock and received reward 3
+
+
+Sequential agent played scissors and received reward -1
+
+
+User Message: 
+
+
+            An interaction with the other player has occurred at round 1, {'round': 0, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move', 'value': 0.0}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0.
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {}
+
+1. 'predicted_opponent_next_play': Given the opponent's strategy of playing the move that would beat their last round's move, and since they played 'scissors' last round, they are likely to play 'rock' in the next round to beat 'scissors'.
+
+2. 'my_next_play': To counter the predicted 'rock' play by the opponent, my next play should be 'paper', as paper beats rock.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+Time Elapsed: 0.0 minutes
+
+
+
+
+
+
+Round 1, Total Inference Cost: 0.0177, HM Reward: 3
+
+
+Tom agent played paper and received reward 3
+
+
+Sequential agent played rock and received reward -1
+
+
+User Message: 
+
+
+            An interaction with the other player has occurred at round 2, {'round': 1, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}].
+            You last played: paper
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0.
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {'self_transition_up': {'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}, 'self_transition_down': {'Opponent_strategy': 'The opponent plays the move that would lose to their last rounds move', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}, 'opponent_transition_stay': {'Opponent_strategy': 'The opponent plays the same move as their opponents last rounds move', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}, 'W_stay_L_up_T_down': {'Opponent_strategy': 'After a win the opponent plays the same move as they did in the last round. After a loss the opponent plays the move that would beat their last rounds move. After a tie the opponent plays the move that would lose to their last rounds move', 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}, 'prev_outcome_prev_transition': {'Opponent_strategy': "The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.             After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.            After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round.             After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.            After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.             After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.            After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.             After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move.", 'value': 0.3, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}}
+
+1. 'predicted_opponent_next_play': Based on the opponent's strategy of playing the move that would beat their last round's move, and considering their last play was 'rock', their next likely play would be 'paper' to beat 'rock'.
+
+2. 'my_next_play': Given that the opponent is likely to play 'paper', my next play should be 'scissors' to counter their 'paper'.
+
+```python
+{
+  'predicted_opponent_next_play': 'paper',
+  'my_next_play': 'scissors'
+}
+```
+
+
+Time Elapsed: 0.1 minutes
+
+
+
+
+
+
+Round 2, Total Inference Cost: 0.0364, HM Reward: 6
+
+
+Tom agent played scissors and received reward 3
+
+
+Sequential agent played paper and received reward -1
+
+
+User Message: 
+
+
+            An interaction with the other player has occurred at round 3, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}].
+            You last played: scissors
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move', 'value': 0.51, 'next_plays': {'predicted_opponent_next_play': 'paper', 'my_next_play': 'scissors'}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0.
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {'self_transition_up': {'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move', 'value': 0.51, 'next_plays': {'predicted_opponent_next_play': 'paper', 'my_next_play': 'scissors'}}, 'opponent_transition_stay': {'Opponent_strategy': 'The opponent plays the same move as their opponents last rounds move', 'value': 0.51, 'next_plays': {'predicted_opponent_next_play': 'paper', 'my_next_play': 'scissors'}}, 'W_stay_L_up_T_down': {'Opponent_strategy': 'After a win the opponent plays the same move as they did in the last round. After a loss the opponent plays the move that would beat their last rounds move. After a tie the opponent plays the move that would lose to their last rounds move', 'value': 0.51, 'next_plays': {'predicted_opponent_next_play': 'paper', 'my_next_play': 'scissors'}}, 'prev_outcome_prev_transition': {'Opponent_strategy': "The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.             After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.            After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round.             After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.            After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.             After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.            After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.             After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move.", 'value': 0.51, 'next_plays': {'predicted_opponent_next_play': 'paper', 'my_next_play': 'scissors'}}}
+
+1. 'predicted_opponent_next_play': Based on the opponent's strategy of playing the move that would beat their last round's move, and considering their last play was 'paper', I predict their next play will be 'scissors' to beat their previous 'paper'.
+
+2. 'my_next_play': Given that I predict the opponent will play 'scissors', my next play should be 'rock' to counter and beat 'scissors'.
+
+```python
+{
+  'predicted_opponent_next_play': 'scissors',
+  'my_next_play': 'rock'
+}
+```
+
+
+Time Elapsed: 0.2 minutes
+
+
+
+
+
+
+Round 3, Total Inference Cost: 0.0557, HM Reward: 9
+
+
+Tom agent played rock and received reward 3
+
+
+Sequential agent played scissors and received reward -1
+
+
+User Message: 
+
+
+            An interaction with the other player has occurred at round 4, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}.
+            The total interaction history is: [{'round': 0, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}, {'round': 1, 'my_play': 'paper', 'opponent_play': 'rock', 'my_reward': 3}, {'round': 2, 'my_play': 'scissors', 'opponent_play': 'paper', 'my_reward': 3}, {'round': 3, 'my_play': 'rock', 'opponent_play': 'scissors', 'my_reward': 3}].
+            You last played: rock
+            You previously guessed that their policy or strategy is: {'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move', 'value': 0.657, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}.
+            High-level strategy Request:
+            Provide the next high-level strategy for player player_0.
+            Think step by step in parts 1 and 2 about which strategy to select based on the entire interaction history in the following format:
+            1. 'predicted_opponent_next_play': Given the above mentioned guess about the opponent's policy/strategy, and the last action you played (if their strategy is adaptive, it may not be), what is their likely play in the next round.
+            2. 'my_next_play': Given the opponent's likely play in the next round, what should your next play be to counter this?
+            3. In the 3rd part of your response, output the predicted opponent's next play and your next play as either 'rock', 'paper', or 'scissors' (use no other string) in following Python dictionary format, parsable by `ast.literal_eval()` starting with ```python.
+            Example response:
+            1. 'predicted_opponent_next_play': Given that my opponent is playing a rock policy, I believe their next play will be a rock.
+            2. 'my_next_play': Given that my opponent is playing a rock policy, I believe my next play should be paper.
+            ```python
+            {
+              'predicted_opponent_next_play': 'rock',
+              'my_next_play': 'paper'
+            }
+            
+
+
+Response: 
+
+Top hypotheses: {'self_transition_up': {'Opponent_strategy': 'The opponent plays the move that would beat their last rounds move', 'value': 0.657, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 'opponent_transition_stay': {'Opponent_strategy': 'The opponent plays the same move as their opponents last rounds move', 'value': 0.657, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 'self_transition_down': {'Opponent_strategy': 'The opponent plays the move that would lose to their last rounds move', 'value': 0.237, 'next_plays': {'predicted_opponent_next_play': 'scissors', 'my_next_play': 'rock'}}, 'W_stay_L_up_T_down': {'Opponent_strategy': 'After a win the opponent plays the same move as they did in the last round. After a loss the opponent plays the move that would beat their last rounds move. After a tie the opponent plays the move that would lose to their last rounds move', 'value': 0.05700000000000005, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}, 'prev_outcome_prev_transition': {'Opponent_strategy': "The opponents transition from one round to the next depends on both the previous outcome (win, lose, or tie) and the previous transition the opponent made.             After a win in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.            After a win in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a win in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the same move as they did in the last round.             After a loss in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.            After a loss in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the move that would beat their last rounds move.             After a loss in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would lose to their last rounds move.             After a tie in which the opponent played the move in the last round that would beat the opponent's move two rounds ago, the opponent plays the move that would lose to their last rounds move.            After a tie in which the opponent played the move in the last round that would lose to the opponent's move two rounds ago, the opponent plays the same move as they did in the last round.             After a tie in which the opponent played the same move in the last round as the opponent played two rounds ago, the opponent plays the move that would beat their last rounds move.", 'value': 0.05700000000000005, 'next_plays': {'predicted_opponent_next_play': 'rock', 'my_next_play': 'paper'}}}
+
+1. 'predicted_opponent_next_play': Based on the opponent's strategy of playing the move that would beat their last round's move, and considering their last play was 'scissors', their likely play in the next round would be 'rock' to beat 'scissors'.
+
+2. 'my_next_play': Given that the opponent is likely to play 'rock', my next play should be 'paper' to counter their 'rock'.
+
+```python
+{
+  'predicted_opponent_next_play': 'rock',
+  'my_next_play': 'paper'
+}
+```
+
+
+Time Elapsed: 0.2 minutes
+
+
+
+
+
+
+Round 4, Total Inference Cost: 0.0762, HM Reward: 12
+
+
+Tom agent played paper and received reward 3
+
+
+Sequential agent played rock and received reward -1
+
+
