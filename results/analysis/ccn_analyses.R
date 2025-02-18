@@ -265,21 +265,21 @@ ggsave(
 
 
 
-# FIGURE: GPT baseline comparisons ----
+# FIGURE: HM baseline comparisons ----
 
-# Load GPT data
+# Load HM data
 gpt_data = read_csv('../all_models/rps_scores_per_episode.csv')
 glimpse(gpt_data)
 
 # Make 'HM ablation' class
 # TODO: only 2 seeds of `opponent_transition_stay` here
-gpt_data$tom_agent_class[gpt_data$tom_agent_class == 'hm_gpt4o' & gpt_data$tom_agent_num_hypotheses == 0] = 'hm_ablation_gpt4o'
+gpt_data$tom_agent_class[gpt_data$tom_agent_class == 'hm_gpt4o' & gpt_data$tom_agent_num_hypotheses == 0] = 'hm_gpt4o_no_hyp'
 
 # Sanity check: seeds per agent class / opponent
 gpt_data |>
   group_by(tom_agent_class, sequential_agent_class, tom_agent_softmax_temp, tom_agent_num_hypotheses) |>
   summarize(seeds = n()) |>
-  print(n = 100)
+  print(n = 200)
 
 
 bot_levels = c(
@@ -295,14 +295,14 @@ bot_levels = c(
 opponent_lookup = c(
   'human' = 'Humans',
   'hm_gpt4o' = 'Hypothetical Minds',
-  'hm_ablation_gpt4o' = 'HM Ablation',
+  'hm_gpt4o_no_hyp' = 'No Hypothesis Evaluation',
   'react_gpt4o' = 'ReAct',
   'base_llm_gpt4o' = 'Base LLM'
 )
 opponent_levels = c(
   'Humans',
   'Hypothetical Minds',
-  'HM Ablation',
+  'No Hypothesis Evaluation',
   'ReAct',
   'Base LLM'
 )
@@ -311,43 +311,43 @@ opponent_levels = c(
 color_lookup = c(
   'Self-transition (+)-Humans' = COLORS[1], #'#440154'
   'Self-transition (+)-Hypothetical Minds' = 'black',
-  'Self-transition (+)-HM Ablation' = 'darkgray',
+  'Self-transition (+)-No Hypothesis Evaluation' = 'darkgray',
   'Self-transition (+)-ReAct' = 'lightgray',
   'Self-transition (+)-Base LLM' = 'white',
 
   'Self-transition (−)-Humans' = COLORS[2], # '#443a83'
   'Self-transition (−)-Hypothetical Minds' = 'black',
-  'Self-transition (−)-HM Ablation' = 'darkgray',
+  'Self-transition (−)-No Hypothesis Evaluation' = 'darkgray',
   'Self-transition (−)-ReAct' = 'lightgray',
   'Self-transition (−)-Base LLM' = 'white',
 
   'Opponent-transition (+)-Humans' = COLORS[3], # '#31688e'
   'Opponent-transition (+)-Hypothetical Minds' = 'black',
-  'Opponent-transition (+)-HM Ablation' = 'darkgray',
+  'Opponent-transition (+)-No Hypothesis Evaluation' = 'darkgray',
   'Opponent-transition (+)-ReAct' = 'lightgray',
   'Opponent-transition (+)-Base LLM' = 'white',
 
   'Opponent-transition (0)-Humans' = COLORS[4], # '#21908c'
   'Opponent-transition (0)-Hypothetical Minds' = 'black',
-  'Opponent-transition (0)-HM Ablation' = 'darkgray',
+  'Opponent-transition (0)-No Hypothesis Evaluation' = 'darkgray',
   'Opponent-transition (0)-ReAct' = 'lightgray',
   'Opponent-transition (0)-Base LLM' = 'white',
 
   'Previous outcome \n(W0L+T−)-Humans' = COLORS[5], # '#35b779'
   'Previous outcome \n(W0L+T−)-Hypothetical Minds' = 'black',
-  'Previous outcome \n(W0L+T−)-HM Ablation' = 'darkgray',
+  'Previous outcome \n(W0L+T−)-No Hypothesis Evaluation' = 'darkgray',
   'Previous outcome \n(W0L+T−)-ReAct' = 'lightgray',
   'Previous outcome \n(W0L+T−)-Base LLM' = 'white',
 
   'Previous outcome \n(W+L−T0)-Humans' = COLORS[6], # '#8fd744'
   'Previous outcome \n(W+L−T0)-Hypothetical Minds' = 'black',
-  'Previous outcome \n(W+L−T0)-HM Ablation' = 'darkgray',
+  'Previous outcome \n(W+L−T0)-No Hypothesis Evaluation' = 'darkgray',
   'Previous outcome \n(W+L−T0)-ReAct' = 'lightgray',
   'Previous outcome \n(W+L−T0)-Base LLM' = 'white',
 
   'Previous outcome, \nprevious transition-Humans' = COLORS[7], # '#fde725'
   'Previous outcome, \nprevious transition-Hypothetical Minds' = 'black',
-  'Previous outcome, \nprevious transition-HM Ablation' = 'darkgray',
+  'Previous outcome, \nprevious transition-No Hypothesis Evaluation' = 'darkgray',
   'Previous outcome, \nprevious transition-ReAct' = 'lightgray',
   'Previous outcome, \nprevious transition-Base LLM' = 'white'
 )
@@ -372,9 +372,9 @@ model_subset = gpt_data |>
     # Base LLM and ReAct
     # TODO we end up with 5 seeds of `opponent_transition_stay` here on base LLM
     # TODO we end up with 2 seeds of `opponent_transition_stay` here on HM ablation
-    (tom_agent_class %in% c('base_llm_gpt4o', 'react_gpt4o', 'hm_ablation_gpt4o')) |
+    (tom_agent_class %in% c('base_llm_gpt4o', 'react_gpt4o', 'hm_gpt4o_no_hyp')) |
     # TODO we end up with > 3 seeds on most of the agents here -- use timestamps to restrict?
-    (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & sequential_agent_class %in% bot_levels)
+    (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & sequential_agent_class %in% bot_levels & tom_agent_softmax_temp == 0.2)
   ) |>
   group_by(tom_agent_class, sequential_agent_class) |>
   summarize(
@@ -392,6 +392,18 @@ model_subset = gpt_data |>
     bot_strategy_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[bot_strategy_str]],
                               levels = STRATEGY_LABELS)
   )
+# Sanity check model subset
+model_subset |> print(n=100)  # do we have at least 3 seeds per row?
+gpt_data |>                   # what's going on with rows where we have more than 3 seeds?
+  filter(
+    (tom_agent_class %in% c('base_llm_gpt4o', 'react_gpt4o', 'hm_gpt4o_no_hyp')) |
+      (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
+  ) |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_num_hypotheses, tom_agent_softmax_temp) |>
+  summarize(
+    seeds = n(),
+  ) |> ungroup() |> print(n=100)
+
 # Combine human and model subset data
 summary_data = human_summary |>
   bind_rows(
@@ -471,7 +483,7 @@ baseline_comparison
 # Save figure
 ggsave(
   baseline_comparison,
-  filename = 'baseline_comparison_v2.pdf',
+  filename = 'baseline_comparison.pdf',
   path = FIGURE_PATH,
   device = cairo_pdf,
   width = 20,
@@ -480,7 +492,7 @@ ggsave(
 
 
 
-# FIGURE: GPT LLM comparisons ----
+# FIGURE: HM LLM comparisons ----
 
 color_lookup = c(
   'Self-transition (+)-Humans' = COLORS[1], #'#440154'
@@ -532,17 +544,15 @@ opponent_levels = c(
   'Llama 3'
 )
 
-# Add relevant GPT rows
+# Add relevant HM rows
 model_subset = gpt_data |>
   filter(
-    # GPT3.5
-    # TODO we seem to be missing several agent class opponents here
+    # GPT 3.5
     (tom_agent_class %in% c('hm_gpt35')) |
-      # Llama3
-      # TODO several of these have > 3 seeds, a couple have only 2
+      # Llama 3
       (tom_agent_class %in% c('hm_llama3') & tom_agent_num_hypotheses == 5) |
-      # TODO we end up with > 3 seeds on most of the agents here -- use timestamps to restrict?
-      (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & sequential_agent_class %in% bot_levels)
+      # Baseline (GPT 4o)
+      (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
   ) |>
   group_by(tom_agent_class, sequential_agent_class) |>
   summarize(
@@ -560,6 +570,24 @@ model_subset = gpt_data |>
     bot_strategy_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[bot_strategy_str]],
                               levels = STRATEGY_LABELS)
   )
+
+# Sanity check model subset
+model_subset |> print(n=100)  # do we have at least 3 seeds per row?
+gpt_data |>
+  filter(
+    # GPT 3.5
+    (tom_agent_class %in% c('hm_gpt35')) |
+      # Llama 3
+      (tom_agent_class %in% c('hm_llama3') & tom_agent_num_hypotheses == 5) |
+      # Baseline (GPT 4o)
+      (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
+  ) |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_num_hypotheses, tom_agent_softmax_temp) |>
+  summarize(
+    seeds = n(),
+  ) |> ungroup() |> print(n=100)
+
+
 # Combine human and model subset data
 summary_data = human_summary |>
   bind_rows(
@@ -648,6 +676,562 @@ ggsave(
 
 
 
+
+# FIGURE: HM hypothesis generation/evaluation ----
+
+color_lookup = c(
+  'Self-transition (+)-Humans' = COLORS[1], #'#440154'
+  'Self-transition (+)-Hypothetical Minds' = 'black',
+  'Self-transition (+)-HM Give Hypothesis' = 'gray',
+  'Self-transition (+)-HM Choose Hypothesis' = 'white',
+
+  'Self-transition (−)-Humans' = COLORS[2], # '#443a83'
+  'Self-transition (−)-Hypothetical Minds' = 'black',
+  'Self-transition (−)-HM Give Hypothesis' = 'gray',
+  'Self-transition (−)-HM Choose Hypothesis' = 'white',
+
+  'Opponent-transition (+)-Humans' = COLORS[3], # '#31688e'
+  'Opponent-transition (+)-Hypothetical Minds' = 'black',
+  'Opponent-transition (+)-HM Give Hypothesis' = 'gray',
+  'Opponent-transition (+)-HM Choose Hypothesis' = 'white',
+
+  'Opponent-transition (0)-Humans' = COLORS[4], # '#21908c'
+  'Opponent-transition (0)-Hypothetical Minds' = 'black',
+  'Opponent-transition (0)-HM Give Hypothesis' = 'gray',
+  'Opponent-transition (0)-HM Choose Hypothesis' = 'white',
+
+  'Previous outcome \n(W0L+T−)-Humans' = COLORS[5], # '#35b779'
+  'Previous outcome \n(W0L+T−)-Hypothetical Minds' = 'black',
+  'Previous outcome \n(W0L+T−)-HM Give Hypothesis' = 'gray',
+  'Previous outcome \n(W0L+T−)-HM Choose Hypothesis' = 'white',
+
+  'Previous outcome \n(W+L−T0)-Humans' = COLORS[6], # '#8fd744'
+  'Previous outcome \n(W+L−T0)-Hypothetical Minds' = 'black',
+  'Previous outcome \n(W+L−T0)-HM Give Hypothesis' = 'gray',
+  'Previous outcome \n(W+L−T0)-HM Choose Hypothesis' = 'white',
+
+  'Previous outcome, \nprevious transition-Humans' = COLORS[7], # '#fde725'
+  'Previous outcome, \nprevious transition-Hypothetical Minds' = 'black',
+  'Previous outcome, \nprevious transition-HM Give Hypothesis' = 'gray',
+  'Previous outcome, \nprevious transition-HM Choose Hypothesis' = 'white'
+)
+
+opponent_lookup = c(
+  'human' = 'Humans',
+  'hm_gpt4o' = 'Hypothetical Minds',
+  'give_hypothesis_gpt4o' = 'HM Give Hypothesis',
+  'choose_hypothesis_gpt4o' = 'HM Choose Hypothesis'
+)
+opponent_levels = c(
+  'Humans',
+  'Hypothetical Minds',
+  'HM Give Hypothesis',
+  'HM Choose Hypothesis'
+)
+
+# Add relevant HM rows
+# Look at different sets of `choose_hypothesis` runs
+gpt_data |>
+  filter(tom_agent_class == 'choose_hypothesis_gpt4o') |>
+  group_by(timestamp, sequential_agent_class) |>
+  summarize(seeds = n()) |> ungroup() |> print(n=100)
+
+model_subset = gpt_data |>
+  filter(
+    # HM Give Hypothesis
+    (tom_agent_class %in% c('give_hypothesis_gpt4o')) |
+      # HM Choose Hypothesis (most recent runs)
+      (tom_agent_class %in% c('choose_hypothesis_gpt4o') & sequential_agent_class %in% bot_levels & as.Date(timestamp) > as.Date('2025-01-01')) |
+      # Baseline (GPT 4o)
+      (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
+  ) |>
+  group_by(tom_agent_class, sequential_agent_class) |>
+  summarize(
+    mean_win_rate = mean(win_percentage),
+    seeds = n(),
+    se_win_rate = sd(win_percentage) / sqrt(n())
+  ) |>
+  ungroup() |>
+  rename(
+    bot_strategy_str = sequential_agent_class,
+    opponent = tom_agent_class
+  ) |>
+  rowwise() |>
+  mutate(
+    bot_strategy_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[bot_strategy_str]],
+                              levels = STRATEGY_LABELS)
+  )
+
+# Sanity check model subset
+model_subset |> print(n=100)  # do we have at least 3 seeds per row?
+gpt_data |>
+  filter(
+    # HM Give Hypothesis
+    (tom_agent_class %in% c('give_hypothesis_gpt4o')) |
+      # HM Choose Hypothesis (most recent runs)
+      (tom_agent_class %in% c('choose_hypothesis_gpt4o') & sequential_agent_class %in% bot_levels & as.Date(timestamp) > as.Date('2025-01-01')) |
+      # Baseline (GPT 4o)
+      (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
+  ) |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_num_hypotheses, tom_agent_softmax_temp) |>
+  summarize(
+    seeds = n(),
+  ) |> ungroup() |> print(n=100)
+
+
+# Combine human and model subset data
+summary_data = human_summary |>
+  bind_rows(
+    model_subset
+  ) |>
+  rowwise() |>
+  mutate(
+    opponent = factor(opponent_lookup[[opponent]],
+                      levels = opponent_levels)
+  )
+
+# Figure
+hyp_gen_eval_comparison = summary_data |>
+  ggplot(
+    aes(
+      x = bot_strategy_str,
+      y = mean_win_rate,
+      color = opponent,
+      fill = paste(bot_strategy_str, opponent, sep = '-')
+    )
+  ) +
+  geom_bar(
+    stat = 'identity',
+    position = position_dodge(0.9),
+    width = 0.7,
+    # alpha = 0.5
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = mean_win_rate - se_win_rate,
+      ymax = mean_win_rate + se_win_rate,
+      color = opponent
+      # color = paste(opponent, bot_strategy_str, sep = '-')
+    ),
+    position = position_dodge(width = 0.9), # NB: needs to match position above
+    linewidth = 0.5,
+    width = 0,
+    # color = 'black'
+  ) +
+  # chance line
+  geom_hline(
+    yintercept = 1/3,
+    linewidth = 0.5,
+    linetype = 'dashed',
+    color = 'black'
+  ) +
+  # noise ceiling
+  geom_hline(
+    yintercept = 0.9,
+    linewidth = 0.5,
+    linetype = 'dashed',
+    color = 'black'
+  ) +
+  scale_y_continuous(
+    name = 'win rate',
+    breaks = seq(0, 1.0, by = 0.25),
+    labels = seq(0, 1.0, by = 0.25),
+    limits = c(0, 1.0)
+  ) +
+  scale_x_discrete(
+    name = element_blank()
+  ) +
+  scale_fill_manual(
+    values = color_lookup
+  ) +
+  scale_color_manual(
+    values = c('black', 'black', 'black', 'black')
+  ) +
+  DEFAULT_PLOT_THEME +
+  theme(
+    legend.position = 'none',
+    axis.text.x = element_text(size = 14),
+  )
+
+hyp_gen_eval_comparison
+# Save figure
+ggsave(
+  hyp_gen_eval_comparison,
+  filename = 'hyp_gen_eval_comparison.pdf',
+  path = FIGURE_PATH,
+  device = cairo_pdf,
+  width = 20,
+  height = 7,
+)
+
+
+
+# FIGURE: Num hypotheses ----
+
+# Sanity check: seeds per agent class / opponent for each num_hypotheses
+gpt_data |>
+  filter(tom_agent_class == 'hm_gpt4o', sequential_agent_class %in% bot_levels, tom_agent_softmax_temp == 0.2) |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_softmax_temp, tom_agent_num_hypotheses) |>
+  summarize(seeds = n()) |>
+  print(n=200)
+
+
+# Keep human colors
+grey.colors(3, start = 0.8, end = 0.2)
+color_lookup = c(
+  'Self-transition (+)-Humans' = COLORS[1], #'#440154'
+  'Self-transition (+)-HM (hyp=9)' = 'black',
+  'Self-transition (+)-HM (hyp=7)' = '#333333',
+  'Self-transition (+)-HM default (hyp=5)' = '#989898',
+  'Self-transition (+)-HM (hyp=3)' = '#CCCCCC',
+  'Self-transition (+)-HM (hyp=1)' = 'white',
+
+  'Self-transition (−)-Humans' = COLORS[2], # '#443a83'
+  'Self-transition (−)-HM (hyp=9)' = 'black',
+  'Self-transition (−)-HM (hyp=7)' = '#333333',
+  'Self-transition (−)-HM default (hyp=5)' = '#989898',
+  'Self-transition (−)-HM (hyp=3)' = '#CCCCCC',
+  'Self-transition (−)-HM (hyp=1)' = 'white',
+
+  'Opponent-transition (+)-Humans' = COLORS[3], # '#31688e'
+  'Opponent-transition (+)-HM (hyp=9)' = 'black',
+  'Opponent-transition (+)-HM (hyp=7)' = '#333333',
+  'Opponent-transition (+)-HM default (hyp=5)' = '#989898',
+  'Opponent-transition (+)-HM (hyp=3)' = '#CCCCCC',
+  'Opponent-transition (+)-HM (hyp=1)' = 'white',
+
+  'Opponent-transition (0)-Humans' = COLORS[4], # '#21908c'
+  'Opponent-transition (0)-HM (hyp=9)' = 'black',
+  'Opponent-transition (0)-HM (hyp=7)' = '#333333',
+  'Opponent-transition (0)-HM default (hyp=5)' = '#989898',
+  'Opponent-transition (0)-HM (hyp=3)' = '#CCCCCC',
+  'Opponent-transition (0)-HM (hyp=1)' = 'white',
+
+  'Previous outcome \n(W0L+T−)-Humans' = COLORS[5], # '#35b779'
+  'Previous outcome \n(W0L+T−)-HM (hyp=9)' = 'black',
+  'Previous outcome \n(W0L+T−)-HM (hyp=7)' = '#333333',
+  'Previous outcome \n(W0L+T−)-HM default (hyp=5)' = '#989898',
+  'Previous outcome \n(W0L+T−)-HM (hyp=3)' = '#CCCCCC',
+  'Previous outcome \n(W0L+T−)-HM (hyp=1)' = 'white',
+
+  'Previous outcome \n(W+L−T0)-Humans' = COLORS[6], # '#8fd744'
+  'Previous outcome \n(W+L−T0)-HM (hyp=9)' = 'black',
+  'Previous outcome \n(W+L−T0)-HM (hyp=7)' = '#333333',
+  'Previous outcome \n(W+L−T0)-HM default (hyp=5)' = '#989898',
+  'Previous outcome \n(W+L−T0)-HM (hyp=3)' = '#CCCCCC',
+  'Previous outcome \n(W+L−T0)-HM (hyp=1)' = 'white',
+
+  'Previous outcome, \nprevious transition-Humans' = COLORS[7], # '#fde725'
+  'Previous outcome, \nprevious transition-HM (hyp=9)' = 'black',
+  'Previous outcome, \nprevious transition-HM (hyp=7)' = '#333333',
+  'Previous outcome, \nprevious transition-HM default (hyp=5)' = '#989898',
+  'Previous outcome, \nprevious transition-HM (hyp=3)' = '#CCCCCC',
+  'Previous outcome, \nprevious transition-HM (hyp=1)' = 'white'
+)
+
+opponent_lookup = c(
+  'human' = 'Humans',
+  'hm_gpt4o_1' = 'HM (hyp=1)',
+  'hm_gpt4o_3' = 'HM (hyp=3)',
+  'hm_gpt4o' = 'HM default (hyp=5)',
+  'hm_gpt4o_7' = 'HM (hyp=7)',
+  'hm_gpt4o_9' = 'HM (hyp=9)'
+)
+opponent_levels = c(
+  'Humans',
+  'HM (hyp=1)',
+  'HM (hyp=3)',
+  'HM default (hyp=5)',
+  'HM (hyp=7)',
+  'HM (hyp=9)'
+)
+
+
+
+model_subset = gpt_data |>
+  filter(tom_agent_class == 'hm_gpt4o', sequential_agent_class %in% bot_levels, tom_agent_softmax_temp == 0.2) |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_num_hypotheses) |>
+  summarize(
+    mean_win_rate = mean(win_percentage),
+    seeds = n(),
+    se_win_rate = sd(win_percentage) / sqrt(n())
+  ) |>
+  ungroup() |>
+  rename(
+    bot_strategy_str = sequential_agent_class,
+    opponent = tom_agent_class
+  ) |>
+  rowwise() |>
+  mutate(
+    bot_strategy_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[bot_strategy_str]],
+                              levels = STRATEGY_LABELS)
+  )
+
+model_subset |> print(n=100)
+# Make num_hypothesis classes
+model_subset$opponent[model_subset$opponent == 'hm_gpt4o' & model_subset$tom_agent_num_hypotheses == 1] = 'hm_gpt4o_1'
+model_subset$opponent[model_subset$opponent == 'hm_gpt4o' & model_subset$tom_agent_num_hypotheses == 3] = 'hm_gpt4o_3'
+model_subset$opponent[model_subset$opponent == 'hm_gpt4o' & model_subset$tom_agent_num_hypotheses == 7] = 'hm_gpt4o_7'
+model_subset$opponent[model_subset$opponent == 'hm_gpt4o' & model_subset$tom_agent_num_hypotheses == 9] = 'hm_gpt4o_9'
+
+
+# Combine human and model subset data
+summary_data = human_summary |>
+  bind_rows(
+    model_subset
+  ) |>
+  rowwise() |>
+  mutate(
+    opponent = factor(opponent_lookup[[opponent]],
+                      levels = opponent_levels)
+  )
+# Sanity check
+summary_data |> print(n=100)
+
+
+# Figure
+num_hypotheses_comparison = summary_data |>
+  ggplot(
+    aes(
+      x = bot_strategy_str,
+      y = mean_win_rate,
+      color = opponent,
+      fill = paste(bot_strategy_str, opponent, sep = '-')
+    )
+  ) +
+  geom_bar(
+    stat = 'identity',
+    position = position_dodge(0.9),
+    width = 0.7,
+    # alpha = 0.5
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = mean_win_rate - se_win_rate,
+      ymax = mean_win_rate + se_win_rate,
+      color = opponent
+      # color = paste(opponent, bot_strategy_str, sep = '-')
+    ),
+    position = position_dodge(width = 0.9), # NB: needs to match position above
+    linewidth = 0.5,
+    width = 0,
+    # color = 'black'
+  ) +
+  # chance line
+  geom_hline(
+    yintercept = 1/3,
+    linewidth = 0.5,
+    linetype = 'dashed',
+    color = 'black'
+  ) +
+  # noise ceiling
+  geom_hline(
+    yintercept = 0.9,
+    linewidth = 0.5,
+    linetype = 'dashed',
+    color = 'black'
+  ) +
+  scale_y_continuous(
+    name = 'win rate',
+    breaks = seq(0, 1.0, by = 0.25),
+    labels = seq(0, 1.0, by = 0.25),
+    limits = c(0, 1.0)
+  ) +
+  scale_x_discrete(
+    name = element_blank()
+  ) +
+  scale_fill_manual(
+    values = color_lookup
+  ) +
+  scale_color_manual(
+    values = c('black', 'black', 'black', 'black', 'black', 'black')
+  ) +
+  DEFAULT_PLOT_THEME +
+  theme(
+    legend.position = 'none',
+    axis.text.x = element_text(size = 14),
+  )
+
+num_hypotheses_comparison
+# Save figure
+ggsave(
+  num_hypotheses_comparison,
+  filename = 'num_hypotheses_comparison.pdf',
+  path = FIGURE_PATH,
+  device = cairo_pdf,
+  width = 20,
+  height = 7,
+)
+
+
+# FIGURE: Softmax temp ----
+
+# TODO consider revising softmax temp code to only modify the *hypothesis generation* temp
+# while preserving the default temp for evaluation (downstream decision making, etc. should not be more noisy)
+
+
+# Sanity check: seeds per agent class / opponent for each num_hypotheses
+# TODO should we restrict the 8 seeds for `opponent_transition_stay`?
+gpt_data |>
+  filter(tom_agent_class == 'hm_gpt4o', sequential_agent_class %in% bot_levels, tom_agent_num_hypotheses == 5) |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_softmax_temp, tom_agent_num_hypotheses) |>
+  summarize(seeds = n()) |>
+  print(n=200)
+
+color_lookup = c(
+  'Self-transition (+)-Humans' = COLORS[1], #'#440154'
+  'Self-transition (+)-HM (noise=0.2)' = 'black',
+  'Self-transition (+)-HM (noise=1)' = 'white',
+
+  'Self-transition (−)-Humans' = COLORS[2], # '#443a83'
+  'Self-transition (−)-HM (noise=0.2)' = 'black',
+  'Self-transition (−)-HM (noise=1)' = 'white',
+
+  'Opponent-transition (+)-Humans' = COLORS[3], # '#31688e'
+  'Opponent-transition (+)-HM (noise=0.2)' = 'black',
+  'Opponent-transition (+)-HM (noise=1)' = 'white',
+
+  'Opponent-transition (0)-Humans' = COLORS[4], # '#21908c'
+  'Opponent-transition (0)-HM (noise=0.2)' = 'black',
+  'Opponent-transition (0)-HM (noise=1)' = 'white',
+
+  'Previous outcome \n(W0L+T−)-Humans' = COLORS[5], # '#35b779'
+  'Previous outcome \n(W0L+T−)-HM (noise=0.2)' = 'black',
+  'Previous outcome \n(W0L+T−)-HM (noise=1)' = 'white',
+
+  'Previous outcome \n(W+L−T0)-Humans' = COLORS[6], # '#8fd744'
+  'Previous outcome \n(W+L−T0)-HM (noise=0.2)' = 'black',
+  'Previous outcome \n(W+L−T0)-HM (noise=1)' = 'white',
+
+  'Previous outcome, \nprevious transition-Humans' = COLORS[7], # '#fde725'
+  'Previous outcome, \nprevious transition-HM (noise=0.2)' = 'black',
+  'Previous outcome, \nprevious transition-HM (noise=1)' = 'white'
+)
+
+opponent_lookup = c(
+  'human' = 'Humans',
+  'hm_gpt4o_0.2' = 'HM (noise=0.2)',
+  'hm_gpt4o_1' = 'HM (noise=1)'
+)
+opponent_levels = c(
+  'Humans',
+  'HM (noise=0.2)',
+  'HM (noise=1)'
+)
+
+
+model_subset = gpt_data |>
+  filter(tom_agent_class == 'hm_gpt4o', sequential_agent_class %in% bot_levels, tom_agent_num_hypotheses == 5) |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_softmax_temp) |>
+  summarize(
+    mean_win_rate = mean(win_percentage),
+    seeds = n(),
+    se_win_rate = sd(win_percentage) / sqrt(n())
+  ) |>
+  ungroup() |>
+  rename(
+    bot_strategy_str = sequential_agent_class,
+    opponent = tom_agent_class
+  ) |>
+  rowwise() |>
+  mutate(
+    bot_strategy_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[bot_strategy_str]],
+                              levels = STRATEGY_LABELS)
+  )
+
+model_subset |> print(n=100)
+# Make softmax_noise classes
+model_subset$opponent[model_subset$opponent == 'hm_gpt4o' & model_subset$tom_agent_softmax_temp == 0.2] = 'hm_gpt4o_0.2'
+model_subset$opponent[model_subset$opponent == 'hm_gpt4o' & model_subset$tom_agent_softmax_temp == 1] = 'hm_gpt4o_1'
+
+# Combine human and model subset data
+summary_data = human_summary |>
+  bind_rows(
+    model_subset
+  ) |>
+  rowwise() |>
+  mutate(
+    opponent = factor(opponent_lookup[[opponent]],
+                      levels = opponent_levels)
+  )
+
+# Sanity check
+summary_data |> print(n=100)
+
+
+# Figure
+softmax_temp_comparison = summary_data |>
+  ggplot(
+    aes(
+      x = bot_strategy_str,
+      y = mean_win_rate,
+      color = opponent,
+      fill = paste(bot_strategy_str, opponent, sep = '-')
+    )
+  ) +
+  geom_bar(
+    stat = 'identity',
+    position = position_dodge(0.9),
+    width = 0.7,
+    # alpha = 0.5
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = mean_win_rate - se_win_rate,
+      ymax = mean_win_rate + se_win_rate,
+      color = opponent
+      # color = paste(opponent, bot_strategy_str, sep = '-')
+    ),
+    position = position_dodge(width = 0.9), # NB: needs to match position above
+    linewidth = 0.5,
+    width = 0,
+    # color = 'black'
+  ) +
+  # chance line
+  geom_hline(
+    yintercept = 1/3,
+    linewidth = 0.5,
+    linetype = 'dashed',
+    color = 'black'
+  ) +
+  # noise ceiling
+  geom_hline(
+    yintercept = 0.9,
+    linewidth = 0.5,
+    linetype = 'dashed',
+    color = 'black'
+  ) +
+  scale_y_continuous(
+    name = 'win rate',
+    breaks = seq(0, 1.0, by = 0.25),
+    labels = seq(0, 1.0, by = 0.25),
+    limits = c(0, 1.0)
+  ) +
+  scale_x_discrete(
+    name = element_blank()
+  ) +
+  scale_fill_manual(
+    values = color_lookup
+  ) +
+  scale_color_manual(
+    values = c('black', 'black', 'black', 'black', 'black', 'black')
+  ) +
+  DEFAULT_PLOT_THEME +
+  theme(
+    legend.position = 'none',
+    axis.text.x = element_text(size = 14),
+  )
+
+softmax_temp_comparison
+# Save figure
+ggsave(
+  softmax_temp_comparison,
+  filename = 'softmax_temp_comparison.pdf',
+  path = FIGURE_PATH,
+  device = cairo_pdf,
+  width = 20,
+  height = 7,
+)
 
 
 
