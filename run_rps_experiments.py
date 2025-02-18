@@ -37,7 +37,7 @@ async def run_experiments(agent_type, llm_type, num_seeds, num_rounds, softmax, 
         else:
             opponent_label = opponent_type
         existing_results = df_results[
-            (df_results['tom_agent_class'] == f"{agent_type}_{llm_type}") & 
+            (df_results['tom_agent_class'] == f"{agent_type}_{llm_type}") &
             (df_results['sequential_agent_class'] == opponent_label ) &
             (df_results['tom_agent_softmax_temp'] == softmax) &
             (df_results['tom_agent_num_hypotheses'] == num_hypotheses)
@@ -72,7 +72,9 @@ def main():
                        help='Sequential opponent chooses moves without any noise (disabled by default)')
     args = parser.parse_args()
 
+    print(f'Running RPS experiments with parameter settings: {args}')
     asyncio.run(run_experiments(args.agent_type, args.llm_type, args.num_seeds, args.num_rounds, args.softmax, args.num_hypotheses, args.deterministic_opponent))
+
 
 if __name__ == '__main__':
     main()

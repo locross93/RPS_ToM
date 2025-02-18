@@ -10,7 +10,7 @@ file_path = os.path.join(current_dir, '..', 'all_models', 'rps_scores_per_episod
 df_results = pd.read_csv(file_path)
 
 # do not plot these tom agents - hm_gpt35
-df_results = df_results[~df_results['tom_agent_class'].str.contains('hm_gpt35')]
+#df_results = df_results[~df_results['tom_agent_class'].str.contains('hm_gpt35')]
 
 # Create the bar plot
 plt.figure(figsize=(12, 6))
@@ -23,3 +23,10 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.ylim([0, 1])
 plt.show()
+
+
+combination_counts = df_results.groupby(['tom_agent_class', 'sequential_agent_class']).size()
+
+# Print the counts
+for (tom_agent, sequential_agent), count in combination_counts.items():
+    print(f"tom_agent_class: {tom_agent}, sequential_agent_class: {sequential_agent}, count: {count}")
