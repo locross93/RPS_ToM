@@ -720,7 +720,7 @@ opponent_lookup = c(
   'human' = 'Humans',
   'hm_gpt4o' = 'Hypothetical Minds',
   'give_hypothesis_gpt4o' = 'HM Give Hypothesis',
-  'choose_hypothesis_gpt4o' = 'HM Choose Hypothesis'
+  'choose_hyp_gpt4o' = 'HM Choose Hypothesis'
 )
 opponent_levels = c(
   'Humans',
@@ -732,7 +732,8 @@ opponent_levels = c(
 # Add relevant HM rows
 # Look at different sets of `choose_hypothesis` runs
 gpt_data |>
-  filter(tom_agent_class == 'choose_hypothesis_gpt4o') |>
+  # filter(tom_agent_class == 'choose_hypothesis_gpt4o') |>
+  filter(tom_agent_class == 'choose_hyp_gpt4o') |>
   group_by(timestamp, sequential_agent_class) |>
   summarize(seeds = n()) |> ungroup() |> print(n=100)
 
@@ -741,7 +742,7 @@ model_subset = gpt_data |>
     # HM Give Hypothesis
     (tom_agent_class %in% c('give_hypothesis_gpt4o')) |
       # HM Choose Hypothesis (most recent runs)
-      (tom_agent_class %in% c('choose_hypothesis_gpt4o') & sequential_agent_class %in% bot_levels & as.Date(timestamp) > as.Date('2025-01-01')) |
+      (tom_agent_class %in% c('choose_hyp_gpt4o') & sequential_agent_class %in% bot_levels & as.Date(timestamp) > as.Date('2025-01-01')) |
       # Baseline (GPT 4o)
       (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
   ) |>
@@ -769,7 +770,7 @@ gpt_data |>
     # HM Give Hypothesis
     (tom_agent_class %in% c('give_hypothesis_gpt4o')) |
       # HM Choose Hypothesis (most recent runs)
-      (tom_agent_class %in% c('choose_hypothesis_gpt4o') & sequential_agent_class %in% bot_levels & as.Date(timestamp) > as.Date('2025-01-01')) |
+      (tom_agent_class %in% c('choose_hyp_gpt4o') & sequential_agent_class %in% bot_levels & as.Date(timestamp) > as.Date('2025-01-01')) |
       # Baseline (GPT 4o)
       (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
   ) |>
@@ -1232,6 +1233,15 @@ ggsave(
   width = 20,
   height = 7,
 )
+
+
+
+# FIGURE: Deterministic opponent ----
+
+
+
+
+
 
 
 
