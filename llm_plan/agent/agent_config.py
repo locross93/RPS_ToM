@@ -6,4 +6,6 @@ agent_config = {
     'react': 'llm_plan.agent.rps.react.DecentralizedAgent',
     'base_llm': 'llm_plan.agent.rps.base_llm.DecentralizedAgent',
     'hm_mod_memory': 'llm_plan.agent.rps.hm_mod_memory.DecentralizedAgent',
+    'hm_scaffold': 'llm_plan.agent.rps.hm_scaffolding.DecentralizedAgent',
+    'hm_scaffold_1shot': 'llm_plan.agent.rps.hm_scaffold_1shot.DecentralizedAgent',
 }

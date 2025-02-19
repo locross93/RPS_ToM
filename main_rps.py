@@ -83,7 +83,7 @@ def setup_tom_agent(api_key, model_id, model_settings, agent_type, llm_type, seq
     else:
         agent_config_obj['self_improve'] = False
 
-    if 'give_hypothesis' in agent_type:
+    if 'give_hypothesis' in agent_type or 'scaffold' in agent_type:
         agent_config_obj['sequential_opponent'] = sequential_opponent
 
     # configure controller
