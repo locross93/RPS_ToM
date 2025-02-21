@@ -8,6 +8,7 @@
 rm(list=ls())
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
+library(lubridate)
 library(patchwork)
 library(tidyverse)
 library(viridis)
@@ -271,18 +272,57 @@ ggsave(
 )
 
 
-
-# FIGURE: HM baseline comparisons ----
+# Process HM data ----
 
 # Make 'HM ablation' class
 # TODO: only 2 seeds of `opponent_transition_stay` here
 gpt_data$tom_agent_class[gpt_data$tom_agent_class == 'hm_gpt4o' & gpt_data$tom_agent_num_hypotheses == 0] = 'hm_gpt4o_no_hyp'
 
-# Sanity check: seeds per agent class / opponent
-gpt_data |>
-  group_by(tom_agent_class, sequential_agent_class, tom_agent_softmax_temp, tom_agent_num_hypotheses) |>
-  summarize(seeds = n()) |>
-  print(n = 200)
+# Add converted timestamp
+gpt_data = gpt_data |>
+  filter(!is.na(timestamp)) |>
+  mutate(
+    timestamp_dt = as_datetime(timestamp, format = '%Y-%m-%d_%H-%M-%S')
+  )
+
+
+# Filter relevant baseline agents
+baseline_gpt_data = gpt_data |>
+  filter(
+    # Default HM
+    (tom_agent_class == 'hm_gpt4o' &
+       tom_agent_num_hypotheses == 5 &
+       tom_agent_softmax_temp == 0.2 &
+       sequential_agent_class %in% bot_levels &
+       timestamp_dt < as_datetime('2024-10-01_00-00-00', format = '%Y-%m-%d_%H-%M-%S')
+     ) |
+    # No hypothesis evaluation
+    (tom_agent_class == 'hm_gpt4o_no_hyp') |
+    # ReAct
+    (tom_agent_class == 'react_gpt4o') |
+    # Base LLM
+    (tom_agent_class == 'base_llm_gpt4o' &
+       (sequential_agent_class != 'opponent_transition_stay' |
+          (sequential_agent_class == 'opponent_transition_stay' &
+             # only 3 most recent seeds (NB: this is super manual...)
+             timestamp_dt > as_datetime('2025-02-06_14-34-25', format = '%Y-%m-%d_%H-%M-%S')
+          )
+      )
+    )
+  )
+
+# FIGURE: HM baseline comparisons ----
+
+
+# Sanity check filtering
+# Check all 7 bot opponent categories for each HM agent and 3 seeds for each agent-opponent combo
+baseline_gpt_data |>
+  group_by(tom_agent_class, sequential_agent_class, tom_agent_num_hypotheses, tom_agent_softmax_temp) |>
+  summarize(
+    seeds = n(),
+  ) |>
+  ungroup() |>
+  print(n=100)
 
 
 bot_levels = c(
@@ -309,54 +349,6 @@ opponent_levels = c(
   'ReAct',
   'Base LLM'
 )
-
-# Keep human colors
-# color_lookup = c(
-#   'Self-transition (+)-Humans' = COLORS[1], #'#440154'
-#   'Self-transition (+)-Hypothetical Minds' = 'black',
-#   'Self-transition (+)-No Hypothesis Evaluation' = 'darkgray',
-#   'Self-transition (+)-ReAct' = 'lightgray',
-#   'Self-transition (+)-Base LLM' = 'white',
-#
-#   'Self-transition (−)-Humans' = COLORS[2], # '#443a83'
-#   'Self-transition (−)-Hypothetical Minds' = 'black',
-#   'Self-transition (−)-No Hypothesis Evaluation' = 'darkgray',
-#   'Self-transition (−)-ReAct' = 'lightgray',
-#   'Self-transition (−)-Base LLM' = 'white',
-#
-#   'Opponent-transition (+)-Humans' = COLORS[3], # '#31688e'
-#   'Opponent-transition (+)-Hypothetical Minds' = 'black',
-#   'Opponent-transition (+)-No Hypothesis Evaluation' = 'darkgray',
-#   'Opponent-transition (+)-ReAct' = 'lightgray',
-#   'Opponent-transition (+)-Base LLM' = 'white',
-#
-#   'Opponent-transition (0)-Humans' = COLORS[4], # '#21908c'
-#   'Opponent-transition (0)-Hypothetical Minds' = 'black',
-#   'Opponent-transition (0)-No Hypothesis Evaluation' = 'darkgray',
-#   'Opponent-transition (0)-ReAct' = 'lightgray',
-#   'Opponent-transition (0)-Base LLM' = 'white',
-#
-#   'Previous outcome \n(W0L+T−)-Humans' = COLORS[5], # '#35b779'
-#   'Previous outcome \n(W0L+T−)-Hypothetical Minds' = 'black',
-#   'Previous outcome \n(W0L+T−)-No Hypothesis Evaluation' = 'darkgray',
-#   'Previous outcome \n(W0L+T−)-ReAct' = 'lightgray',
-#   'Previous outcome \n(W0L+T−)-Base LLM' = 'white',
-#
-#   'Previous outcome \n(W+L−T0)-Humans' = COLORS[6], # '#8fd744'
-#   'Previous outcome \n(W+L−T0)-Hypothetical Minds' = 'black',
-#   'Previous outcome \n(W+L−T0)-No Hypothesis Evaluation' = 'darkgray',
-#   'Previous outcome \n(W+L−T0)-ReAct' = 'lightgray',
-#   'Previous outcome \n(W+L−T0)-Base LLM' = 'white',
-#
-#   'Previous outcome, \nprevious transition-Humans' = COLORS[7], # '#fde725'
-#   'Previous outcome, \nprevious transition-Hypothetical Minds' = 'black',
-#   'Previous outcome, \nprevious transition-No Hypothesis Evaluation' = 'darkgray',
-#   'Previous outcome, \nprevious transition-ReAct' = 'lightgray',
-#   'Previous outcome, \nprevious transition-Base LLM' = 'white'
-# )
-
-# Updated colors
-
 
 color_lookup = c(
   'Self \ntransition \n(+)-Humans' = HUMAN_DEFAULT_COLOR,
@@ -444,15 +436,7 @@ model_subset = gpt_data |>
   )
 # Sanity check model subset
 model_subset |> print(n=100)  # do we have at least 3 seeds per row?
-gpt_data |>                   # what's going on with rows where we have more than 3 seeds?
-  filter(
-    (tom_agent_class %in% c('base_llm_gpt4o', 'react_gpt4o', 'hm_gpt4o_no_hyp')) |
-      (tom_agent_class == 'hm_gpt4o' & tom_agent_num_hypotheses == 5 & tom_agent_softmax_temp == 0.2 & sequential_agent_class %in% bot_levels)
-  ) |>
-  group_by(tom_agent_class, sequential_agent_class, tom_agent_num_hypotheses, tom_agent_softmax_temp) |>
-  summarize(
-    seeds = n(),
-  ) |> ungroup() |> print(n=100)
+
 
 # Combine human and model subset data
 summary_data = human_summary |>
@@ -542,6 +526,168 @@ ggsave(
   height = 7,
 )
 
+
+# FIGURE: L2 distance ----
+subject_summary = read_csv('data_processed/rps_human_trial_data_summary.csv')
+# Sanity check
+glimpse(subject_summary)
+
+# Summary of human win rate at strategy level
+human_win_summary = human_summary |> arrange(bot_strategy_str) |> select(bot_strategy_str, mean_win_rate)
+glimpse(human_win_summary)
+
+
+hm_default_summary = gpt_data |>
+  filter(
+    (tom_agent_class == 'hm_gpt4o' &
+       tom_agent_num_hypotheses == 5 &
+       sequential_agent_class %in% bot_levels &
+       tom_agent_softmax_temp == 0.2
+    ) |
+      (tom_agent_class %in% c('base_llm_gpt4o', 'react_gpt4o', 'hm_gpt4o_no_hyp'))
+  ) |>
+  group_by(tom_agent_class, sequential_agent_class) |>
+  summarize(
+    seeds = n(),
+    mean_win_rate = mean(win_percentage)
+  ) |>
+  ungroup() |>
+  rowwise() |>
+  mutate(
+    bot_strategy_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[sequential_agent_class]],
+                              levels = STRATEGY_LABELS)
+  )
+# Sanity check
+glimpse(hm_default_summary)
+
+
+
+# Calculate distances
+table(hm_default_summary$tom_agent_class)
+
+l2_dist = data.frame()
+
+l2_dist = rbind(
+  l2_dist,
+  data.frame(
+    'model' = 'Hyp. Minds',
+    'L2 distance' = dist(
+      rbind(
+        human_win_summary$mean_win_rate,
+        hm_default_summary |> filter(tom_agent_class == 'hm_gpt4o') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
+      )
+    )
+  )
+)
+
+l2_dist = rbind(
+  l2_dist,
+  data.frame(
+    'model' = 'No Hyp. Eval.',
+    'L2 distance' = dist(
+      rbind(
+        human_win_summary$mean_win_rate,
+        hm_default_summary |> filter(tom_agent_class == 'hm_gpt4o_no_hyp') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
+      )
+    )
+
+  )
+)
+
+l2_dist = rbind(
+  l2_dist,
+  data.frame(
+    'model' = 'ReAct',
+    'L2 distance' = dist(
+      rbind(
+        human_win_summary$mean_win_rate,
+        hm_default_summary |> filter(tom_agent_class == 'react_gpt4o') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
+      )
+    )
+  )
+)
+
+l2_dist = rbind(
+  l2_dist,
+  data.frame(
+    'model' = 'Base LLM',
+    'L2 distance' = dist(
+      rbind(
+        human_win_summary$mean_win_rate,
+        hm_default_summary |> filter(tom_agent_class == 'base_llm_gpt4o') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
+      )
+    )
+  )
+)
+
+l2_dist$model = factor(l2_dist$model,
+                       levels = c('Hyp. Minds', 'No Hyp. Eval.', 'ReAct', 'Base LLM'))
+
+
+
+l2_heatmap = l2_dist |>
+  ggplot(
+    aes(
+      x = model,
+      y = 1,
+      fill = L2.distance
+    )
+  ) +
+  geom_tile(
+    # color = 'white',
+    aes(color = model),
+    width = 0.9,
+    height = 0.9,
+    lwd = 4,
+    linetype = 1
+  ) +
+  geom_text(
+    aes(label = round(L2.distance, 2)),
+    color = 'black',
+    size = 8,
+    family = 'Charter'
+  ) +
+  coord_fixed() +
+  scale_x_discrete(
+    name = element_blank()
+  ) +
+  scale_y_discrete(
+    name = element_blank(),
+  ) +
+  scale_fill_gradient(
+    name = 'L2 Distance',
+    low = '#e5e5e5',
+    high = '#7d7d7d'
+  ) +
+  scale_color_manual(
+    values = c(
+      'Hyp. Minds' = HM_DEFAULT_COLOR,
+      'No Hyp. Eval.' = '#cc719d',
+      'ReAct' = '#e2aec7',
+      'Base LLM' = '#f7eaf1'
+    )
+  ) +
+  DEFAULT_PLOT_THEME +
+  theme(
+    # same x formatting
+    # axis.text.x = element_text(size = 20, angle = 90, vjust = 0.5, family = 'Charter', margin = margin(t = 0.5, unit = 'line'), color = 'black'),
+    axis.text.x = element_blank(),
+    axis.text.y = element_text(size = 10, family = 'Charter', margin = margin(r = 0.5, unit = 'line'), color = 'black'),
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    # legend.position = 'none'
+  )
+
+
+l2_heatmap
+ggsave(
+  l2_heatmap,
+  filename = 'l2_heatmap.pdf',
+  path = FIGURE_PATH,
+  device = cairo_pdf,
+  width = 7,
+  height = 4,
+)
 
 
 # FIGURE: HM LLM comparisons ----
@@ -1665,164 +1811,5 @@ ggsave(
 
 # FIGURE: Model summary ----
 
-subject_summary = read_csv('data_processed/rps_human_trial_data_summary.csv')
-# Sanity check
-glimpse(subject_summary)
 
-# Summary of human win rate at strategy level
-human_win_summary = human_summary |> arrange(bot_strategy_str) |> select(bot_strategy_str, mean_win_rate)
-glimpse(human_win_summary)
-
-
-hm_default_summary = gpt_data |>
-  filter(
-    (tom_agent_class == 'hm_gpt4o' &
-      tom_agent_num_hypotheses == 5 &
-      sequential_agent_class %in% bot_levels &
-      tom_agent_softmax_temp == 0.2
-    ) |
-    (tom_agent_class %in% c('base_llm_gpt4o', 'react_gpt4o', 'hm_gpt4o_no_hyp'))
-  ) |>
-  group_by(tom_agent_class, sequential_agent_class) |>
-  summarize(
-    seeds = n(),
-    mean_win_rate = mean(win_percentage)
-  ) |>
-  ungroup() |>
-  rowwise() |>
-  mutate(
-    bot_strategy_str = factor(TOM_AGENT_STRATEGY_LOOKUP[[sequential_agent_class]],
-                              levels = STRATEGY_LABELS)
-  )
-# Sanity check
-glimpse(hm_default_summary)
-
-
-
-# Calculate distances
-table(hm_default_summary$tom_agent_class)
-
-l2_dist = data.frame()
-
-l2_dist = rbind(
-  l2_dist,
-  data.frame(
-    'model' = 'Hyp. Minds',
-    'L2 distance' = dist(
-      rbind(
-        human_win_summary$mean_win_rate,
-        hm_default_summary |> filter(tom_agent_class == 'hm_gpt4o') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
-      )
-    )
-  )
-)
-
-l2_dist = rbind(
-  l2_dist,
-  data.frame(
-    'model' = 'No Hyp. Eval.',
-    'L2 distance' = dist(
-      rbind(
-        human_win_summary$mean_win_rate,
-        hm_default_summary |> filter(tom_agent_class == 'hm_gpt4o_no_hyp') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
-      )
-    )
-
-  )
-)
-
-l2_dist = rbind(
-  l2_dist,
-  data.frame(
-    'model' = 'ReAct',
-    'L2 distance' = dist(
-      rbind(
-        human_win_summary$mean_win_rate,
-        hm_default_summary |> filter(tom_agent_class == 'react_gpt4o') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
-      )
-    )
-  )
-)
-
-l2_dist = rbind(
-  l2_dist,
-  data.frame(
-    'model' = 'Base LLM',
-    'L2 distance' = dist(
-      rbind(
-        human_win_summary$mean_win_rate,
-        hm_default_summary |> filter(tom_agent_class == 'base_llm_gpt4o') |> arrange(bot_strategy_str) |> pull(mean_win_rate)
-      )
-    )
-  )
-)
-
-l2_dist$model = factor(l2_dist$model,
-                          levels = c('Hyp. Minds', 'No Hyp. Eval.', 'ReAct', 'Base LLM'))
-
-
-
-l2_heatmap = l2_dist |>
-  ggplot(
-    aes(
-      x = model,
-      y = 1,
-      fill = L2.distance
-    )
-  ) +
-  geom_tile(
-    # color = 'white',
-    aes(color = model),
-    width = 0.9,
-    height = 0.9,
-    lwd = 4,
-    linetype = 1
-  ) +
-  geom_text(
-    aes(label = round(L2.distance, 2)),
-    color = 'black',
-    size = 8,
-    family = 'Charter'
-  ) +
-  coord_fixed() +
-  scale_x_discrete(
-    name = element_blank()
-  ) +
-  scale_y_discrete(
-    name = element_blank(),
-  ) +
-  scale_fill_gradient(
-    name = 'L2 Distance',
-    low = '#e5e5e5',
-    high = '#7d7d7d'
-  ) +
-  scale_color_manual(
-    values = c(
-      'Hyp. Minds' = HM_DEFAULT_COLOR,
-      'No Hyp. Eval.' = '#cc719d',
-      'ReAct' = '#e2aec7',
-      'Base LLM' = '#f7eaf1'
-    )
-  ) +
-  DEFAULT_PLOT_THEME +
-  theme(
-      # same x formatting
-      # axis.text.x = element_text(size = 20, angle = 90, vjust = 0.5, family = 'Charter', margin = margin(t = 0.5, unit = 'line'), color = 'black'),
-      axis.text.x = element_blank(),
-      axis.text.y = element_text(size = 10, family = 'Charter', margin = margin(r = 0.5, unit = 'line'), color = 'black'),
-      axis.line = element_blank(),
-      axis.ticks = element_blank(),
-      # legend.position = 'none'
-    )
-
-
-l2_heatmap
-ggsave(
-  l2_heatmap,
-  filename = 'l2_heatmap.pdf',
-  path = FIGURE_PATH,
-  device = cairo_pdf,
-  width = 7,
-  height = 4,
-)
 
