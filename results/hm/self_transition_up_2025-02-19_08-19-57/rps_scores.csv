@@ -285,3 +285,17 @@
 283,self_transition_up,hm_llama3,0.2,5,283,scissors,scissors,0,0
 284,self_transition_up,hm_llama3,0.2,5,284,rock,paper,-1,3
 285,self_transition_up,hm_llama3,0.2,5,285,paper,rock,3,-1
+286,self_transition_up,hm_llama3,0.2,5,286,scissors,rock,-1,3
+287,self_transition_up,hm_llama3,0.2,5,287,rock,rock,0,0
+288,self_transition_up,hm_llama3,0.2,5,288,paper,rock,3,-1
+289,self_transition_up,hm_llama3,0.2,5,289,scissors,rock,-1,3
+290,self_transition_up,hm_llama3,0.2,5,290,rock,rock,0,0
+291,self_transition_up,hm_llama3,0.2,5,291,scissors,scissors,0,0
+292,self_transition_up,hm_llama3,0.2,5,292,rock,scissors,3,-1
+293,self_transition_up,hm_llama3,0.2,5,293,scissors,scissors,0,0
+294,self_transition_up,hm_llama3,0.2,5,294,rock,paper,-1,3
+295,self_transition_up,hm_llama3,0.2,5,295,paper,rock,3,-1
+296,self_transition_up,hm_llama3,0.2,5,296,scissors,scissors,0,0
+297,self_transition_up,hm_llama3,0.2,5,297,rock,rock,0,0
+298,self_transition_up,hm_llama3,0.2,5,298,paper,scissors,-1,3
+299,self_transition_up,hm_llama3,0.2,5,299,scissors,paper,3,-1
