@@ -87,3 +87,7 @@ plt.axhline(y=0.33, color='black', linestyle='--')
 plt.tight_layout()
 plt.ylim([0, 1])
 plt.show()
+
+# print the average results for hm_gpt4o
+hm_gpt4o_results = df_results[df_results['tom_agent_class'] == 'hm_gpt4o']
+print(hm_gpt4o_results.groupby('sequential_agent_class').mean()['win_percentage'])
