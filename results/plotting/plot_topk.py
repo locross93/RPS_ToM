@@ -11,6 +11,7 @@ df_results = pd.read_csv(file_path)
 
 # Filter for gpt4o ToM agents only
 df_results = df_results[df_results['tom_agent_class'] == 'hm_gpt4o']
+df_results = df_results[~df_results['sequential_agent_class'].str.contains('deterministic')]
 
 # Create the bar plot
 plt.figure(figsize=(12, 6))
