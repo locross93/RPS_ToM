@@ -1,0 +1,1 @@
+hm_pattern_recog_gpt-4o-mini, playing rock paper scissors vs. self_transition_up
