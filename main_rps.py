@@ -188,6 +188,7 @@ def main():
     args = parser.parse_args()
 
     # Run the game
+    print(f'Running main_rps with parameters: {args}')
     loop = asyncio.get_event_loop()
     loop.run_until_complete(
         main_async(
