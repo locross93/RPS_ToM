@@ -8,4 +8,5 @@ agent_config = {
     'hm_mod_memory': 'llm_plan.agent.rps.hm_mod_memory.DecentralizedAgent',
     'hm_scaffold': 'llm_plan.agent.rps.hm_scaffolding.DecentralizedAgent',
     'hm_scaffold_1shot': 'llm_plan.agent.rps.hm_scaffold_1shot.DecentralizedAgent',
+    'hm_pattern_recog': 'llm_plan.agent.rps.hm_pattern_recog.PatternHypotheticalMinds',
 }

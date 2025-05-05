@@ -23,7 +23,7 @@ async def run_experiments(agent_type, llm_type, num_seeds, num_rounds, softmax, 
         'opponent_transition_stay',
         'W_up_L_down_T_stay',
         'W_stay_L_up_T_down',
-        #'prev_outcome_prev_transition'
+        'prev_outcome_prev_transition'
     ]
     for opponent_type in SEQUENTIAL_OPPONENTS:
         # Filter existing results for current agent, opponent, and hyperparameters
